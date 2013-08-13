@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.billme.ui.AccountActivity" >
+
+    <RelativeLayout
+        android:id="@+id/rl_account_userInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp" >
+
+        <QuickContactBadge
+            android:id="@+id/qcb_account_userIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/result_minor_text"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_account_userName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/qcb_account_userIcon"
+            android:layout_toRightOf="@+id/qcb_account_userIcon"
+            android:background="@color/result_minor_text"
+            android:text="@string/tv_imformation_userName"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/tv_account_acountBalance"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/qcb_account_userIcon"
+            android:layout_alignLeft="@+id/tv_account_userName"
+            android:layout_alignRight="@+id/tv_account_userName"
+            android:layout_below="@+id/tv_account_userName"
+            android:background="@color/result_minor_text"
+            android:text="@string/tv_imformation_acountBalance" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_account_admin"
+        android:dividerHeight="0dip"
+        android:scrollbars="none"
+        android:divider="@null"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:listSelector="@android:color/transparent"
+        android:layout_below="@+id/rl_account_userInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000" >
+    </ListView>
+
+</RelativeLayout>
