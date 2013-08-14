@@ -32,9 +32,6 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity
 	public static final int GET_BANK_CARD_FAILURE = -1;
 	public static final int ADD_BANK_CARD_FAILURE = -2;
 
-	private ImageButton backButton = null;
-	private TextView title = null;
-
 	private ListView bankCardList = null;
 	private Button bandCardBindButton = null;
 	private ProgressDialog pd = null;
@@ -52,23 +49,9 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bank_card);
-		backButton = (ImageButton) findViewById(R.id.btn_mytitle_back);
-		title = (TextView) findViewById(R.id.tv_mytitle_title);
-
+		addTitle("银行卡管理");
 		bankCardList = (ListView) findViewById(R.id.lv_bankcard_bankcards);
 		bandCardBindButton = (Button) findViewById(R.id.btn_bankcard_bind);
-
-		title.setText("银行卡管理");
-		backButton.setOnClickListener(new Button.OnClickListener()
-		{
-
-			@Override
-			public void onClick(View v)
-			{
-				// TODO Auto-generated method stub
-				finish();
-			}
-		});
 
 		bandCardBindButton.setOnClickListener(new Button.OnClickListener()
 		{
