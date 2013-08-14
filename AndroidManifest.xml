@@ -86,6 +86,10 @@
             android:name="com.billme.ui.PaymentConfirmActivity"
             android:label="@string/title_activity_payment_confirm" >
         </activity>
+        <activity
+            android:name="com.billme.ui.FriendActivity"
+            android:label="@string/title_activity_friend" >
+        </activity>
     </application>
 
 </manifest>

@@ -30,6 +30,11 @@ public class MyListViewAdapter extends BaseAdapter
 		this.context = context;
 		inflater = LayoutInflater.from(context);
 	}
+	
+	public String getText(int n)
+	{
+		return (String) list.get(n).get("text");
+	}
 	@Override
 	public int getCount()
 	{
@@ -78,5 +83,14 @@ public class MyListViewAdapter extends BaseAdapter
 		public ImageView icon = null;
 		public TextView text = null;
 		public ImageView end = null;
+	}
+
+	public ArrayList<HashMap<String, Object>> getList()
+	{
+		return list;
+	}
+	public void setList(ArrayList<HashMap<String, Object>> list)
+	{
+		this.list = list;
 	}
 }

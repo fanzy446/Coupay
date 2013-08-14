@@ -404,7 +404,21 @@ public class FuturePayment{
 			throw e;
 		}
 	}
-	
+	/**
+	 * 查询好友列表
+	 * @return 好友列表
+	 * @throws PaymentException
+	 */
+	public ArrayList<Friend> queryFriend()throws PaymentException{
+		try
+		{
+			return supporter.queryFriend();
+		}
+		catch(PaymentException e)
+		{
+			throw e;
+		}
+	}
 	/**
 	 * 添加好友
 	 * @param friendId 好友id

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import com.billme.logic.BillMeActivity;
 import com.billme.logic.MainService;
-import com.billme.logic.Task;
+import com.futurePayment.constant.Task;
 
 import android.os.Bundle;
 import android.graphics.drawable.Drawable;
