@@ -1,6 +1,9 @@
 package com.futurePayment.model;
 
-public class Friend
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Friend implements Parcelable
 {
 private String name = null;
 private String path = null;
@@ -19,5 +22,16 @@ public String getPath()
 public void setPath(String path)
 {
 	this.path = path;
+}
+@Override
+public int describeContents()
+{
+	// TODO Auto-generated method stub
+	return 0;
+}
+@Override
+public void writeToParcel(Parcel arg0, int arg1)
+{
+	// TODO Auto-generated method stub
 }
 }

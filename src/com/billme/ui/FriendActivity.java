@@ -2,21 +2,18 @@ package com.billme.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.billme.logic.BillMeActivity;
 import com.billme.logic.MainService;
 import com.billme.widget.MyListViewAdapter;
 import com.futurePayment.constant.ResultCode;
 import com.futurePayment.constant.Task;
-import com.futurePayment.model.BankCard;
 import com.futurePayment.model.Friend;
 import com.futurePayment.model.PaymentException;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.ProgressDialog;
+
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,8 +30,8 @@ public class FriendActivity extends BaseActivity implements BillMeActivity
 	private Button okButton = null;
 	private ProgressDialog pd = null;
 	private MyListViewAdapter adapter = null;
-	private ArrayList<HashMap<String, Object>> al = new ArrayList<HashMap<String, Object>>();
-	private LinkedList<String> nameList = new LinkedList<String>();
+	private ArrayList<HashMap<String, Object>> fl = new ArrayList<HashMap<String, Object>>();
+	private ArrayList<Boolean> isChosen = new ArrayList<Boolean>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -67,26 +64,52 @@ public class FriendActivity extends BaseActivity implements BillMeActivity
 			@Override
 			public void onClick(View arg0)
 			{
+				ArrayList<Friend> al = new ArrayList<Friend>();
 				// TODO Auto-generated method stub
-				
+				for(int i = 0; i < fl.size(); i++)
+				{
+					if(isChosen.get(i))
+					{
+						Friend temp = new Friend();
+						temp.setName((String)fl.get(i).get("text"));
+						temp.setPath((String)fl.get(i).get("icon"));
+						al.add(temp);
+					}
+				}
+				Intent intent = new Intent();
+				intent.putExtra("friend", al);
+				setResult(0, intent);
+				finish();
 			}
 		});
 	}
 
 	private void bindAdapter()
 	{
-		ArrayList<Friend> fl = MainService.getFuturePayment().getUser()
+		Intent intent = getIntent();
+		ArrayList<String> nl = intent.getStringArrayListExtra("name");
+		ArrayList<Friend> al = MainService.getFuturePayment().getUser()
 				.getFriendList();
-		al = new ArrayList<HashMap<String, Object>>();
-		for (int i = 0; i < fl.size(); i++)
+		for (int i = 0; i < al.size(); i++)
 		{
-			Friend f = fl.get(i);
+			Friend f = al.get(i);
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			//加入图片
+			map.put("icon", f.getPath());
 			map.put("text", f.getName());
-			al.add(map);
+			fl.add(map);
+			//初始化选择			
+			if(nl.contains(f.getName()))
+			{
+				map.put("back", R.drawable.click);
+				isChosen.add(true);
+			}
+			else
+			{
+				isChosen.add(false);
+			}
 		}
-		adapter = new MyListViewAdapter(this, al);
+		adapter = new MyListViewAdapter(this, fl);
 		friendList.setAdapter(adapter);
 		friendList.setOnItemClickListener(new ListView.OnItemClickListener(){
 
@@ -96,16 +119,15 @@ public class FriendActivity extends BaseActivity implements BillMeActivity
 			{
 				// TODO Auto-generated method stub
 				//选中某位好友
-				String name = (String)al.get(arg2).get("text");
-				if(nameList.contains(name))
+				if(isChosen.get(arg2) == true)
 				{
-					al.get(arg2).put("back", null);
-					nameList.remove(name);
+					fl.get(arg2).remove("back");
+					isChosen.set(arg2, false);
 				}
 				else
 				{
-					al.get(arg2).put("back", R.drawable.click);
-					nameList.add(name);
+					fl.get(arg2).put("back", R.drawable.click);
+					isChosen.set(arg2, true);
 				}
 			}			
 		});

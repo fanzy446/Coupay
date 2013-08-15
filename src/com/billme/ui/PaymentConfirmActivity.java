@@ -6,9 +6,12 @@ import java.util.HashMap;
 import com.billme.logic.BillMeActivity;
 import com.billme.widget.MyListViewAdapter;
 
+import com.futurePayment.model.Friend;
+
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -68,7 +71,15 @@ public class PaymentConfirmActivity extends BaseActivity implements BillMeActivi
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
-				
+				ArrayList<String> name = new ArrayList<String>();
+				for(int i = 0; i < pl.size(); i++)
+				{
+					name.add((String)pl.get(i).get("text"));
+				}
+				Intent intent = new Intent();
+				intent.putExtra("name", name);
+				intent.setClass(PaymentConfirmActivity.this, FriendActivity.class);
+				startActivityForResult(intent, 0);
 			}
 			
 		});
@@ -105,6 +116,7 @@ public class PaymentConfirmActivity extends BaseActivity implements BillMeActivi
 				{
 				case 0:
 				//选中单人支付
+					//跳转页面
 					break;
 				case 1:
 					if(mutipay == false)
@@ -117,10 +129,11 @@ public class PaymentConfirmActivity extends BaseActivity implements BillMeActivi
 					}
 					else
 					{
-						cl.get(1).put("end", R.drawable.nav_left);
-						peopleList.setVisibility(View.INVISIBLE);
-						mutipay = false;
-						choiceAdapter.notifyDataSetChanged();
+						//跳转页面
+//						cl.get(1).put("end", R.drawable.nav_left);
+//						peopleList.setVisibility(View.INVISIBLE);
+//						mutipay = false;
+//						choiceAdapter.notifyDataSetChanged();
 					}
 				}
 			}
@@ -130,9 +143,9 @@ public class PaymentConfirmActivity extends BaseActivity implements BillMeActivi
 
 	private void bindPeopleAdapter()
 	{
-		HashMap<String, Object> map3 = new HashMap<String, Object>();
-		map3.put("icon", R.drawable.back);
-		pl.add(map3);
+//		HashMap<String, Object> map3 = new HashMap<String, Object>();
+//		map3.put("icon", R.drawable.back);
+//		pl.add(map3);
 		peopleAdapter = new MyListViewAdapter(this, pl);
 		peopleList.setAdapter(peopleAdapter);
 		peopleList.setOnItemClickListener(new GridView.OnItemClickListener(){
@@ -165,6 +178,23 @@ public class PaymentConfirmActivity extends BaseActivity implements BillMeActivi
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		ArrayList<Friend> al = data.getParcelableArrayListExtra("friend");
+		for(int i = 0; i < al.size(); i ++)
+		{
+			Friend temp = al.get(i);
+			HashMap<String, Object> map3 = new HashMap<String, Object>();
+			//查找放置头像
+			map3.put("icon", temp.getPath());
+			pl.add(map3);
+		}
+		peopleAdapter.notifyDataSetChanged();
 	}
 
 }
