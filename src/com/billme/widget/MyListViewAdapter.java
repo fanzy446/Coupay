@@ -2,7 +2,10 @@ package com.billme.widget;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.billme.logic.MainService;
 import com.billme.ui.R;
+import com.billme.util.FileUtil;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -80,6 +83,10 @@ public class MyListViewAdapter extends BaseAdapter
 			else if(map.get("icon") instanceof String)
 			{
 				//¥”sdø®∂¡»°
+				FileUtil fu = new FileUtil(MainService.getUser().getName());
+				viewHolder.icon.setImageDrawable(fu.readImageFromSD((String)map.get("icon")));
+				viewHolder.text.setText((String)map.get("text"));
+				viewHolder.end.setImageDrawable(context.getResources().getDrawable((Integer)(map.get("end"))));
 			}
 		}	
 		return convertView;

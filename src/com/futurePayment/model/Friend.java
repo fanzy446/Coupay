@@ -7,6 +7,7 @@ public class Friend implements Parcelable
 {
 private String name = null;
 private String path = null;
+private int size;
 public String getName()
 {
 	return name;
@@ -33,5 +34,14 @@ public int describeContents()
 public void writeToParcel(Parcel arg0, int arg1)
 {
 	// TODO Auto-generated method stub
+	
+}
+public int getSize()
+{
+	return size;
+}
+public void setSize(int size)
+{
+	this.size = size;
 }
 }
