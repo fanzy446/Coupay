@@ -172,7 +172,7 @@ public class FuturePayment{
 	 * @return Ö§¸¶½á¹û
 	 * @throws PaymentException
 	 */
-	public boolean multiplePay(JSONObject[] payerlist)throws PaymentException{
+	public boolean multiplePay(ArrayList<HashMap<String, Object>> payerlist)throws PaymentException{
 		try
 		{
 			return supporter.multiplePay(payerlist);

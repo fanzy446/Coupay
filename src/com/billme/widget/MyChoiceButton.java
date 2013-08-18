@@ -169,13 +169,13 @@ public class MyChoiceButton extends LinearLayout implements View.OnTouchListener
 //				intent.setClassName(getContext(), className);
 				break;
 			case 3:
-				intent.setClass(getContext(), AccountActivity.class);
+//				intent.setClass(getContext(), AccountActivity.class);
 				break;
 			default:
-				intent.setClass(getContext(), AccountActivity.class);
+//				intent.setClass(getContext(), AccountActivity.class);
 				break;
 			}
-			getContext().startActivity(intent);
+//			getContext().startActivity(intent);
 			break;
 		case MotionEvent.ACTION_MOVE:
 //			this.setFocusable(false);

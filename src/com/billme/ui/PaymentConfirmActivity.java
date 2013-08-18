@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.billme.logic.BillMeActivity;
-import com.billme.widget.MyListViewAdapter;
 
+import com.billme.logic.MainService;
+import com.billme.widget.MyListViewAdapter;
+import com.futurePayment.constant.Task;
 import com.futurePayment.model.Friend;
 
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
@@ -20,9 +23,12 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PaymentConfirmActivity extends BaseActivity implements BillMeActivity
 {
+	public final static int APPLY_SUCCESS = 1;
+	public final static int APPLY_FAILURE = -1;
 	
 	private TextView text = null;
 	private ListView choiceList = null;
@@ -31,9 +37,14 @@ public class PaymentConfirmActivity extends BaseActivity implements BillMeActivi
 	private ArrayList<HashMap<String, Object>> cl = new ArrayList<HashMap<String, Object>>();
 	private MyListViewAdapter peopleAdapter = null;
 	private ArrayList<HashMap<String, Object>> pl = new ArrayList<HashMap<String, Object>>();
+	private ArrayList<Friend> fl = new ArrayList<Friend>();
 	private Button friendButton = null;
 	private Button codeButton = null;
+	private ProgressDialog pd = null;
 	
+	private String receiver;
+	private double money;
+	private String method;
 	boolean mutipay = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -49,8 +60,11 @@ public class PaymentConfirmActivity extends BaseActivity implements BillMeActivi
 		codeButton = (Button)findViewById(R.id.btn_payment_confirm_code);
 		
 		//得到交易信息并显示。。。
-		
-		
+		Intent intent = getIntent();
+		receiver = intent.getStringExtra("receiver");
+		money = intent.getDoubleExtra("money", 0);
+		method = intent.getStringExtra("method");
+		text.setText("本次消费需向" + receiver + "支付" + money + "元");
 		
 		bindChoiceAdapter();
 		bindPeopleAdapter();
@@ -117,6 +131,16 @@ public class PaymentConfirmActivity extends BaseActivity implements BillMeActivi
 				case 0:
 				//选中单人支付
 					//跳转页面
+					Intent intent = new Intent();
+					//传入付款人
+					
+					//传入收款人
+					intent.putExtra("receiver", receiver);
+					//传入金额
+					intent.putExtra("money", money);
+					intent.putExtra("method", method);
+					intent.setClass(PaymentConfirmActivity.this, PaymentActivity.class);
+					startActivity(intent);
 					break;
 				case 1:
 					if(mutipay == false)
@@ -129,11 +153,25 @@ public class PaymentConfirmActivity extends BaseActivity implements BillMeActivi
 					}
 					else
 					{
-						//跳转页面
-//						cl.get(1).put("end", R.drawable.nav_left);
-//						peopleList.setVisibility(View.INVISIBLE);
-//						mutipay = false;
-//						choiceAdapter.notifyDataSetChanged();
+						if (pd == null) {
+							pd = new ProgressDialog(
+									PaymentConfirmActivity.this);
+						}
+						pd.setMessage("Sending..");
+						pd.show();
+						HashMap<String, Object> param = new HashMap<String, Object>();
+						ArrayList<HashMap<String, Object>> tempList = new ArrayList<HashMap<String, Object>>();
+						for(int i = 0; i < pl.size(); i ++)
+						{
+							HashMap<String, Object> map = new HashMap<String, Object>();
+							map.put("name", fl.get(i).getName());
+							//分摊方式需要考虑
+							map.put("money", money / (pl.size() + 1));
+							tempList.add(map);
+						}
+						param.put("sender", tempList);
+						Task task = new Task(Task.TASK_MULTI_USER_PAY, param);
+						MainService.newTask(task);
 					}
 				}
 			}
@@ -177,7 +215,25 @@ public class PaymentConfirmActivity extends BaseActivity implements BillMeActivi
 	public void refresh(Object... param)
 	{
 		// TODO Auto-generated method stub
-		
+		if (((Integer) param[0]).intValue() == APPLY_SUCCESS) {
+			//跳转到申请成功成功页面		
+			Toast.makeText(this, "Send messages successfully", Toast.LENGTH_SHORT)
+			.show();
+			//跳转页面
+			Intent intent = new Intent();
+			//传入收款人
+			intent.putExtra("receiver", receiver);
+			//传入金额
+			intent.putExtra("money", money / (pl.size() + 1));
+			intent.putExtra("method", method);
+			intent.setClass(PaymentConfirmActivity.this, PaymentActivity.class);
+			startActivity(intent);
+		} 
+		else if(((Integer) param[0]).intValue() == APPLY_FAILURE){
+			pd.cancel();
+			Toast.makeText(this, "Send messages failurily", Toast.LENGTH_SHORT)
+					.show();
+		}
 	}
 
 	@Override
@@ -185,10 +241,10 @@ public class PaymentConfirmActivity extends BaseActivity implements BillMeActivi
 	{
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		ArrayList<Friend> al = data.getParcelableArrayListExtra("friend");
-		for(int i = 0; i < al.size(); i ++)
+		fl = (ArrayList<Friend>) data.getSerializableExtra("friend");
+		for(int i = 0; i < fl.size(); i ++)
 		{
-			Friend temp = al.get(i);
+			Friend temp = fl.get(i);
 			HashMap<String, Object> map3 = new HashMap<String, Object>();
 			//查找放置头像
 			map3.put("icon", temp.getPath());

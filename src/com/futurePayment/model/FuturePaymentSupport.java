@@ -313,12 +313,11 @@ public class FuturePaymentSupport {
 	 * @return Ö§¸¶½á¹û
 	 * @throws PaymentException
 	 */
-	public boolean multiplePay(JSONObject[] payerlist)throws PaymentException{
-		JSONObject jobj = new JSONObject();
+	public boolean multiplePay(ArrayList<HashMap<String,Object>> payerlist)throws PaymentException{
 		boolean result = false; 
 		try {
-			jobj.put("payerlist",payerlist);
-			MyResponse response = http.post(ServiceType.MUTIPLE_PAY, jobj);
+			Gson gson = new Gson();
+			MyResponse response = http.post(ServiceType.MUTIPLE_PAY, new JSONObject(gson.toJson(payerlist)));
 			if(response.getResultCode() == ResultCode.SUCCESS)
 				return true;
 			else
@@ -714,7 +713,7 @@ public class FuturePaymentSupport {
 		return result;
 	}
 	public ArrayList<Friend> queryFriend()throws PaymentException{
-		ArrayList<Friend> al = null;
+		ArrayList<Friend> al = new ArrayList<Friend>();
 		try {
 			Gson gson = new Gson();
 			MyResponse response = http.post(ServiceType.QUERY_BILL, null);

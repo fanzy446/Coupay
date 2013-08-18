@@ -1,6 +1,5 @@
 package com.futurePayment.http;
 
-
 import java.io.File;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
