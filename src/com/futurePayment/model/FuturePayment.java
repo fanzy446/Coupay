@@ -498,11 +498,9 @@ public class FuturePayment {
 	 * @return ·ÖÏí½á¹û
 	 * @throws PaymentException
 	 */
-	public boolean shareExperience(String enterpriseId, int grade,
-			String content, Date time) throws PaymentException {
+	public boolean shareExperience(ShareInfo si) throws PaymentException {
 		try {
-			return supporter
-					.shareExperience(enterpriseId, grade, content, time);
+			return supporter.shareExperience(si);
 		} catch (PaymentException e) {
 			throw e;
 		}

@@ -25,6 +25,7 @@ import com.billme.ui.PaymentActivity;
 import com.billme.ui.PaymentConfirmActivity;
 import com.billme.ui.R;
 import com.billme.ui.RegistActivity;
+import com.billme.ui.ShareActivity;
 
 import com.futurePayment.constant.Task;
 import com.futurePayment.model.*;
@@ -40,6 +41,7 @@ public class MainService extends Service implements Runnable {
 	public static ArrayList<Task> allTask = new ArrayList<Task>();
 	public boolean isRun = true;
 	private static FuturePayment futurePayment = FuturePayment.getInstance();
+	private static ImageHelper imageHelper = ImageHelper.getInstance();
 
 	public static void newTask(Task task) {
 		Log.i("error", "add task");
@@ -179,6 +181,18 @@ public class MainService extends Service implements Runnable {
 							null);
 				}
 			}
+			case Task.TASK_SHARE_MOMENT: {
+				Log.i("error", "分享消费体验回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("ShareActivity");
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO 返回失败信息
+					ba.refresh(new Integer(ShareActivity.SHARE_FAILURE), e);
+				} else {
+					ba.refresh(new Integer(ShareActivity.SHARE_SECCUSS), null);
+				}
+			}
 			default:
 				break;
 			}
@@ -308,6 +322,21 @@ public class MainService extends Service implements Runnable {
 				}
 				break;
 			}
+			case Task.TASK_SHARE_MOMENT: {
+				Log.i("error", "分享消费体验");
+				try {
+					ShareInfo si = new ShareInfo();
+					si.setEnterpriseName((String) task.getTaskParam().get(
+							"receiver"));
+					si.setGrade((Integer) task.getTaskParam().get("grade"));
+					si.setContent((String) task.getTaskParam().get("content"));
+					si.setPhoto((byte[]) task.getTaskParam().get("photo"));
+					futurePayment.shareExperience(si);
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+				break;
+			}
 			default:
 				break;
 			}
@@ -413,5 +442,9 @@ public class MainService extends Service implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public static ImageHelper getImageHelper() {
+		return imageHelper;
 	}
 }

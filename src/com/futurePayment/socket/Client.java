@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.futurePayment.model.Message;
+import com.futurePayment.model.MyMessage;
 
 import android.util.Log;
 
@@ -18,7 +18,7 @@ public class Client implements Runnable {
 	private String serverUrl = ""; // the url of the server
 	private int serverPost; // the post of the server
 	private final int INTERVAL = 1000 * 30; // interval is set to 30 seconds
-	private LinkedList<Message> unReadMessage = new LinkedList<Message>();
+	private LinkedList<MyMessage> unReadMessage = new LinkedList<MyMessage>();
 
 	public Client() {
 
@@ -33,7 +33,7 @@ public class Client implements Runnable {
 		return unReadMessage.size() > 0;
 	}
 
-	public LinkedList<Message> getUnReadMessage() {
+	public LinkedList<MyMessage> getUnReadMessage() {
 		return unReadMessage;
 	}
 
@@ -64,7 +64,7 @@ public class Client implements Runnable {
 							if (messageString.equals("done!"))
 								break;
 							else {
-								Message message = getMessage(messageString);
+								MyMessage message = getMessage(messageString);
 								unReadMessage.add(message);
 							}
 						}
@@ -105,9 +105,9 @@ public class Client implements Runnable {
 		return INTERVAL;
 	}
 
-	public Message getMessage(String messageString) {
+	public MyMessage getMessage(String messageString) {
 		JSONTokener parser = new JSONTokener(messageString);
-		Message message = new Message();
+		MyMessage message = new MyMessage();
 		try {
 			JSONObject json = (JSONObject) parser.nextValue();
 

@@ -7,8 +7,10 @@ import java.util.HashMap;
 import com.billme.logic.MainService;
 import com.billme.ui.R;
 import com.billme.util.FileUtil;
+import com.futurePayment.model.ImageHelper;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,10 +84,20 @@ public class MyListViewAdapter extends BaseAdapter {
 				viewHolder.end.setImageDrawable(context.getResources()
 						.getDrawable((Integer) (map.get("end"))));
 			} else if (map.get("icon") instanceof String) {
-				// 从sd卡读取
-				FileUtil fu = new FileUtil(MainService.getUser().getName());
-				viewHolder.icon.setImageDrawable(fu
-						.readImageFromSD((String) map.get("icon")));
+				String str = (String) map.get("icon");
+				if (str.startsWith("http://")) {
+					// 从网络读取
+					ImageHelper imageHelper = MainService.getImageHelper();
+					Drawable temp = imageHelper.loadDrawable(str,
+							viewHolder.icon);
+					if (temp != null)
+						viewHolder.icon.setImageDrawable(temp);
+				} else {
+					// 从sd卡读取
+					FileUtil fu = new FileUtil(MainService.getUser().getName());
+					viewHolder.icon.setImageDrawable(fu
+							.readImageFromSD((String) map.get("icon")));
+				}
 				viewHolder.text.setText((String) map.get("text"));
 				viewHolder.end.setImageDrawable(context.getResources()
 						.getDrawable((Integer) (map.get("end"))));

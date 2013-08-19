@@ -16,13 +16,15 @@ import com.futurePayment.model.PaymentException;
 
 public class PaymentActivity extends BaseActivity implements BillMeActivity {
 
-	public static int PAY_SUCCESS = 1;
-	public static int PAY_FAILURE = -1;
+	public final static int PAY_SUCCESS = 1;
+	public final static int PAY_FAILURE = -1;
 
 	private EditText password = null;
 	private Button okButton = null;
 	private Button bankButton = null;
 	private ProgressDialog pd = null;
+
+	private String receiver = null;
 
 	// private Button btnPayByQRCode;
 	// private Button btnPayByNFC;
@@ -66,8 +68,8 @@ public class PaymentActivity extends BaseActivity implements BillMeActivity {
 				HashMap<String, Object> param = new HashMap<String, Object>();
 				param.put("password", p);
 				param.put("sender", MainService.getUser().getName());
-				param.put("receiver",
-						(String) intent.getStringExtra("receiver"));
+				receiver = (String) intent.getStringExtra("receiver");
+				param.put("receiver", receiver);
 				param.put("money", (Double) intent.getDoubleExtra("money", 0));
 				param.put("method", (String) intent.getStringExtra("method"));
 
@@ -176,6 +178,9 @@ public class PaymentActivity extends BaseActivity implements BillMeActivity {
 	public void refresh(Object... param) {
 		if (((Integer) param[0]).intValue() == PAY_SUCCESS) {
 			// 跳转到支付成功页面
+			Intent intent = new Intent();
+			intent.putExtra("receiver", receiver);
+
 		} else if (((Integer) param[0]).intValue() == PAY_FAILURE) {
 			int state = ((PaymentException) param[1]).getResultCode();
 			String hint = null;

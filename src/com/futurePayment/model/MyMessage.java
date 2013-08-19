@@ -2,7 +2,7 @@ package com.futurePayment.model;
 
 import java.sql.Date;
 
-public class Message {
+public class MyMessage {
 	private String content;
 	private Date date;
 

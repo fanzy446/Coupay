@@ -783,7 +783,7 @@ public class FuturePaymentSupport {
 		ArrayList<Friend> al = new ArrayList<Friend>();
 		try {
 			Gson gson = new Gson();
-			MyResponse response = http.post(ServiceType.QUERY_BILL, null);
+			MyResponse response = http.post(ServiceType.QUERY_FRIEND, null);
 			if (response.getResultCode() == ResultCode.SUCCESS) {
 				JSONArray ja = response.getResultArray("friend");
 				for (int i = 0; i < ja.length(); i++) {
@@ -918,16 +918,12 @@ public class FuturePaymentSupport {
 	 * @return ·ÖÏí½á¹û
 	 * @throws PaymentException
 	 */
-	public boolean shareExperience(String enterpriseId, int grade,
-			String content, Date time) throws PaymentException {
-		JSONObject jobj = new JSONObject();
+	public boolean shareExperience(ShareInfo si) throws PaymentException {
+		Gson gson = new Gson();
 		boolean result = false;
 		try {
-			jobj.put("enterpriseId", enterpriseId);
-			jobj.put("grade", grade);
-			jobj.put("content", content);
-			jobj.put("time", time);
-			MyResponse response = http.post(ServiceType.SHARE_EXPERIENCE, jobj);
+			MyResponse response = http.post(ServiceType.SHARE_EXPERIENCE,
+					new JSONObject(gson.toJson(si)));
 			if (response.getResultCode() == ResultCode.SUCCESS)
 				return true;
 			else
