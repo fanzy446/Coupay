@@ -108,9 +108,9 @@ public class LoginActivity extends BaseActivity implements BillMeActivity {
 			case ResultCode.REPEAT_LOGIN:
 				hint = "Repeatly Login";
 				break;
-				default:
-					hint = "Unknown fault";
-					break;
+			default:
+				hint = "Unknown fault";
+				break;
 			}
 			pd.cancel();
 			Toast.makeText(LoginActivity.this, hint, Toast.LENGTH_SHORT).show();
