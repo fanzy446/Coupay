@@ -102,6 +102,7 @@ public class ShareActivity extends BaseActivity implements BillMeActivity {
 				param.put("receiver", intent.getStringExtra("receiver"));
 				param.put("grade", grade);
 				param.put("content", content.getText().toString());
+				param.put("money", intent.getDoubleExtra("money", 0));
 				param.put(
 						"photo",
 						MainService.getImageHelper().drawableToByte(

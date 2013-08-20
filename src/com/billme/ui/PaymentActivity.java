@@ -25,6 +25,7 @@ public class PaymentActivity extends BaseActivity implements BillMeActivity {
 	private ProgressDialog pd = null;
 
 	private String receiver = null;
+	private double money = 0;
 
 	// private Button btnPayByQRCode;
 	// private Button btnPayByNFC;
@@ -70,7 +71,8 @@ public class PaymentActivity extends BaseActivity implements BillMeActivity {
 				param.put("sender", MainService.getUser().getName());
 				receiver = (String) intent.getStringExtra("receiver");
 				param.put("receiver", receiver);
-				param.put("money", (Double) intent.getDoubleExtra("money", 0));
+				money = (Double) intent.getDoubleExtra("money", 0);
+				param.put("money", money);				
 				param.put("method", (String) intent.getStringExtra("method"));
 
 				Task task = new Task(Task.TASK_SINGLE_USER_PAY, param);

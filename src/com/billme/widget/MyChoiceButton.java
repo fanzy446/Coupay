@@ -1,5 +1,6 @@
 package com.billme.widget;
 
+import com.billme.logic.MainService;
 import com.billme.ui.R;
 
 import android.annotation.SuppressLint;
@@ -214,9 +215,10 @@ public class MyChoiceButton extends LinearLayout implements
 				FrameLayout.LayoutParams.WRAP_CONTENT,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
 		currentX = (int) event.getX() - this.getLayoutWidth() / 2;
-		currentY = (int) event.getY() - statusBarHeight
-				- this.getLayoutHeight() / 2;
-		layoutParams.setMargins(currentX, currentY, 0, 0);
+		Log.i("test", MainService.getStatusBarHeight() + "/" + MainService.getTitleBarHeight());
+		currentY = (int) event.getY() - this.getLayoutHeight() / 2;
+		layoutParams.setMargins(currentX, currentY - MainService.getStatusBarHeight()
+				- MainService.getTitleBarHeight(), 0, 0);
 		this.setLayoutParams(layoutParams);
 		Animation animation = AnimationUtils.loadAnimation(getContext(),
 				R.anim.show_anim);

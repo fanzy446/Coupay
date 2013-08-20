@@ -42,6 +42,8 @@ public class MainService extends Service implements Runnable {
 	public boolean isRun = true;
 	private static FuturePayment futurePayment = FuturePayment.getInstance();
 	private static ImageHelper imageHelper = ImageHelper.getInstance();
+	private static int statusBarHeight = 0;
+	private static int titleBarHeight = 0;
 
 	public static void newTask(Task task) {
 		Log.i("error", "add task");
@@ -193,10 +195,22 @@ public class MainService extends Service implements Runnable {
 					ba.refresh(new Integer(ShareActivity.SHARE_SECCUSS), null);
 				}
 			}
+			case Task.TASK_GET_MOMENTS:{
+				Log.i("error", "获得消费体验回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("SocietyActivity");
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO 返回失败信息
+					ba.refresh(new Integer(ShareActivity.SHARE_FAILURE), e);
+				} else {
+					ba.refresh(new Integer(ShareActivity.SHARE_SECCUSS), null);
+				}
+			}
 			default:
 				break;
 			}
-
+			
 		}
 	};
 
@@ -330,6 +344,7 @@ public class MainService extends Service implements Runnable {
 							"receiver"));
 					si.setGrade((Integer) task.getTaskParam().get("grade"));
 					si.setContent((String) task.getTaskParam().get("content"));
+					si.setMoney((Double) task.getTaskParam().get("money"));
 					si.setPhoto((byte[]) task.getTaskParam().get("photo"));
 					futurePayment.shareExperience(si);
 				} catch (PaymentException e) {
@@ -337,9 +352,19 @@ public class MainService extends Service implements Runnable {
 				}
 				break;
 			}
+			case Task.TASK_GET_MOMENTS:{
+				Log.i("error", "获得消费体验");
+				try{
+					msg.obj = futurePayment.getExperience();
+				}catch (PaymentException e) {
+					msg.obj = e;
+				}
+				break;
+			}
 			default:
 				break;
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -446,5 +471,21 @@ public class MainService extends Service implements Runnable {
 
 	public static ImageHelper getImageHelper() {
 		return imageHelper;
+	}
+
+	public static int getStatusBarHeight() {
+		return statusBarHeight;
+	}
+
+	public static void setStatusBarHeight(int statusBarHeight) {
+		MainService.statusBarHeight = statusBarHeight;
+	}
+
+	public static int getTitleBarHeight() {
+		return titleBarHeight;
+	}
+
+	public static void setTitleBarHeight(int titleBarHeight) {
+		MainService.titleBarHeight = titleBarHeight;
 	}
 }

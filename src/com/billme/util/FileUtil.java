@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.futurePayment.http.MyHttpClient;
+import com.futurePayment.model.Friend;
 
 public class FileUtil
 {
@@ -446,4 +447,21 @@ public class FileUtil
 		}
 		return true;
 	}
+	/**
+	 * 把实体转化成存储地址
+	 * 
+	 * @param urlStr
+	 * @return
+	 */
+	public String modelToAddress(Object model) {
+		String result = null;
+		if (model instanceof Friend) {
+			Friend f = (Friend) model;
+			String dir = "Friend";
+			String name = f.getName();
+			result = dir + File.separator + name;
+		}
+		return ROOTPATH + result;
+	}
+	
 }

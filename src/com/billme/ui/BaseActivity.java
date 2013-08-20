@@ -1,14 +1,18 @@
 package com.billme.ui;
 
+import com.billme.logic.MainService;
 import com.billme.widget.MyChoiceButton;
 
 import android.app.Activity;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -82,6 +86,24 @@ public class BaseActivity extends Activity {
 			// TODO Auto-generated method stub
 			myLayout.showChoice(e);
 			super.onShowPress(e);
+		}
+	}
+
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		// TODO Auto-generated method stub
+		if (MainService.getStatusBarHeight() == 0
+				&& MainService.getTitleBarHeight() == 0) {
+			Rect frame = new Rect();
+			getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+			int statusBarHeight = frame.top;
+			int contentTop = getWindow()
+					.findViewById(Window.ID_ANDROID_CONTENT).getTop();
+			// statusBarHeight是上面所求的状态栏的高度
+			int titleBarHeight = contentTop - statusBarHeight;
+			MainService.setStatusBarHeight(statusBarHeight);
+			MainService.setTitleBarHeight(titleBarHeight);
+			super.onWindowFocusChanged(hasFocus);
 		}
 	}
 

@@ -51,5 +51,6 @@
     <string name="title_activity_payment_confirm">PaymentConfirmActivity</string>
     <string name="title_activity_friend">FriendActivity</string>
     <string name="title_activity_share">ShareActivity</string>
+    <string name="title_activity_society">SocietyActivity</string>
 
 </resources>

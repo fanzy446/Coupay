@@ -409,9 +409,9 @@ public class FuturePayment {
 	public ArrayList<Friend> queryFriend() throws PaymentException {
 		try {
 			ArrayList<Friend> friend = supporter.queryFriend();
-			for (int i = 0; i < friend.size(); i++) {
-				modelToAddress(friend.get(i));
-			}
+//			for (int i = 0; i < friend.size(); i++) {
+//				fileUtil.modelToAddress(friend.get(i));
+//			}
 			return friend;
 		} catch (PaymentException e) {
 			throw e;
@@ -506,6 +506,13 @@ public class FuturePayment {
 		}
 	}
 
+	public ArrayList<CommentInfo> getExperience() throws PaymentException{
+		try {
+			return supporter.getExperience();
+		} catch (PaymentException e) {
+			throw e;
+		}
+	}
 	/**
 	 * 获得位置图片
 	 * 
@@ -591,30 +598,30 @@ public class FuturePayment {
 	// return fu.isSameFile(getUser().getName() + File.separator + path, name,
 	// size);
 	// }
-	/**
-	 * 把实体转化成存储地址
-	 * 
-	 * @param urlStr
-	 * @return
-	 */
-	public String modelToAddress(Object model) {
-		String result = null;
-		if (model instanceof Friend) {
-			Friend f = (Friend) model;
-			String dir = "Friend";
-			String name = f.getName();
-			result = dir + File.separator + name;
-			if (fileUtil.isSameFile(dir, name, f.getSize())) {
-
-			} else {
-				if (fileUtil.downloadFile(f.getPath(), dir, name, true)) {
-					f.setPath(result);
-					f.setSize(fileUtil.getFileSize(dir, name));
-				} else {
-					// 下载失败
-				}
-			}
-		}
-		return result;
-	}
+//	/**
+//	 * 把实体转化成存储地址
+//	 * 
+//	 * @param urlStr
+//	 * @return
+//	 */
+//	public String modelToAddress(Object model) {
+//		String result = null;
+//		if (model instanceof Friend) {
+//			Friend f = (Friend) model;
+//			String dir = "Friend";
+//			String name = f.getName();
+//			result = dir + File.separator + name;
+//			if (fileUtil.isSameFile(dir, name, f.getSize())) {
+//
+//			} else {
+//				if (fileUtil.downloadFile(f.getPath(), dir, name, true)) {
+//					f.setPath(result);
+//					f.setSize(fileUtil.getFileSize(dir, name));
+//				} else {
+//					// 下载失败
+//				}
+//			}
+//		}
+//		return result;
+//	}
 }

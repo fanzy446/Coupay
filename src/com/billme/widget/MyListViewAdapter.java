@@ -28,9 +28,7 @@ public class MyListViewAdapter extends BaseAdapter {
 	 * @param context
 	 *            the context of current activity
 	 * @param list
-	 *            every hashmap have three keys:"icon","text","end"
-	 * @param resource
-	 *            the list item layout
+	 *            every hashmap have three keys:"icon":string/int,"text":string,"end":string/int
 	 */
 	public MyListViewAdapter(Context context,
 			ArrayList<HashMap<String, Object>> list) {

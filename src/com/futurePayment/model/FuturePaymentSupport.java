@@ -13,6 +13,7 @@ import com.futurePayment.constant.ServiceType;
 import com.futurePayment.http.MyHttpClient;
 import com.futurePayment.http.MyResponse;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import android.util.Log;
 
@@ -780,17 +781,14 @@ public class FuturePaymentSupport {
 	}
 
 	public ArrayList<Friend> queryFriend() throws PaymentException {
-		ArrayList<Friend> al = new ArrayList<Friend>();
+		ArrayList<Friend> al = null;
 		try {
 			Gson gson = new Gson();
 			MyResponse response = http.post(ServiceType.QUERY_FRIEND, null);
 			if (response.getResultCode() == ResultCode.SUCCESS) {
 				JSONArray ja = response.getResultArray("friend");
-				for (int i = 0; i < ja.length(); i++) {
-					Friend f = gson.fromJson(ja.getJSONObject(i).toString(),
-							Friend.class);
-					al.add(f);
-				}
+				al = gson.fromJson(ja.toString(),
+						 new TypeToken<ArrayList<Friend>>(){}.getType());
 			} else
 				throw new PaymentException(response.getResultCode());
 
@@ -935,6 +933,22 @@ public class FuturePaymentSupport {
 		return result;
 	}
 
+	public ArrayList<CommentInfo> getExperience() throws PaymentException{
+		ArrayList<CommentInfo> al = null;
+		Gson gson = new Gson();
+		try{
+			MyResponse response = http.post(ServiceType.GET_COMMENT, null);
+			if (response.getResultCode() == ResultCode.SUCCESS)
+				al = gson.fromJson(response.getResultArray("comment").toString(), new TypeToken<ArrayList<CommentInfo>>(){}.getType());
+			else
+				throw new PaymentException(response.getResultCode());
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return al;
+	}
 	/**
 	 * ªÒµ√Œª÷√Õº∆¨
 	 * 
