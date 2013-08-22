@@ -52,5 +52,6 @@
     <string name="title_activity_friend">FriendActivity</string>
     <string name="title_activity_share">ShareActivity</string>
     <string name="title_activity_society">SocietyActivity</string>
+    <string name="title_activity_surround">SurroundActivity</string>
 
 </resources>

@@ -91,23 +91,23 @@ public class MyHttpClient {
 		}
 		return inputStream;
 	}
-	
-	public String download(String urlStr){
+
+	public String download(String urlStr) {
 		StringBuffer sb = new StringBuffer();
 		String line = null;
 		BufferedReader buffer = null;
-		try{
-			buffer = new BufferedReader(new InputStreamReader(getInputStreamFromUrl(urlStr)));
-			while((line = buffer.readLine()) != null){
+		try {
+			buffer = new BufferedReader(new InputStreamReader(
+					getInputStreamFromUrl(urlStr)));
+			while ((line = buffer.readLine()) != null) {
 				sb.append(line);
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
-			try{
+		} finally {
+			try {
 				buffer.close();
-			}catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

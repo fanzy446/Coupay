@@ -229,7 +229,7 @@ public class FuturePayment {
 	/**
 	 * 查询会员 return 会员列表
 	 **/
-	public JSONObject queryVip() throws PaymentException {
+	public ArrayList<VipCard> queryVip() throws PaymentException {
 		try {
 			return supporter.queryVip();
 		} catch (PaymentException e) {
@@ -278,7 +278,7 @@ public class FuturePayment {
 	 * @return 查询结果
 	 * @throws PaymentException
 	 */
-	public JSONObject queryUserGrade() throws PaymentException {
+	public int queryUserGrade() throws PaymentException {
 		try {
 			return supporter.queryUserGrade();
 		} catch (PaymentException e) {
@@ -291,12 +291,15 @@ public class FuturePayment {
 	 * 
 	 * @param grade
 	 *            使用积分
+	 * @param couponId
+	 *            优惠券id
 	 * @return 兑换结果
 	 * @throws PaymentException
 	 */
-	public boolean userGradeSwap(int grade) throws PaymentException {
+	public boolean userGradeSwap(int grade, int couponId)
+			throws PaymentException {
 		try {
-			return supporter.userGradeSwap(grade);
+			return supporter.userGradeSwap(grade, couponId);
 		} catch (PaymentException e) {
 			throw e;
 		}
@@ -308,7 +311,7 @@ public class FuturePayment {
 	 * @return 查询结果
 	 * @throws PaymentException
 	 */
-	public JSONObject queryCoupon() throws PaymentException {
+	public ArrayList<Coupon> queryCoupon() throws PaymentException {
 		try {
 			return supporter.queryCoupon();
 		} catch (PaymentException e) {
@@ -345,9 +348,9 @@ public class FuturePayment {
 	 * @return 使用结果
 	 * @throws PaymentException
 	 */
-	public boolean useCoupon(JSONObject[] coupun) throws PaymentException {
+	public boolean useCoupon(ArrayList<Coupon> coupon) throws PaymentException {
 		try {
-			return supporter.useCoupon(coupun);
+			return supporter.useCoupon(coupon);
 		} catch (PaymentException e) {
 			throw e;
 		}
@@ -409,9 +412,9 @@ public class FuturePayment {
 	public ArrayList<Friend> queryFriend() throws PaymentException {
 		try {
 			ArrayList<Friend> friend = supporter.queryFriend();
-//			for (int i = 0; i < friend.size(); i++) {
-//				fileUtil.modelToAddress(friend.get(i));
-//			}
+			// for (int i = 0; i < friend.size(); i++) {
+			// fileUtil.modelToAddress(friend.get(i));
+			// }
 			return friend;
 		} catch (PaymentException e) {
 			throw e;
@@ -506,13 +509,14 @@ public class FuturePayment {
 		}
 	}
 
-	public ArrayList<CommentInfo> getExperience() throws PaymentException{
+	public ArrayList<CommentInfo> getExperience() throws PaymentException {
 		try {
 			return supporter.getExperience();
 		} catch (PaymentException e) {
 			throw e;
 		}
 	}
+
 	/**
 	 * 获得位置图片
 	 * 
@@ -561,10 +565,11 @@ public class FuturePayment {
 	/**
 	 * 获得周边商家
 	 * 
-	 * @return 周边商家
+	 * @return 周边商家基本信息
 	 * @throws PaymentException
 	 */
-	public JSONObject getSurroundingEnterprise() throws PaymentException {
+	public ArrayList<EnterpriseBasicInfo> getSurroundingEnterprise()
+			throws PaymentException {
 		try {
 			return supporter.getSurroundingEnterprise();
 		} catch (PaymentException e) {
@@ -598,30 +603,30 @@ public class FuturePayment {
 	// return fu.isSameFile(getUser().getName() + File.separator + path, name,
 	// size);
 	// }
-//	/**
-//	 * 把实体转化成存储地址
-//	 * 
-//	 * @param urlStr
-//	 * @return
-//	 */
-//	public String modelToAddress(Object model) {
-//		String result = null;
-//		if (model instanceof Friend) {
-//			Friend f = (Friend) model;
-//			String dir = "Friend";
-//			String name = f.getName();
-//			result = dir + File.separator + name;
-//			if (fileUtil.isSameFile(dir, name, f.getSize())) {
-//
-//			} else {
-//				if (fileUtil.downloadFile(f.getPath(), dir, name, true)) {
-//					f.setPath(result);
-//					f.setSize(fileUtil.getFileSize(dir, name));
-//				} else {
-//					// 下载失败
-//				}
-//			}
-//		}
-//		return result;
-//	}
+	// /**
+	// * 把实体转化成存储地址
+	// *
+	// * @param urlStr
+	// * @return
+	// */
+	// public String modelToAddress(Object model) {
+	// String result = null;
+	// if (model instanceof Friend) {
+	// Friend f = (Friend) model;
+	// String dir = "Friend";
+	// String name = f.getName();
+	// result = dir + File.separator + name;
+	// if (fileUtil.isSameFile(dir, name, f.getSize())) {
+	//
+	// } else {
+	// if (fileUtil.downloadFile(f.getPath(), dir, name, true)) {
+	// f.setPath(result);
+	// f.setSize(fileUtil.getFileSize(dir, name));
+	// } else {
+	// // 下载失败
+	// }
+	// }
+	// }
+	// return result;
+	// }
 }

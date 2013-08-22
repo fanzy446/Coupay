@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
+import com.billme.logic.MainService;
+import com.billme.util.FileUtil;
 import com.futurePayment.http.MyHttpClient;
 
 import android.graphics.Bitmap;
@@ -36,7 +38,8 @@ public class ImageHelper {
 	/**
 	 * 获取Bitmap
 	 * 
-	 * @param uri 图片地址
+	 * @param uri
+	 *            图片地址
 	 * @return
 	 */
 	public Bitmap GetBitmapByUrl(String uri) {
@@ -57,16 +60,17 @@ public class ImageHelper {
 	/**
 	 * 获取Drawable
 	 * 
-	 * @param uri 图片地址
+	 * @param uri
+	 *            图片地址
 	 * @return
 	 */
 	public Drawable GetDrawableByUrl(String uri) {
+		FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
 		Drawable drawable;
 		InputStream is;
 		try {
-
 			is = client.getInputStreamFromUrl(uri);
-
+			fileUtil.writeToSDFromInputStream("cache", uri, is, false);
 			drawable = Drawable.createFromStream(is, "src");
 
 			is.close();
@@ -81,12 +85,17 @@ public class ImageHelper {
 
 	/**
 	 * 异步将imageUrl中的图片载入到imageView中
+	 * 
 	 * @param imageUrl
 	 * @param imageView
 	 * @return
 	 */
 	public Drawable loadDrawable(final String imageUrl,
 			final ImageView imageView) {
+		FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
+		if (fileUtil.isFileExists("cache", imageUrl)) {
+			return fileUtil.readImageFromSD("cache", imageUrl);
+		}
 		if (imagesCache.containsKey(imageUrl)) {
 			// 从缓存中获取
 			SoftReference<Drawable> softReference = imagesCache.get(imageUrl);
@@ -114,11 +123,14 @@ public class ImageHelper {
 
 		return null;
 	}
-/**
- * 将drawable转换成字节码
- * @param drawable 图片
- * @return 字节码
- */
+
+	/**
+	 * 将drawable转换成字节码
+	 * 
+	 * @param drawable
+	 *            图片
+	 * @return 字节码
+	 */
 	public synchronized byte[] drawableToByte(Drawable drawable) {
 
 		if (drawable != null) {
@@ -143,9 +155,12 @@ public class ImageHelper {
 		}
 		return null;
 	}
+
 	/**
 	 * 将字节码转换成drawable
-	 * @param img 图片字节码
+	 * 
+	 * @param img
+	 *            图片字节码
 	 * @return 返回图片drawable
 	 */
 	public synchronized Drawable byteToDrawable(byte[] img) {

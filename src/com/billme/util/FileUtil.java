@@ -1,32 +1,32 @@
 package com.billme.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.util.Log;
 
 import com.futurePayment.http.MyHttpClient;
-import com.futurePayment.model.Friend;
 
-public class FileUtil
-{
+public class FileUtil {
 	private MyHttpClient client = null;
 	private String ROOTPATH;
 	private String APP_NAME = "BillMe";
 	private String USER_NAME = null;
 
-	public FileUtil(String name)
-	{
+	public FileUtil(String name) {
 		USER_NAME = name;
-		ROOTPATH = Environment.getExternalStorageDirectory() + File.separator + APP_NAME + File.separator + USER_NAME + File.separator;
+		ROOTPATH = Environment.getExternalStorageDirectory() + File.separator
+				+ APP_NAME + File.separator + USER_NAME + File.separator;
 		client = new MyHttpClient(name);
 		createSDRootDirectory();
-		//创建一系列文件夹
+		// 创建一系列文件夹
 		createSDDirectory("Friend");
 	}
 
@@ -35,89 +35,70 @@ public class FileUtil
 	 * 
 	 * @return 结果
 	 */
-	public boolean isSDCardAvailable()
-	{
+	public boolean isSDCardAvailable() {
 		if (Environment.MEDIA_MOUNTED.equals(Environment
-				.getExternalStorageState()))
-		{
+				.getExternalStorageState())) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 得到文件大小
-	 * @param path 文件绝对路径
+	 * 
+	 * @param path
+	 *            文件绝对路径
 	 * @return 文件大小
 	 */
-	public int getFileSize(String path)
-	{
+	public int getFileSize(String path) {
 		FileInputStream fis = null;
 		File file = new File(ROOTPATH + path);
-		try
-		{
-			if (file.exists())
-			{
+		try {
+			if (file.exists()) {
 				fis = new FileInputStream(file);
 				return fis.available();
-			}
-			else
+			} else
 				return 0;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
+		} finally {
+			try {
 				fis.close();
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		return 0;
 	}
+
 	/**
 	 * 得到文件大小
 	 * 
-	 * @param dir 文件目录路径
-	 * @param name 文件名
+	 * @param dir
+	 *            文件目录路径
+	 * @param name
+	 *            文件名
 	 * @return 文件大小
 	 */
-	public int getFileSize(String dir, String name)
-	{
+	public int getFileSize(String dir, String name) {
 		FileInputStream fis = null;
 		File file = new File(ROOTPATH + dir, name);
-		try
-		{
-			if (file.exists())
-			{
+		try {
+			if (file.exists()) {
 				fis = new FileInputStream(file);
 				Log.i("error", fis.available() + "");
 				return fis.available();
-			}
-			else
+			} else
 				return 0;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
+		} finally {
+			try {
 				fis.close();
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -128,28 +109,25 @@ public class FileUtil
 	/**
 	 * 创建文件
 	 * 
-	 * @param path 文件绝对路径
+	 * @param path
+	 *            文件绝对路径
 	 * @return 创建的文件，若出错，返回null
 	 * @throws IOException
 	 */
-	public File createSDFile(String path)
-	{
+	public File createSDFile(String path) {
 		File file = null;
-		try
-		{
+		try {
 			file = new File(path);
 			file.createNewFile();
-			if (!file.isFile())
-			{
+			if (!file.isFile()) {
 				return null;
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return file;
 	}
+
 	/**
 	 * 创建文件
 	 * 
@@ -160,24 +138,20 @@ public class FileUtil
 	 * @return 创建的文件，若出错，返回null
 	 * @throws IOException
 	 */
-	public File createSDFile(String dir, String name)
-	{
+	public File createSDFile(String dir, String name) {
 		File file = null;
-		try
-		{
+		try {
 			file = new File(ROOTPATH + dir, name);
 			file.createNewFile();
-			if (!file.isFile())
-			{
+			if (!file.isFile()) {
 				return null;
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return file;
 	}
+
 	/**
 	 * 创建根目录
 	 * 
@@ -185,16 +159,15 @@ public class FileUtil
 	 *            目录路径
 	 * @return 创建的目录,若出错，返回null
 	 */
-	public File createSDRootDirectory()
-	{
+	public File createSDRootDirectory() {
 		File dir = new File(ROOTPATH);
 		dir.mkdirs();
-		if (!dir.isDirectory())
-		{
+		if (!dir.isDirectory()) {
 			return null;
 		}
 		return dir;
 	}
+
 	/**
 	 * 创建目录
 	 * 
@@ -202,27 +175,27 @@ public class FileUtil
 	 *            目录路径
 	 * @return 创建的目录,若出错，返回null
 	 */
-	public File createSDDirectory(String path)
-	{
+	public File createSDDirectory(String path) {
 		File dir = new File(ROOTPATH + path);
 		dir.mkdirs();
-		if (!dir.isDirectory())
-		{
+		if (!dir.isDirectory()) {
 			return null;
 		}
 		return dir;
 	}
+
 	/**
 	 * 检测文件是否存在
 	 * 
-	 * @param path 文件绝对路径
+	 * @param path
+	 *            文件绝对路径
 	 * @return 是否存在文件
 	 */
-	public boolean isFileExists(String path)
-	{
+	public boolean isFileExists(String path) {
 		File file = new File(path);
 		return file.exists();
 	}
+
 	/**
 	 * 检测文件是否存在
 	 * 
@@ -232,8 +205,7 @@ public class FileUtil
 	 *            文件名
 	 * @return 是否存在文件
 	 */
-	public boolean isFileExists(String dir, String name)
-	{
+	public boolean isFileExists(String dir, String name) {
 		File file = new File(ROOTPATH + dir, name);
 		return file.exists();
 	}
@@ -241,20 +213,19 @@ public class FileUtil
 	/**
 	 * 检测文件与下载文件是否为同一文件，通过比较大小确定
 	 * 
-	 * @param path 文件绝对路径
+	 * @param path
+	 *            文件绝对路径
 	 * @param size
 	 *            下载文件大小
 	 * @return 是否为同一文件
 	 */
-	public boolean isSameFile(String path, int size)
-	{
-		if(getFileSize(path) == size)
-		{
+	public boolean isSameFile(String path, int size) {
+		if (getFileSize(path) == size) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 检测文件与下载文件是否为同一文件，通过比较大小确定
 	 * 
@@ -266,10 +237,8 @@ public class FileUtil
 	 *            下载文件大小
 	 * @return 是否为同一文件
 	 */
-	public boolean isSameFile(String dir, String name, int size)
-	{
-		if(getFileSize(dir, name) == size)
-		{
+	public boolean isSameFile(String dir, String name, int size) {
+		if (getFileSize(dir, name) == size) {
 			return true;
 		}
 		return false;
@@ -289,40 +258,27 @@ public class FileUtil
 	 * @return 生成的文件
 	 */
 	public File writeToSDFromInputStream(String dir, String fileName,
-			InputStream input, boolean cover)
-	{
+			InputStream input, boolean cover) {
 		File file = null;
 		FileOutputStream output = null;
-		try
-		{
+		try {
 			createSDDirectory(dir);
 			file = createSDFile(dir, fileName);
-			if (isFileExists(dir, fileName) && cover == false)
-			{
-			}
-			else
-			{
+			if (isFileExists(dir, fileName) && cover == false) {
+			} else {
 				output = new FileOutputStream(file);
 				byte buffer[] = new byte[1024];
-				while (input.read(buffer) != -1)
-				{
+				while (input.read(buffer) != -1) {
 					output.write(buffer);
 				}
 				output.flush();
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
+		} finally {
+			try {
 				output.close();
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -330,36 +286,89 @@ public class FileUtil
 	}
 
 	/**
-	 * 读取sd卡里的图片
-	 * @param path 文件绝对路径
-	 * @return 图片drawable
+	 * 从SD卡读取文件
+	 * 
+	 * @param path
+	 *            文件绝对路径
+	 * @return
 	 */
-	public Drawable readImageFromSD(String path)
-	{
-		Drawable image = null;
-		FileInputStream inputStream = null;
+	public String readFromSD(String path) {
+		StringBuffer sb = new StringBuffer();
+		String line = null;
 		File file = new File(path);
-		if (isSDCardAvailable())
-		{
-			try
-			{
-				inputStream = new FileInputStream(file);
-				image = Drawable.createFromStream(inputStream, file.getName());
+		BufferedReader buffer = null;
+		try {
+			buffer = new BufferedReader(new InputStreamReader(
+					new FileInputStream(file)));
+			while ((line = buffer.readLine()) != null) {
+				sb.append(line);
 			}
-			catch (Exception e)
-			{
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				buffer.close();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			finally
-			{
-				if (inputStream != null)
-				{
-					try
-					{
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * 从SD卡读取文件
+	 * 
+	 * @param dir
+	 *            文件目录路径
+	 * @param name
+	 *            文件名
+	 * @return
+	 */
+	public String readFromSD(String dir, String name) {
+		StringBuffer sb = new StringBuffer();
+		String line = null;
+		File file = new File(ROOTPATH + dir, name);
+		BufferedReader buffer = null;
+		try {
+			buffer = new BufferedReader(new InputStreamReader(
+					new FileInputStream(file)));
+			while ((line = buffer.readLine()) != null) {
+				sb.append(line);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				buffer.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * 读取sd卡里的图片
+	 * 
+	 * @param path
+	 *            文件绝对路径
+	 * @return 图片drawable
+	 */
+	public Drawable readImageFromSD(String path) {
+		Drawable image = null;
+		FileInputStream inputStream = null;
+		File file = new File(ROOTPATH + path);
+		if (isSDCardAvailable()) {
+			try {
+				inputStream = new FileInputStream(file);
+				image = Drawable.createFromStream(inputStream, file.getName());
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (inputStream != null) {
+					try {
 						inputStream.close();
-					}
-					catch (Exception e)
-					{
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -367,38 +376,31 @@ public class FileUtil
 		}
 		return image;
 	}
+
 	/**
 	 * 读取sd卡里的图片
-	 * @param dir 文件目录路径
-	 * @param name 文件名
+	 * 
+	 * @param dir
+	 *            文件目录路径
+	 * @param name
+	 *            文件名
 	 * @return 图片drawable
 	 */
-	public Drawable readImageFromSD(String dir, String name)
-	{
+	public Drawable readImageFromSD(String dir, String name) {
 		Drawable image = null;
 		FileInputStream inputStream = null;
 		File file = new File(ROOTPATH + dir, name);
-		if (isSDCardAvailable())
-		{
-			try
-			{
+		if (isSDCardAvailable()) {
+			try {
 				inputStream = new FileInputStream(file);
 				image = Drawable.createFromStream(inputStream, file.getName());
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
-			}
-			finally
-			{
-				if (inputStream != null)
-				{
-					try
-					{
+			} finally {
+				if (inputStream != null) {
+					try {
 						inputStream.close();
-					}
-					catch (Exception e)
-					{
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -406,47 +408,42 @@ public class FileUtil
 		}
 		return image;
 	}
-	
+
 	/**
 	 * 
-	 * @param urlStr 文件url地址
-	 * @param path 存储到sd目录路径
-	 * @param fileName 存储的文件名
-	 * @param cover 若文件已存在，是否覆盖
+	 * @param urlStr
+	 *            文件url地址
+	 * @param path
+	 *            存储到sd目录路径
+	 * @param fileName
+	 *            存储的文件名
+	 * @param cover
+	 *            若文件已存在，是否覆盖
 	 * @return 下载是否成功
 	 */
 	public boolean downloadFile(String urlStr, String path, String fileName,
-			boolean cover)
-	{
+			boolean cover) {
 		InputStream inputStream = null;
-		try
-		{
+		try {
 			inputStream = client.getInputStreamFromUrl(urlStr);
-			File file = writeToSDFromInputStream(path, fileName,
-					inputStream, cover);
-			if (file == null)
-			{
+			File file = writeToSDFromInputStream(path, fileName, inputStream,
+					cover);
+			if (file == null) {
 				return false;
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
-		}
-		finally
-		{
-			try
-			{
+		} finally {
+			try {
 				inputStream.close();
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		return true;
 	}
+
 	/**
 	 * 把实体转化成存储地址
 	 * 
@@ -454,14 +451,8 @@ public class FileUtil
 	 * @return
 	 */
 	public String modelToAddress(Object model) {
-		String result = null;
-		if (model instanceof Friend) {
-			Friend f = (Friend) model;
-			String dir = "Friend";
-			String name = f.getName();
-			result = dir + File.separator + name;
-		}
-		return ROOTPATH + result;
+		String name = model.getClass().getName();
+		return ROOTPATH + name;
 	}
-	
+
 }

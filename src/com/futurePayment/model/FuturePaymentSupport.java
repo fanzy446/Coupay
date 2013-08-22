@@ -431,22 +431,29 @@ public class FuturePaymentSupport {
 	// }
 
 	/**
-	 * 查询会员 return 会员列表
-	 **/
-	public JSONObject queryVip() throws PaymentException {
-		JSONObject jobj = new JSONObject();
-		JSONObject vipList = null;
+	 * 查询会员卡
+	 * 
+	 * @return
+	 * @throws PaymentException
+	 */
+	public ArrayList<VipCard> queryVip() throws PaymentException {
+		Gson gson = new Gson();
+		ArrayList<VipCard> al = null;
 		try {
-			MyResponse response = http.post(ServiceType.QUERY_VIP, jobj);
-			if (response.getResultCode() == ResultCode.SUCCESS)
-				vipList = response.getResultObject("vipList");
+			MyResponse response = http.post(ServiceType.QUERY_VIP, null);
+			if (response.getResultCode() == ResultCode.SUCCESS) {
+				al = gson.fromJson(response.getResultArray("vipList")
+						.toString(), new TypeToken<ArrayList<VipCard>>() {
+				}.getType());
+			}
+
 			else
 				throw new PaymentException(response.getResultCode());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return vipList;
+		return al;
 	}
 
 	/**
@@ -541,20 +548,19 @@ public class FuturePaymentSupport {
 	 * @return 查询结果
 	 * @throws PaymentException
 	 */
-	public JSONObject queryUserGrade() throws PaymentException {
-		JSONObject jobj = new JSONObject();
-		JSONObject userGrade = null;
+	public int queryUserGrade() throws PaymentException {
+		int grade = 0;
 		try {
-			MyResponse response = http.post(ServiceType.QUERY_USER_GRADE, jobj);
+			MyResponse response = http.post(ServiceType.QUERY_USER_GRADE, null);
 			if (response.getResultCode() == ResultCode.SUCCESS)
-				userGrade = response.getResultObject("userGrade");
+				grade = response.getData().getInt("userGrade");
 			else
 				throw new PaymentException(response.getResultCode());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return userGrade;
+		return grade;
 	}
 
 	/**
@@ -565,11 +571,13 @@ public class FuturePaymentSupport {
 	 * @return 兑换结果
 	 * @throws PaymentException
 	 */
-	public boolean userGradeSwap(int grade) throws PaymentException {
+	public boolean userGradeSwap(int grade, int couponId)
+			throws PaymentException {
 		JSONObject jobj = new JSONObject();
 		boolean result = false;
 		try {
 			jobj.put("grade", grade);
+			jobj.put("couponId", couponId);
 			MyResponse response = http.post(ServiceType.USER_GRADE_SWAP, jobj);
 			if (response.getResultCode() == ResultCode.SUCCESS)
 				return true;
@@ -588,20 +596,22 @@ public class FuturePaymentSupport {
 	 * @return 查询结果
 	 * @throws PaymentException
 	 */
-	public JSONObject queryCoupon() throws PaymentException {
-		JSONObject jobj = new JSONObject();
-		JSONObject coupunList = null;
+	public ArrayList<Coupon> queryCoupon() throws PaymentException {
+		ArrayList<Coupon> al = null;
+		Gson gson = new Gson();
 		try {
-			MyResponse response = http.post(ServiceType.QUERY_COUPON, jobj);
-			if (response.getResultCode() == ResultCode.SUCCESS)
-				coupunList = response.getResultObject("coupunList");
-			else
+			MyResponse response = http.post(ServiceType.QUERY_COUPON, null);
+			if (response.getResultCode() == ResultCode.SUCCESS) {
+				gson.fromJson(response.getResultArray("coupunList").toString(),
+						new TypeToken<ArrayList<Friend>>() {
+						}.getType());
+			} else
 				throw new PaymentException(response.getResultCode());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return coupunList;
+		return al;
 	}
 
 	/**
@@ -671,11 +681,11 @@ public class FuturePaymentSupport {
 	 * @return 使用结果
 	 * @throws PaymentException
 	 */
-	public boolean useCoupon(JSONObject[] coupun) throws PaymentException {
+	public boolean useCoupon(ArrayList<Coupon> coupon) throws PaymentException {
 		JSONObject jobj = new JSONObject();
 		boolean result = false;
 		try {
-			jobj.put("coupun", coupun);
+			jobj.put("coupon", coupon);
 			MyResponse response = http.post(ServiceType.USE_COUPON, jobj);
 			if (response.getResultCode() == ResultCode.SUCCESS)
 				return true;
@@ -788,7 +798,8 @@ public class FuturePaymentSupport {
 			if (response.getResultCode() == ResultCode.SUCCESS) {
 				JSONArray ja = response.getResultArray("friend");
 				al = gson.fromJson(ja.toString(),
-						 new TypeToken<ArrayList<Friend>>(){}.getType());
+						new TypeToken<ArrayList<Friend>>() {
+						}.getType());
 			} else
 				throw new PaymentException(response.getResultCode());
 
@@ -933,22 +944,24 @@ public class FuturePaymentSupport {
 		return result;
 	}
 
-	public ArrayList<CommentInfo> getExperience() throws PaymentException{
+	public ArrayList<CommentInfo> getExperience() throws PaymentException {
 		ArrayList<CommentInfo> al = null;
 		Gson gson = new Gson();
-		try{
+		try {
 			MyResponse response = http.post(ServiceType.GET_COMMENT, null);
 			if (response.getResultCode() == ResultCode.SUCCESS)
-				al = gson.fromJson(response.getResultArray("comment").toString(), new TypeToken<ArrayList<CommentInfo>>(){}.getType());
+				al = gson.fromJson(response.getResultArray("comment")
+						.toString(), new TypeToken<ArrayList<CommentInfo>>() {
+				}.getType());
 			else
 				throw new PaymentException(response.getResultCode());
-			
-		}
-		catch (Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return al;
 	}
+
 	/**
 	 * 获得位置图片
 	 * 
@@ -1027,22 +1040,25 @@ public class FuturePaymentSupport {
 	 * @return 周边商家
 	 * @throws PaymentException
 	 */
-	public JSONObject getSurroundingEnterprise() throws PaymentException {
-		JSONObject jobj = new JSONObject();
-		JSONObject surrounding_enterprise = null;
+	public ArrayList<EnterpriseBasicInfo> getSurroundingEnterprise()
+			throws PaymentException {
+		ArrayList<EnterpriseBasicInfo> al = null;
+		Gson gson = new Gson();
 		try {
 			MyResponse response = http.post(
-					ServiceType.GET_SURROUNDIND_ENTERPRISE, jobj);
-			if (response.getResultCode() == ResultCode.SUCCESS)
-				surrounding_enterprise = response
-						.getResultObject("surrounding_enterprise");
-			else
+					ServiceType.GET_SURROUNDIND_ENTERPRISE, null);
+			if (response.getResultCode() == ResultCode.SUCCESS) {
+				JSONArray ja = response.getResultArray("enterprise");
+				al = gson.fromJson(ja.toString(),
+						new TypeToken<ArrayList<EnterpriseBasicInfo>>() {
+						}.getType());
+			} else
 				throw new PaymentException(response.getResultCode());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return surrounding_enterprise;
+		return al;
 	}
 
 	public String getName() {

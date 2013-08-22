@@ -101,6 +101,10 @@
             android:name="com.billme.ui.SocietyActivity"
             android:label="@string/title_activity_society" >
         </activity>
+        <activity
+            android:name="com.billme.ui.SurroundActivity"
+            android:label="@string/title_activity_surround" >
+        </activity>
     </application>
 
 </manifest>

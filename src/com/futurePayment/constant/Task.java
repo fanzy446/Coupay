@@ -53,6 +53,10 @@ public class Task {
 	public static final int TASK_GET_ENTERPRISE_INFO = 1032;
 	public static final int TASK_GET_AROUND_ENTERPRISE_INFO = 1033;
 
+	// initial operation
+	public static final int INIT_SOCIETY = 2000;
+	public static final int INIT_SURROUND = 2001;
+
 	public Task(int id, Map param) {
 		this.taskId = id;
 		this.taskParam = param;

@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,18 +19,13 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 
-import com.billme.ui.BankCardActivity;
-import com.billme.ui.FriendActivity;
-import com.billme.ui.LoginActivity;
-import com.billme.ui.MainActivity;
-import com.billme.ui.PaymentActivity;
-import com.billme.ui.PaymentConfirmActivity;
-import com.billme.ui.R;
-import com.billme.ui.RegistActivity;
-import com.billme.ui.ShareActivity;
+import com.billme.ui.*;
+import com.billme.util.FileUtil;
 
 import com.futurePayment.constant.Task;
 import com.futurePayment.model.*;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @SuppressLint({ "UseValueOf", "HandlerLeak" })
 public class MainService extends Service implements Runnable {
@@ -195,22 +192,56 @@ public class MainService extends Service implements Runnable {
 					ba.refresh(new Integer(ShareActivity.SHARE_SECCUSS), null);
 				}
 			}
-			case Task.TASK_GET_MOMENTS:{
+			case Task.TASK_GET_MOMENTS: {
 				Log.i("error", "获得消费体验回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("SocietyActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
-					ba.refresh(new Integer(ShareActivity.SHARE_FAILURE), e);
+					ba.refresh(new Integer(SocietyActivity.GET_FAILURE), e);
 				} else {
-					ba.refresh(new Integer(ShareActivity.SHARE_SECCUSS), null);
+					ba.refresh(new Integer(SocietyActivity.GET_SECCUSS));
 				}
+			}
+			case Task.TASK_GET_AROUND_ENTERPRISE_INFO: {
+				Log.i("error", "获取周边商家信息回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("SurroundActivity");
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO 返回失败信息
+					ba.refresh(new Integer(SurroundActivity.GET_FAILURE), e);
+				} else {
+					ba.refresh(new Integer(SurroundActivity.GET_SECCUSS), null);
+				}
+			}
+			case Task.INIT_SOCIETY: {
+				Log.i("error", "初始化社区界面回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("SocietyActivity");
+				if (msg.obj != null)
+					ba.refresh(new Integer(SocietyActivity.INITIAL_SECCUSS),
+							(ArrayList<CommentInfo>) msg.obj);
+				else
+					ba.refresh(new Integer(SocietyActivity.INITIAL_FAILURE),
+							(ArrayList<CommentInfo>) msg.obj);
+			}
+			case Task.INIT_SURROUND: {
+				Log.i("error", "初始化周边界面回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("SurroundActivity");
+				if (msg.obj != null)
+					ba.refresh(new Integer(SurroundActivity.INITIAL_SECCUSS),
+							(ArrayList<EnterpriseBasicInfo>) msg.obj);
+				else
+					ba.refresh(new Integer(SurroundActivity.INITIAL_FAILURE),
+							(ArrayList<EnterpriseBasicInfo>) msg.obj);
 			}
 			default:
 				break;
 			}
-			
+
 		}
 	};
 
@@ -352,19 +383,50 @@ public class MainService extends Service implements Runnable {
 				}
 				break;
 			}
-			case Task.TASK_GET_MOMENTS:{
+			case Task.TASK_GET_MOMENTS: {
 				Log.i("error", "获得消费体验");
-				try{
+				try {
 					msg.obj = futurePayment.getExperience();
-				}catch (PaymentException e) {
+				} catch (PaymentException e) {
 					msg.obj = e;
 				}
 				break;
 			}
+			case Task.TASK_GET_AROUND_ENTERPRISE_INFO: {
+				Log.i("error", "获取周边商家信息");
+				try {
+					msg.obj = futurePayment.getSurroundingEnterprise();
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+			}
+			case Task.INIT_SOCIETY: {
+				Log.i("error", "初始化社区界面");
+				FileUtil fileUtil = new FileUtil(MainService.getUser()
+						.getName());
+				JSONArray ja = new JSONArray(fileUtil.readFromSD("society"));
+				Gson gson = new Gson();
+				ArrayList<CommentInfo> al = gson.fromJson(ja.toString(),
+						new TypeToken<ArrayList<CommentInfo>>() {
+						}.getType());
+				msg.obj = al;
+			}
+			case Task.INIT_SURROUND: {
+				Log.i("error", "初始化周边界面");
+				FileUtil fileUtil = new FileUtil(MainService.getUser()
+						.getName());
+				JSONArray ja = new JSONArray(fileUtil.readFromSD("surround"));
+				Gson gson = new Gson();
+				ArrayList<EnterpriseBasicInfo> al = gson.fromJson(
+						ja.toString(),
+						new TypeToken<ArrayList<EnterpriseBasicInfo>>() {
+						}.getType());
+				msg.obj = al;
+			}
 			default:
 				break;
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

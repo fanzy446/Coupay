@@ -1,6 +1,8 @@
 package com.futurePayment.model;
 
 public class Coupon {
+	private int couponId;
+	private String picture;
 	private String enterpriseName;
 	private String startTime;
 	private String endTime;
@@ -54,5 +56,21 @@ public class Coupon {
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+
+	public int getCouponId() {
+		return couponId;
+	}
+
+	public void setCouponId(int couponId) {
+		this.couponId = couponId;
 	}
 }

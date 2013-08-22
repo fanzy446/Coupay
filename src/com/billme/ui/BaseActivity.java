@@ -41,7 +41,7 @@ public class BaseActivity extends Activity {
 	}
 
 	public void addTitle(String t) {
-		ImageButton backButton = (ImageButton) findViewById(R.id.btn_mytitle_back);
+		ImageButton backButton = (ImageButton) findViewById(R.id.ib_mytitle_back);
 		TextView title = (TextView) findViewById(R.id.tv_mytitle_title);
 		title.setText(t);
 		backButton.setOnClickListener(new Button.OnClickListener() {
