@@ -27,11 +27,7 @@ public class MySurroundAdapter extends BaseAdapter {
 	 * 
 	 * @param context
 	 *            the context of current activity
-	 * @param list
-	 *            every hashmap have five
-	 *            keys:"head":int/string,"name":string,"enterprise"
-	 *            :string,"content"
-	 *            :string,"photo":string,"money":double,"time":string
+	 * @param list list of EnterpriseBasicInfo
 	 */
 	public MySurroundAdapter(Context context,
 			ArrayList<EnterpriseBasicInfo> list) {

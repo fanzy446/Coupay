@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
     <ImageView
-        android:id="@+id/iv_societylistitem_head"
+        android:id="@+id/iv_couponlistitem_picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0" />
@@ -23,43 +23,38 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/tv_societylistitem_name"
+                android:id="@+id/tv_couponlistitem_name"
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:clickable="true" />
-            <TextView style="@style/DefaultText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" @ "/>
             <TextView
-                android:id="@+id/tv_societylistitem_enterprise"
+                android:id="@+id/tv_couponlistitem_value"
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true" />
+                android:layout_gravity="center_vertical" />
+             <TextView
+                android:id="@+id/tv_couponlistitem_amount"
+                style="@style/DefaultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical" />
         </LinearLayout>
-        <TextView style="@style/RegistText"
-            android:id="@+id/tv_societylistitem_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <ImageView
-            android:id="@+id/iv_societylistitem_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
         <LinearLayout 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/tv_societylistitem_money"
+                android:id="@+id/tv_couponlistitem_time"
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical" />
             <TextView
-                android:id="@+id/tv_societylistitem_time"
+                android:id="@+id/tv_couponlistitem_least"
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

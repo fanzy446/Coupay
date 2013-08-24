@@ -6,6 +6,7 @@ public class Coupon {
 	private String enterpriseName;
 	private String startTime;
 	private String endTime;
+	private String type;
 	private double value;
 	private double least;
 	private int amount;
@@ -72,5 +73,13 @@ public class Coupon {
 
 	public void setCouponId(int couponId) {
 		this.couponId = couponId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }
