@@ -27,7 +27,7 @@ public class FileUtil {
 		client = new MyHttpClient(name);
 		createSDRootDirectory();
 		// 创建一系列文件夹
-		createSDDirectory("Friend");
+		createSDDirectory("cache");
 	}
 
 	/**

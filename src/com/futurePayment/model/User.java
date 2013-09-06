@@ -220,4 +220,18 @@ public class User {
 		this.balance = balance;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{name:" + name + ",realName:" + realName + ",sex:" + sex
+				+ ",birthday:" + birthday + ",phone:" + phone + ",email:"
+				+ email + ",grade:" + grade + ",balance:" + balance
+				+ ",vipCardList:" + vipCardList.toString() + ",couponList:"
+				+ couponList.toString() + ",friendList:" + friendList
+				+ vipCardList.toString() + ",couponList:"
+				+ couponList.toString() + ",bankCardList:"
+				+ bankCardList.toString() + ",tradeRecordList:"
+				+ tradeRecordList.toString() + "}";
+	}
+
 }

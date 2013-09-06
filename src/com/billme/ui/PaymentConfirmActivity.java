@@ -13,6 +13,7 @@ import com.futurePayment.model.Friend;
 import android.os.Bundle;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -94,6 +95,8 @@ public class PaymentConfirmActivity extends BaseActivity implements
 		});
 	}
 
+
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -234,5 +237,18 @@ public class PaymentConfirmActivity extends BaseActivity implements
 		}
 		peopleAdapter.notifyDataSetChanged();
 	}
-
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		// TODO Auto-generated method stub
+//		super.onActivityResult(requestCode, resultCode, data);
+//		if (resultCode == RESULT_OK) {
+//			Bundle bundle = data.getExtras();
+//			String scanResult = bundle.getString("result");
+//
+//			String[] tempString = scanResult.split(",");
+//			for (int i = 0; i < tempString.length; ++i) {
+//				Log.i("error", tempString[i]);
+//			}
+//		}
+//	}
 }

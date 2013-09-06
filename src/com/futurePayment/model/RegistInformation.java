@@ -88,5 +88,19 @@ public class RegistInformation {
 		public void setNumber(String number) {
 			this.number = number;
 		}
+
+		@Override
+		public String toString() {
+			// TODO Auto-generated method stub
+			return "{type:" + type + ",number:" + number + "}";
+		}
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{name:" + name + ",loginPassword:" + loginPassword + ",payPassword:"
+		+ payPassword + ",realName:" + realName + ",birthday:" + birthday
+		+ ",sex:" + sex + ",contact:" + contact.toString() + "}";
 	}
 }

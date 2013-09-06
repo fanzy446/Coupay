@@ -9,7 +9,7 @@ import com.billme.widget.TradingRecordAdapter;
 import com.billme.widget.TradingRecordListView;
 import com.billme.widget.TradingRecordListView.IXListViewListener;
 
-public class UserImformationActivity extends BaseActivity implements
+public class TestActivity extends BaseActivity implements
 		BillMeActivity, IXListViewListener {
 	TradingRecordListView expandableListView;
 

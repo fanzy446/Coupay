@@ -81,4 +81,12 @@ public class CommentInfo {
 		head = name;
 		photo = name + enterpriseName + time;
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{head:" + head + ",name:" + name + ",enterpriseName:"
+				+ enterpriseName + ",grade:" + grade + ",content:" + content
+				+ ",photo:" + photo + ",money:" + money + ",time:" + time + "}";
+	}
 }

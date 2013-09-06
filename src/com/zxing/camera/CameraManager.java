@@ -19,7 +19,7 @@ package com.zxing.camera;
 import java.io.IOException;
 
 import android.content.Context;
-import android.graphics.PixelFormat;
+import android.graphics.ImageFormat;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
@@ -44,18 +44,6 @@ public final class CameraManager {
 	private static final int MAX_FRAME_HEIGHT = 360;
 
 	private static CameraManager cameraManager;
-
-	static final int SDK_INT; // Later we can use Build.VERSION.SDK_INT
-	static {
-		int sdkInt;
-		try {
-			sdkInt = Integer.parseInt(Build.VERSION.SDK);
-		} catch (NumberFormatException nfe) {
-			// Just to be safe
-			sdkInt = 10000;
-		}
-		SDK_INT = sdkInt;
-	}
 
 	private final Context context;
 	private final CameraConfigurationManager configManager;
@@ -113,7 +101,7 @@ public final class CameraManager {
 		// in the Donut SDK.
 		// useOneShotPreviewCallback = Integer.parseInt(Build.VERSION.SDK) >
 		// Build.VERSION_CODES.CUPCAKE;
-		useOneShotPreviewCallback = Integer.parseInt(Build.VERSION.SDK) > 3; // 3
+		useOneShotPreviewCallback = Build.VERSION.SDK_INT > 3; // 3
 																				// =
 																				// Cupcake
 
@@ -322,11 +310,11 @@ public final class CameraManager {
 		// This is the standard Android format which all devices are REQUIRED to
 		// support.
 		// In theory, it's the only one we should ever care about.
-		case PixelFormat.YCbCr_420_SP:
+		case  ImageFormat.NV21 :
 			// This format has never been seen in the wild, but is compatible as
 			// we only care
 			// about the Y channel, so allow it.
-		case PixelFormat.YCbCr_422_SP:
+		case  ImageFormat.NV16 :
 			return new PlanarYUVLuminanceSource(data, width, height, rect.left,
 					rect.top, rect.width(), rect.height());
 		default:

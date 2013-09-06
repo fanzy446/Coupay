@@ -141,7 +141,6 @@ public class PaymentActivity extends BaseActivity implements BillMeActivity {
 		// // btnPayCart = (Button) this.findViewById(R.id.btn_pay_cart);
 		// // btnPayCart.setOnClickListener(new payCartOnClickListener());
 
-		MainService.allActivities.add(this);
 	}
 
 	// @Override

@@ -20,4 +20,11 @@ public class BankCard {
 		this.bankName = bankName;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{cardNumber:" + cardNumber + ",bankName:" + bankName + "}";
+	}
+
+	
 }

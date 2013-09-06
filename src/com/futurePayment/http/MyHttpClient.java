@@ -12,6 +12,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
@@ -29,6 +30,10 @@ public class MyHttpClient {
 	private String name;
 
 	public MyHttpClient(String name) {
+		// 请求超时
+		http.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 5000);
+        // 读取超时
+		http.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 10000);
 		this.name = name;
 	}
 

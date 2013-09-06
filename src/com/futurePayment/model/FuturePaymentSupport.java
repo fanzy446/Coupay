@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,13 +50,6 @@ public class FuturePaymentSupport {
 				Gson gson = new Gson();
 				JSONObject ob = response.getData();
 				bi = gson.fromJson(ob.toString(), BasicInformation.class);
-				// bi.setName(name);
-				// bi.setGrade(ob.getInt("grade"));
-				// bi.setMoney(ob.getDouble("money"));
-				Log.i("error",
-						"name:" + bi.getName() + "----" + "grade"
-								+ bi.getGrade() + "=====" + "balance"
-								+ bi.getBalance());
 			} else
 				throw new PaymentException(response.getResultCode());
 		} catch (JSONException e) {
@@ -225,6 +220,7 @@ public class FuturePaymentSupport {
 		boolean result = false;
 		try {
 			JSONObject jobj = new JSONObject(gson.toJson(ri));
+			jobj.put("birthday", ri.getBirthday());
 			MyResponse response = http.post(ServiceType.REGIST, jobj);
 			if (response.getResultCode() == ResultCode.SUCCESS)
 				return true;
@@ -563,6 +559,24 @@ public class FuturePaymentSupport {
 		return grade;
 	}
 
+	public ArrayList<Coupon> getSwapList() throws PaymentException {
+		ArrayList<Coupon> al = null;
+		Gson gson = new Gson();
+		try {
+			MyResponse response = http.post(ServiceType.QUERY_SWAP, null);
+			if (response.getResultCode() == ResultCode.SUCCESS) {
+				gson.fromJson(response.getResultArray("swapList").toString(),
+						new TypeToken<ArrayList<Coupon>>() {
+						}.getType());
+			} else
+				throw new PaymentException(response.getResultCode());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return al;
+	}
+
 	/**
 	 * ÕËºÅ»ý·Ö¶Ò»»
 	 * 
@@ -602,8 +616,8 @@ public class FuturePaymentSupport {
 		try {
 			MyResponse response = http.post(ServiceType.QUERY_COUPON, null);
 			if (response.getResultCode() == ResultCode.SUCCESS) {
-				gson.fromJson(response.getResultArray("coupunList").toString(),
-						new TypeToken<ArrayList<Friend>>() {
+				gson.fromJson(response.getResultArray("couponList").toString(),
+						new TypeToken<ArrayList<Coupon>>() {
 						}.getType());
 			} else
 				throw new PaymentException(response.getResultCode());
@@ -944,15 +958,18 @@ public class FuturePaymentSupport {
 		return result;
 	}
 
-	public ArrayList<CommentInfo> getExperience() throws PaymentException {
-		ArrayList<CommentInfo> al = null;
+	public LinkedList<CommentInfo> getExperience() throws PaymentException {
+		LinkedList<CommentInfo> al = null;
 		Gson gson = new Gson();
 		try {
 			MyResponse response = http.post(ServiceType.GET_COMMENT, null);
 			if (response.getResultCode() == ResultCode.SUCCESS)
+			{
 				al = gson.fromJson(response.getResultArray("comment")
-						.toString(), new TypeToken<ArrayList<CommentInfo>>() {
+						.toString(), new TypeToken<LinkedList<CommentInfo>>() {
 				}.getType());
+				
+			}
 			else
 				throw new PaymentException(response.getResultCode());
 

@@ -38,8 +38,7 @@
         </activity>
         <activity
             android:name="com.billme.ui.LogoActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
-            <intent-filter>
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" ><intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -50,7 +49,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.billme.ui.UserImformationActivity"
+            android:name="com.billme.ui.TestActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
@@ -104,6 +103,26 @@
         <activity
             android:name="com.billme.ui.SurroundActivity"
             android:label="@string/title_activity_surround" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.ManagementActivity"
+            android:label="@string/title_activity_management" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.CouponActivity"
+            android:label="@string/title_activity_coupon" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.GradeActivity"
+            android:label="@string/title_activity_grade" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.RelationActivity"
+            android:label="@string/title_activity_relation" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.BankCardActivity"
+            android:label="@string/app_name" >
         </activity>
     </application>
 

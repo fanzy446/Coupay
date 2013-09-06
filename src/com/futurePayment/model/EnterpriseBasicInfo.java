@@ -29,4 +29,11 @@ public class EnterpriseBasicInfo {
 	public void setDiatance(int diatance) {
 		this.diatance = diatance;
 	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{name:" + name + ",head:" + head + ",introduction:"
+		+ introduction + ",diatance:" + diatance + "}";
+	}
+	
 }

@@ -28,4 +28,10 @@ public class BasicInformation {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{name:" + name + ",grade:" + grade + ",balance:" + balance + "}";
+	}
 }

@@ -17,6 +17,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.ImageView;
 
 public class ImageHelper {
@@ -65,16 +66,19 @@ public class ImageHelper {
 	 * @return
 	 */
 	public Drawable GetDrawableByUrl(String uri) {
+		Log.i("test","xiazai1");
 		FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
 		Drawable drawable;
 		InputStream is;
 		try {
 			is = client.getInputStreamFromUrl(uri);
+			Log.i("test","xiazai2");
 			fileUtil.writeToSDFromInputStream("cache", uri, is, false);
+			Log.i("test","xiaza3");
 			drawable = Drawable.createFromStream(is, "src");
-
+			Log.i("test","xiazai4");
 			is.close();
-
+			Log.i("test","xiazai5");
 			return drawable;
 
 		} catch (Exception e) {
@@ -104,7 +108,6 @@ public class ImageHelper {
 				return drawable;
 			}
 		}
-
 		final Handler handler = new Handler() {
 			public void handleMessage(Message message) {
 				imageView.setImageDrawable((Drawable) message.obj);
@@ -113,7 +116,8 @@ public class ImageHelper {
 		// 建立一个新的线程下载图片
 		new Thread() {
 			public void run() {
-				Drawable drawable = imageHelper.GetDrawableByUrl(imageUrl);
+				Log.i("test","xiazai0" + imageUrl);
+				Drawable drawable = getInstance().GetDrawableByUrl(imageUrl);
 				imagesCache
 						.put(imageUrl, new SoftReference<Drawable>(drawable));
 				Message msg = handler.obtainMessage(0, drawable);

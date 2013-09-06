@@ -26,4 +26,5 @@ public class MyMessage {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
 }

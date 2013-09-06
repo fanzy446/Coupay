@@ -25,6 +25,8 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		MainService.allActivities.add(this);
+		addLayout();
 		super.onCreate(savedInstanceState);
 
 	}
@@ -64,9 +66,13 @@ public class BaseActivity extends Activity {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
+		if(event.getAction() == MotionEvent.ACTION_DOWN)
+		Log.i("test","hahaniam");
 		if (myLayout != null && myLayout.isShown())
 			return myLayout.onTouchEvent(event);
-		return gd.onTouchEvent(event);
+		if(gd != null)
+			return gd.onTouchEvent(event);
+		return super.onTouchEvent(event);
 	}
 
 	@Override
@@ -78,13 +84,14 @@ public class BaseActivity extends Activity {
 	public void pushMessage() {
 
 	}
-
+ 
 	protected class MyGestureListener extends
 			GestureDetector.SimpleOnGestureListener {
 		@Override
 		public void onShowPress(MotionEvent e) {
 			// TODO Auto-generated method stub
-			myLayout.showChoice(e);
+			if (myLayout != null)
+				myLayout.showChoice(e);
 			super.onShowPress(e);
 		}
 	}
@@ -105,6 +112,13 @@ public class BaseActivity extends Activity {
 			MainService.setTitleBarHeight(titleBarHeight);
 			super.onWindowFocusChanged(hasFocus);
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		MainService.allActivities.remove(this);
 	}
 
 }

@@ -1,7 +1,11 @@
 package com.billme.widget;
 
 import com.billme.logic.MainService;
+import com.billme.ui.AccountActivity;
+import com.billme.ui.MainActivity;
+import com.billme.ui.ManagementActivity;
 import com.billme.ui.R;
+import com.billme.ui.SocietyActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -29,7 +33,6 @@ public class MyChoiceButton extends LinearLayout implements
 	private boolean isShown = false;
 	private int currentX = 0;
 	private int currentY = 0;
-	private int statusBarHeight = 0;
 	private int m = 1;// 边缘判断倍数
 
 	public MyChoiceButton(Context context) {
@@ -151,26 +154,25 @@ public class MyChoiceButton extends LinearLayout implements
 			break;
 		case MotionEvent.ACTION_UP:
 			// 选中
-			Log.i("test", "选中" + index);
 			Intent intent = new Intent();
 			switch (index) {
 			case 0:
-				// intent.setClassName(getContext(), className);
+				 intent.setClass(getContext(), MainActivity.class);
 				break;
 			case 1:
-				// intent.setClassName(getContext(), className);
+				 intent.setClass(getContext(), SocietyActivity.class);
 				break;
 			case 2:
-				// intent.setClassName(getContext(), className);
+				intent.setClass(getContext(), MainActivity.class);
 				break;
 			case 3:
-				// intent.setClass(getContext(), AccountActivity.class);
+				 intent.setClass(getContext(), ManagementActivity.class);
 				break;
 			default:
 				// intent.setClass(getContext(), AccountActivity.class);
 				break;
 			}
-			// getContext().startActivity(intent);
+			 getContext().startActivity(intent);
 			break;
 		case MotionEvent.ACTION_MOVE:
 			// this.setFocusable(false);
@@ -215,7 +217,6 @@ public class MyChoiceButton extends LinearLayout implements
 				FrameLayout.LayoutParams.WRAP_CONTENT,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
 		currentX = (int) event.getX() - this.getLayoutWidth() / 2;
-		Log.i("test", MainService.getStatusBarHeight() + "/" + MainService.getTitleBarHeight());
 		currentY = (int) event.getY() - this.getLayoutHeight() / 2;
 		layoutParams.setMargins(currentX, currentY - MainService.getStatusBarHeight()
 				- MainService.getTitleBarHeight(), 0, 0);

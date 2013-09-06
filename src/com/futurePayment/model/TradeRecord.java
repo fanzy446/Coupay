@@ -52,4 +52,11 @@ public class TradeRecord {
 		this.date = date;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{sender:" + sender + ",receiver:" + receiver + ",amount:"
+		+ amount + ",date:" + date + ",method:" + method + "}";
+	}
+
 }

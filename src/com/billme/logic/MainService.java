@@ -3,6 +3,7 @@ package com.billme.logic;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.json.JSONArray;
 
@@ -59,17 +60,17 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "登陆回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("LoginActivity");
-				// if (msg.obj instanceof PaymentException) {
-				// PaymentException e = (PaymentException) msg.obj;
-				// // TODO 返回失败信息
-				// ba.refresh(new Integer(LoginActivity.LOGIN_FAILURE), e);
-				// } else if (msg.obj instanceof BasicInformation) {
-				// BasicInformation bi = (BasicInformation) msg.obj;
-				// futurePayment.getUser().setName(bi.getName());
-				// futurePayment.getUser().setBalance(bi.getBalance());
-				// futurePayment.getUser().setGrade(bi.getGrade());
+				 if (msg.obj instanceof PaymentException) {
+				 PaymentException e = (PaymentException) msg.obj;
+				 // TODO 返回失败信息
+				 ba.refresh(new Integer(LoginActivity.LOGIN_FAILURE), e);
+				 } else if (msg.obj instanceof BasicInformation) {
+				 BasicInformation bi = (BasicInformation) msg.obj;
+				 futurePayment.getUser().setName(bi.getName());
+				 futurePayment.getUser().setBalance(bi.getBalance());
+				 futurePayment.getUser().setGrade(bi.getGrade());
 				ba.refresh(new Integer(LoginActivity.LOGIN_SECCUSS));
-				// }
+				 }
 			}
 				break;
 			case Task.TASK_GET_USER_INFO: {
@@ -136,6 +137,7 @@ public class MainService extends Service implements Runnable {
 					ba.refresh(new Integer(
 							BankCardActivity.ADD_BANK_CARD_SUCCESS), msg.obj);
 				}
+				break;
 			}
 			case Task.TASK_GET_FRIENDS: {
 				Log.i("error", "查询好友列表回调中");
@@ -151,6 +153,7 @@ public class MainService extends Service implements Runnable {
 							(ArrayList<Friend>) msg.obj);
 					ba.refresh(new Integer(FriendActivity.GET_FRIEND_FAILURE));
 				}
+				break;
 			}
 			case Task.TASK_SINGLE_USER_PAY: {
 				Log.i("error", "单人支付回调中");
@@ -163,6 +166,7 @@ public class MainService extends Service implements Runnable {
 				} else {
 					ba.refresh(new Integer(PaymentActivity.PAY_SUCCESS), null);
 				}
+				break;
 			}
 			case Task.TASK_MULTI_USER_PAY: {
 				Log.i("error", "多人支付回调中");
@@ -179,6 +183,7 @@ public class MainService extends Service implements Runnable {
 							new Integer(PaymentConfirmActivity.APPLY_SUCCESS),
 							null);
 				}
+				break;
 			}
 			case Task.TASK_SHARE_MOMENT: {
 				Log.i("error", "分享消费体验回调中");
@@ -191,6 +196,7 @@ public class MainService extends Service implements Runnable {
 				} else {
 					ba.refresh(new Integer(ShareActivity.SHARE_SECCUSS), null);
 				}
+				break;
 			}
 			case Task.TASK_GET_MOMENTS: {
 				Log.i("error", "获得消费体验回调中");
@@ -201,8 +207,9 @@ public class MainService extends Service implements Runnable {
 					// TODO 返回失败信息
 					ba.refresh(new Integer(SocietyActivity.GET_FAILURE), e);
 				} else {
-					ba.refresh(new Integer(SocietyActivity.GET_SECCUSS));
+					ba.refresh(new Integer(SocietyActivity.GET_SECCUSS), (LinkedList<CommentInfo>) msg.obj);
 				}
+				break;
 			}
 			case Task.TASK_GET_AROUND_ENTERPRISE_INFO: {
 				Log.i("error", "获取周边商家信息回调中");
@@ -215,6 +222,7 @@ public class MainService extends Service implements Runnable {
 				} else {
 					ba.refresh(new Integer(SurroundActivity.GET_SECCUSS), null);
 				}
+				break;
 			}
 			case Task.INIT_SOCIETY: {
 				Log.i("error", "初始化社区界面回调中");
@@ -226,6 +234,7 @@ public class MainService extends Service implements Runnable {
 				else
 					ba.refresh(new Integer(SocietyActivity.INITIAL_FAILURE),
 							(ArrayList<CommentInfo>) msg.obj);
+				break;
 			}
 			case Task.INIT_SURROUND: {
 				Log.i("error", "初始化周边界面回调中");
@@ -237,6 +246,22 @@ public class MainService extends Service implements Runnable {
 				else
 					ba.refresh(new Integer(SurroundActivity.INITIAL_FAILURE),
 							(ArrayList<EnterpriseBasicInfo>) msg.obj);
+				break;
+			}
+			case Task.TASK_GET_COUPON:{
+				Log.i("error", "获得优惠券列表回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("CouponActivity");
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO 返回失败信息
+					ba.refresh(new Integer(
+							CouponActivity.GET_COUPON_FAILURE), e);
+				} else if (msg.obj instanceof ArrayList<?>) {
+					ba.refresh(new Integer(
+							CouponActivity.GET_COUPON_SECCUSS), msg.obj);
+				}
+				break;
 			}
 			default:
 				break;
@@ -251,18 +276,17 @@ public class MainService extends Service implements Runnable {
 		try {
 			switch (task.getTaskId()) {
 			case Task.TASK_USER_LOGIN: {
-				// TODO
-				// Log.i("error", "登陆中");
-				// String userName = (String)
-				// task.getTaskParam().get("userName");
-				// String userPassword = (String) task.getTaskParam().get(
-				// "userPassword");
-				// futurePayment = FuturePayment.getInstance(userName);
-				// try {
-				// msg.obj = futurePayment.loginUser(userPassword);
-				// } catch (PaymentException e) {
-				// msg.obj = e;
-				// }
+				 Log.i("error", "登陆中");
+				 String userName = (String)
+				 task.getTaskParam().get("userName");
+				 String userPassword = (String) task.getTaskParam().get(
+				 "userPassword");
+				 futurePayment = FuturePayment.getInstance(userName);
+				 try {
+				 msg.obj = futurePayment.loginUser(userPassword);
+				 } catch (PaymentException e) {
+				 msg.obj = e;
+				 }
 				break;
 			}
 			case Task.TASK_GET_USER_INFO: {
@@ -399,17 +423,20 @@ public class MainService extends Service implements Runnable {
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
+				break;
 			}
 			case Task.INIT_SOCIETY: {
 				Log.i("error", "初始化社区界面");
 				FileUtil fileUtil = new FileUtil(MainService.getUser()
 						.getName());
 				JSONArray ja = new JSONArray(fileUtil.readFromSD("society"));
+				Log.i("test", ja.toString());
 				Gson gson = new Gson();
 				ArrayList<CommentInfo> al = gson.fromJson(ja.toString(),
 						new TypeToken<ArrayList<CommentInfo>>() {
 						}.getType());
 				msg.obj = al;
+				break;
 			}
 			case Task.INIT_SURROUND: {
 				Log.i("error", "初始化周边界面");
@@ -422,6 +449,16 @@ public class MainService extends Service implements Runnable {
 						new TypeToken<ArrayList<EnterpriseBasicInfo>>() {
 						}.getType());
 				msg.obj = al;
+				break;
+			}
+			case Task.TASK_GET_COUPON:{
+				Log.i("error", "获取优惠券列表");
+				try {
+					msg.obj = futurePayment.queryCoupon();
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+				break;
 			}
 			default:
 				break;

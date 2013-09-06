@@ -11,6 +11,7 @@ import com.futurePayment.model.ImageHelper;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,14 +75,9 @@ public class MyListViewAdapter extends BaseAdapter {
 				.findViewById(R.id.tv_mylistitem_text);
 		viewHolder.end = (ImageView) convertView
 				.findViewById(R.id.iv_mylistitem_end);
+		Log.i("test", map.toString());
 		if (map != null) {
-			if (map.get("icon") instanceof Integer) {
-				viewHolder.icon.setImageDrawable(context.getResources()
-						.getDrawable((Integer) (map.get("icon"))));
-				viewHolder.text.setText((String) map.get("text"));
-				viewHolder.end.setImageDrawable(context.getResources()
-						.getDrawable((Integer) (map.get("end"))));
-			} else if (map.get("icon") instanceof String) {
+			if (map.get("icon") instanceof String) {
 				String str = (String) map.get("icon");
 				if (str.startsWith("http://")) {
 					// ¥”Õ¯¬Á∂¡»°
@@ -95,11 +91,16 @@ public class MyListViewAdapter extends BaseAdapter {
 					FileUtil fu = new FileUtil(MainService.getUser().getName());
 					viewHolder.icon.setImageDrawable(fu
 							.readImageFromSD((String) map.get("icon")));
-				}
-				viewHolder.text.setText((String) map.get("text"));
-				viewHolder.end.setImageDrawable(context.getResources()
-						.getDrawable((Integer) (map.get("end"))));
+				}			
 			}
+			else
+			{
+				viewHolder.icon.setImageDrawable(context.getResources()
+						.getDrawable((Integer) (map.get("icon"))));
+			}
+			viewHolder.text.setText((String) map.get("text"));
+			viewHolder.end.setImageDrawable(context.getResources()
+					.getDrawable((Integer) (map.get("end"))));
 		}
 		return convertView;
 	}

@@ -1,6 +1,6 @@
 package com.billme.ui;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 
 import com.billme.logic.BillMeActivity;
@@ -183,13 +183,12 @@ public class RegistActivity extends BaseActivity implements BillMeActivity {
 				@SuppressWarnings("deprecation")
 				Date date = new Date(birthday.getYear() - 1900, birthday
 						.getMonth(), birthday.getDayOfMonth());
-				String b = date.toString();
-				Log.i("error", b);
+				Log.i("test",date.toString());
 
 				if (n != null && lp1 != null && lp2 != null && pp1 != null
 						&& pp2 != null && rn != null && p != null && e != null) {
 					if (lpSame && ppSame && nAvailable) {
-						HashMap<String, String> param = new HashMap<String, String>();
+						HashMap<String, Object> param = new HashMap<String, Object>();
 						param.put("name", n);
 						param.put("loginPassword", lp1);
 						param.put("payPassword", pp1);
@@ -197,7 +196,7 @@ public class RegistActivity extends BaseActivity implements BillMeActivity {
 						param.put("phone", p);
 						param.put("email", e);
 						param.put("sex", s);
-						param.put("birthday", b);
+						param.put("birthday", date);
 						Task task = new Task(Task.TASK_USER_REGIST, param);
 						MainService.newTask(task);
 					}
@@ -208,7 +207,6 @@ public class RegistActivity extends BaseActivity implements BillMeActivity {
 
 			}
 		});
-		MainService.allActivities.add(this);
 	}
 
 	@Override

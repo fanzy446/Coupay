@@ -53,5 +53,9 @@
     <string name="title_activity_share">ShareActivity</string>
     <string name="title_activity_society">SocietyActivity</string>
     <string name="title_activity_surround">SurroundActivity</string>
+    <string name="title_activity_management">ManagementActivity</string>
+    <string name="title_activity_coupon">CouponActivity</string>
+    <string name="title_activity_grade">GradeActivity</string>
+    <string name="title_activity_relation">RelationActivity</string>
 
 </resources>

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+
 import org.json.JSONObject;
 
 import com.billme.util.FileUtil;
@@ -286,6 +288,14 @@ public class FuturePayment {
 		}
 	}
 
+	public ArrayList<Coupon> getSwapList() throws PaymentException {
+		try {
+			return supporter.getSwapList();
+		} catch (PaymentException e) {
+			throw e;
+		}
+	}
+
 	/**
 	 * ÕËºÅ»ý·Ö¶Ò»»
 	 * 
@@ -509,7 +519,7 @@ public class FuturePayment {
 		}
 	}
 
-	public ArrayList<CommentInfo> getExperience() throws PaymentException {
+	public List<CommentInfo> getExperience() throws PaymentException {
 		try {
 			return supporter.getExperience();
 		} catch (PaymentException e) {

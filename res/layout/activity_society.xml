@@ -37,11 +37,19 @@
             android:text="周边" />
     </RelativeLayout>
 
+    <Button 
+        android:id="@+id/btn_society_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="刷新"/>
     <ListView
         android:id="@+id/lv_society_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="1" 
+        android:background="@color/bg_color"
+        android:divider="@color/bg_color"
+        android:dividerHeight="5dp">
     </ListView>
 
 </LinearLayout>

@@ -67,4 +67,11 @@ public class ShareInfo {
 		this.picture = picture;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{head:" + head + ",enterpriseName:" + enterpriseName + ",grade:"
+		+ grade + ",content:" + content + ",money:" + money + "}";
+	}
+
 }

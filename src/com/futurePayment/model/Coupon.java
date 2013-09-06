@@ -82,4 +82,12 @@ public class Coupon {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{couponId:" + couponId + ",picture:" + picture + ",enterpriseName:"
+		+ enterpriseName + ",startTime:" + startTime + ",endTime:" + endTime
+		+ ",type:" + type + ",value:" + value + ",amount:" + amount + ",least:" + least + "}";
+	}
 }

@@ -20,4 +20,10 @@ public class VipCard {
 		this.enterpriseName = enterpriseName;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{enterpriseName:" + enterpriseName + ",grade:" + grade + "}";
+	}
+	
 }

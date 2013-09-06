@@ -60,4 +60,11 @@ public class Transfer {
 	public void setMethod(String method) {
 		this.method = method;
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{sender:" + sender + ",receiver:" + receiver + ",amount:"
+		+ amount + ",bank:" + bank + ",cardNumber:" + cardNumber + ",method:" + method + "}";
+	}
 }

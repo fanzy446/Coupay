@@ -43,4 +43,12 @@ public class Friend implements Parcelable {
 	public void setSize(int size) {
 		this.size = size;
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{name:" + name + ",path:" + path + ",size:"
+		+ size + "}";
+	}
+	
 }

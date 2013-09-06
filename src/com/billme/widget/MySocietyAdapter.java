@@ -1,6 +1,6 @@
 package com.billme.widget;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 
 import com.billme.logic.MainService;
@@ -11,6 +11,7 @@ import com.futurePayment.model.ImageHelper;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 
 public class MySocietyAdapter extends BaseAdapter {
 	private Context context = null;
-	private ArrayList<CommentInfo> list;
+	private List<CommentInfo> list;
 	private LayoutInflater inflater = null;
 
 	/**
@@ -29,7 +30,7 @@ public class MySocietyAdapter extends BaseAdapter {
 	 *            the context of current activity
 	 * @param list list of CommentInfo
 	 */
-	public MySocietyAdapter(Context context, ArrayList<CommentInfo> list) {
+	public MySocietyAdapter(Context context, List<CommentInfo> list) {
 		super();
 		this.list = list;
 		this.context = context;
@@ -90,29 +91,34 @@ public class MySocietyAdapter extends BaseAdapter {
 				Drawable temp = imageHelper.loadDrawable(str, viewHolder.head);
 				if (temp != null)
 					viewHolder.head.setImageDrawable(temp);
-			} else {
-				// 从sd卡读取
-				FileUtil fu = new FileUtil(MainService.getUser().getName());
-				viewHolder.head.setImageDrawable(fu.readImageFromSD(ci
-						.getHead()));
 			}
+//			else {
+//				// 从sd卡读取
+//				FileUtil fu = new FileUtil(MainService.getUser().getName());
+//				viewHolder.head.setImageDrawable(fu.readImageFromSD(ci
+//						.getHead()));
+//			}
 			// viewHolder.text.setText((String) map.get("text"));
 			// viewHolder.end.setImageDrawable(context.getResources()
 			// .getDrawable((Integer) (map.get("end"))));
 			String str1 = (String) ci.getPhoto();
-			if (str.startsWith("http://")) {
+			Log.i("test",str1);
+			if (str1.startsWith("http://")) {
 				// 从网络读取
+				Log.i("test","hehe");
 				ImageHelper imageHelper = MainService.getImageHelper();
 				Drawable temp = imageHelper
 						.loadDrawable(str1, viewHolder.photo);
 				if (temp != null)
 					viewHolder.photo.setImageDrawable(temp);
-			} else {
-				// 从sd卡读取
-				FileUtil fu = new FileUtil(MainService.getUser().getName());
-				viewHolder.photo.setImageDrawable(fu.readImageFromSD(ci
-						.getPhoto()));
-			}
+			} 
+//			else {
+//				// 从sd卡读取
+//				Log.i("test","hehe2");
+//				FileUtil fu = new FileUtil(MainService.getUser().getName());
+//				viewHolder.photo.setImageDrawable(fu.readImageFromSD(ci
+//						.getPhoto()));
+//			}
 		}
 		return convertView;
 	}

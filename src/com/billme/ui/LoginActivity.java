@@ -5,6 +5,7 @@ import java.util.HashMap;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,11 +31,11 @@ public class LoginActivity extends BaseActivity implements BillMeActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		addLayout();
 		// RelativeLayout layout = (RelativeLayout)findViewById(R.id.nima);
 		// myLayout = new MyChoiceButton(this);
 		// myLayout.setVisibility(View.VISIBLE);
 		// layout.addView(myLayout);
-		addLayout();
 
 		loginButton = (Button) findViewById(R.id.btn_login_login);
 		registButton = (Button) findViewById(R.id.btn_login_regist);
@@ -72,7 +73,6 @@ public class LoginActivity extends BaseActivity implements BillMeActivity {
 			}
 
 		});
-		MainService.allActivities.add(this);
 	}
 
 	@Override

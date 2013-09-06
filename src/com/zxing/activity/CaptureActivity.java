@@ -21,6 +21,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.billme.ui.BaseActivity;
+import com.billme.ui.PaymentConfirmActivity;
 import com.billme.ui.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
@@ -34,7 +36,7 @@ import com.zxing.view.ViewfinderView;
  * 
  * @author Ryan.Tang
  */
-public class CaptureActivity extends Activity implements Callback {
+public class CaptureActivity extends BaseActivity implements Callback {
 
 	private CaptureActivityHandler handler;
 	private ViewfinderView viewfinderView;
@@ -42,6 +44,7 @@ public class CaptureActivity extends Activity implements Callback {
 	private Vector<BarcodeFormat> decodeFormats;
 	private String characterSet;
 	private InactivityTimer inactivityTimer;
+	
 	private MediaPlayer mediaPlayer;
 	private boolean playBeep;
 	private static final float BEEP_VOLUME = 0.10f;
@@ -61,9 +64,9 @@ public class CaptureActivity extends Activity implements Callback {
 		cancelScanButton = (Button) this.findViewById(R.id.btn_cancel_scan);
 		hasSurface = false;
 		inactivityTimer = new InactivityTimer(this);
+		addTitle("Barcord");
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -74,11 +77,12 @@ public class CaptureActivity extends Activity implements Callback {
 			initCamera(surfaceHolder);
 		} else {
 			surfaceHolder.addCallback(this);
-			surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+			//surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		}
 		decodeFormats = null;
 		characterSet = null;
 
+		//…Ë÷√œÏ…˘
 		playBeep = true;
 		AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);
 		if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
@@ -130,10 +134,10 @@ public class CaptureActivity extends Activity implements Callback {
 		} else {
 			// System.out.println("Result:"+resultString);
 			Intent resultIntent = new Intent();
-			Bundle bundle = new Bundle();
-			bundle.putString("result", resultString);
-			resultIntent.putExtras(bundle);
+			resultIntent.putExtra("result", resultString);
 			this.setResult(RESULT_OK, resultIntent);
+			resultIntent.setClass(CaptureActivity.this, PaymentConfirmActivity.class);
+			startActivity(resultIntent);
 		}
 		CaptureActivity.this.finish();
 	}
@@ -146,6 +150,7 @@ public class CaptureActivity extends Activity implements Callback {
 		} catch (RuntimeException e) {
 			return;
 		}
+		 
 		if (handler == null) {
 			handler = new CaptureActivityHandler(this, decodeFormats,
 					characterSet);

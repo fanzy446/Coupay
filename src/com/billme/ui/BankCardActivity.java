@@ -45,7 +45,6 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bank_card);
-		MainService.allActivities.add(this);
 		addTitle("银行卡管理");
 
 		bankCardList = (ListView) findViewById(R.id.lv_bankcard_bankcards);
@@ -75,11 +74,15 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 						}
 						pd.setMessage("Adding..");
 						pd.show();
-						HashMap<String, String> map = new HashMap<String, String>();
-						map.put("bank", bank.getText().toString());
-						map.put("cardNumber", cardNumber.getText().toString());
-						Task task = new Task(Task.TASK_ADD_BANK_CARD, map);
-						MainService.newTask(task);
+//						HashMap<String, String> map = new HashMap<String, String>();
+//						map.put("bank", bank.getText().toString());
+//						map.put("cardNumber", cardNumber.getText().toString());
+//						Task task = new Task(Task.TASK_ADD_BANK_CARD, map);
+//						MainService.newTask(task);
+						HashMap<String, Object> map = new HashMap<String, Object>();
+						map.put("text", bank.getText().toString() + ":" + cardNumber.getText().toString());
+						al.add(map);
+						adapter.notifyDataSetChanged();
 						addBankCard.cancel();
 					}
 
@@ -100,19 +103,20 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 			}
 
 		});
+		bindAdapter();
 
-		if (MainService.getFuturePayment().getUser().getBankCardList().size() == 0) {
-			if (this.pd == null) {
-				this.pd = new ProgressDialog(this);
-			}
-			pd.setMessage("Loading..");
-			pd.show();
-
-			Task task = new Task(Task.TASK_GET_BANK_CARD);
-			MainService.newTask(task);
-		} else {
-			bindAdapter();
-		}
+//		if (MainService.getFuturePayment().getUser().getBankCardList().size() == 0) {
+//			if (this.pd == null) {
+//				this.pd = new ProgressDialog(this);
+//			}
+//			pd.setMessage("Loading..");
+//			pd.show();
+//
+//			Task task = new Task(Task.TASK_GET_BANK_CARD);
+//			MainService.newTask(task);
+//		} else {
+//			bindAdapter();
+//		}
 
 	}
 
@@ -170,8 +174,9 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 				hint = "No account binded";
 				pd.cancel();
 				Toast.makeText(this, hint, Toast.LENGTH_SHORT).show();
-				break;
+				
 			}
+			break;
 		case ADD_BANK_CARD_SUCCESS:
 			BankCard bc = (BankCard) param[1];
 			MainService.getFuturePayment().getUser().appentBankCardList(bc);

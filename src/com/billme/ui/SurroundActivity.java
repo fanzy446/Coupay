@@ -99,6 +99,11 @@ public class SurroundActivity extends BaseActivity implements BillMeActivity {
 		return true;
 	}
 
+	protected void onResume() {
+		super.onResume();
+		this.init();
+	}
+	
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub

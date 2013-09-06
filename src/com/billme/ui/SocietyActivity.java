@@ -1,7 +1,7 @@
 package com.billme.ui;
 
 import java.io.StringBufferInputStream;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import com.billme.logic.BillMeActivity;
 import com.billme.logic.MainService;
 import com.billme.util.FileUtil;
@@ -15,6 +15,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -29,7 +30,8 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 	public static final int REFRESH_FAILURE = -3;
 
 	private ImageButton jumpButton = null;
-	private ArrayList<CommentInfo> cl = new ArrayList<CommentInfo>();
+	private Button refreshButton = null;
+	private LinkedList<CommentInfo> cl = new LinkedList<CommentInfo>();
 	private MySocietyAdapter commentAdapter = null;
 	private ListView commentList = null;
 	private ProgressDialog pd = null;
@@ -40,7 +42,9 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 		setContentView(R.layout.activity_society);
 
 		jumpButton = (ImageButton) findViewById(R.id.ib_society_jump);
+		refreshButton =  (Button) findViewById(R.id.btn_society_refresh);
 		commentList = (ListView) findViewById(R.id.lv_society_list);
+
 
 		jumpButton.setOnClickListener(new ImageButton.OnClickListener() {
 
@@ -53,8 +57,24 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 			}
 
 		});
+		refreshButton.setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				if (pd == null) {
+					pd = new ProgressDialog(SocietyActivity.this);
+				}
+				pd.setMessage("Loading..");
+				pd.show();
+				Task task = new Task(Task.TASK_GET_MOMENTS, null);
+				MainService.newTask(task);
+			}
+
+		});
 
 		bindAdapter();
+		this.init();
 	}
 
 	@Override
@@ -84,7 +104,7 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		this.init();
+		
 	}
 
 	@Override
@@ -128,9 +148,9 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 
 		case GET_SECCUSS: {
 			pd.cancel();
-			ArrayList<CommentInfo> fresh = (ArrayList<CommentInfo>) param[1];
-			cl.addAll(fresh);
-			commentAdapter.notifyDataSetChanged();
+			LinkedList<CommentInfo> fresh = (LinkedList<CommentInfo>) param[1];
+			cl = fresh;
+			bindAdapter();
 			break;
 		}
 		case INITIAL_FAILURE: {
@@ -140,20 +160,20 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 
 		case INITIAL_SECCUSS: {
 			pd.cancel();
-			ArrayList<CommentInfo> fresh = (ArrayList<CommentInfo>) param[1];
+			LinkedList<CommentInfo> fresh = (LinkedList<CommentInfo>) param[1];
 			cl.addAll(fresh);
 			commentAdapter.notifyDataSetChanged();
 			break;
 		}
 		case REFRESH_SECCUSS: {
-			ArrayList<CommentInfo> fresh = (ArrayList<CommentInfo>) param[1];
+			LinkedList<CommentInfo> fresh = (LinkedList<CommentInfo>) param[1];
 			cl.addAll(0, fresh);
-			// 不确定，待改进
-			FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
-			Gson gson = new Gson();
-			String temp = gson.toJson(fresh.subList(0, 10));
-			StringBufferInputStream sbis = new StringBufferInputStream(temp);
-			fileUtil.writeToSDFromInputStream("", "society", sbis, true);
+//			// 不确定，待改进
+//			FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
+//			Gson gson = new Gson();
+//			String temp = gson.toJson(fresh.subList(0, 10));
+//			StringBufferInputStream sbis = new StringBufferInputStream(temp);
+//			fileUtil.writeToSDFromInputStream("", "society", sbis, true);
 			commentAdapter.notifyDataSetChanged();
 			break;
 		}
@@ -168,6 +188,19 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
+		
 		super.onPause();
 	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
+		Gson gson = new Gson();
+		String temp = gson.toJson(cl.subList(0, 10));
+		StringBufferInputStream sbis = new StringBufferInputStream(temp);
+		fileUtil.writeToSDFromInputStream("", "society", sbis, true);
+		super.onStop();
+	}
+	
 }

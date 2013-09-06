@@ -2,69 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/help_view"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <include 
+        layout="@layout/my_title"
+        android:layout_weight="0"/>
+    <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/result_minor_text" >
-
-        <QuickContactBadge
-            android:id="@+id/qcb_account_userIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
-
-        <TextView
-            android:id="@+id/tv_account_userName"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <Button 
+            android:id="@+id/btn_main_code"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/qcb_account_userIcon"
-            android:layout_toRightOf="@+id/qcb_account_userIcon"
-            android:text="@string/tv_imformation_userName"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/tv_account_acountBalance"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="二维码支付"/>
+        <Button 
+            android:id="@+id/btn_main_nfc"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/qcb_account_userIcon"
-            android:layout_alignLeft="@+id/tv_account_userName"
-            android:layout_alignRight="@+id/tv_account_userName"
-            android:layout_below="@+id/tv_account_userName"
-            android:text="@string/tv_imformation_acountBalance" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/help_view"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/btn_payment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_payment" />
-
-        <Button
-            android:id="@+id/btn_repayment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_repayment" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="NFC支付"/>
     </LinearLayout>
-
 </LinearLayout>

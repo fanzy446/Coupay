@@ -36,7 +36,6 @@ public class FriendActivity extends BaseActivity implements BillMeActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_friend);
-		MainService.allActivities.add(this);
 		addTitle("—°‘Ò∫√”—");
 
 		friendList = (ListView) findViewById(R.id.lv_friend_list);

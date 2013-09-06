@@ -112,7 +112,6 @@ public class ShareActivity extends BaseActivity implements BillMeActivity {
 			}
 
 		});
-		MainService.allActivities.add(this);
 	}
 
 	@Override
@@ -143,7 +142,6 @@ public class ShareActivity extends BaseActivity implements BillMeActivity {
 					.show();
 			Intent it = new Intent(this, MainActivity.class);
 			this.startActivity(it);
-			MainService.allActivities.remove(this);
 			this.finish();
 			break;
 		}
