@@ -66,19 +66,14 @@ public class ImageHelper {
 	 * @return
 	 */
 	public Drawable GetDrawableByUrl(String uri) {
-		Log.i("test","xiazai1");
 		FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
 		Drawable drawable;
 		InputStream is;
 		try {
 			is = client.getInputStreamFromUrl(uri);
-			Log.i("test","xiazai2");
 			fileUtil.writeToSDFromInputStream("cache", uri, is, false);
-			Log.i("test","xiaza3");
 			drawable = Drawable.createFromStream(is, "src");
-			Log.i("test","xiazai4");
 			is.close();
-			Log.i("test","xiazai5");
 			return drawable;
 
 		} catch (Exception e) {
@@ -96,10 +91,7 @@ public class ImageHelper {
 	 */
 	public Drawable loadDrawable(final String imageUrl,
 			final ImageView imageView) {
-		FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
-		if (fileUtil.isFileExists("cache", imageUrl)) {
-			return fileUtil.readImageFromSD("cache", imageUrl);
-		}
+		FileUtil fileUtil = new FileUtil(MainService.getUser().getName());		
 		if (imagesCache.containsKey(imageUrl)) {
 			// 从缓存中获取
 			SoftReference<Drawable> softReference = imagesCache.get(imageUrl);
@@ -107,6 +99,10 @@ public class ImageHelper {
 			if (null != drawable) {
 				return drawable;
 			}
+		}
+		if (fileUtil.isFileExists("cache", imageUrl)) {
+			//从sd卡中获取
+			return fileUtil.readImageFromSD("cache", imageUrl);
 		}
 		final Handler handler = new Handler() {
 			public void handleMessage(Message message) {
@@ -116,7 +112,6 @@ public class ImageHelper {
 		// 建立一个新的线程下载图片
 		new Thread() {
 			public void run() {
-				Log.i("test","xiazai0" + imageUrl);
 				Drawable drawable = getInstance().GetDrawableByUrl(imageUrl);
 				imagesCache
 						.put(imageUrl, new SoftReference<Drawable>(drawable));

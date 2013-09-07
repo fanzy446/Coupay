@@ -102,10 +102,8 @@ public class MySocietyAdapter extends BaseAdapter {
 			// viewHolder.end.setImageDrawable(context.getResources()
 			// .getDrawable((Integer) (map.get("end"))));
 			String str1 = (String) ci.getPhoto();
-			Log.i("test",str1);
 			if (str1.startsWith("http://")) {
 				// ¥”Õ¯¬Á∂¡»°
-				Log.i("test","hehe");
 				ImageHelper imageHelper = MainService.getImageHelper();
 				Drawable temp = imageHelper
 						.loadDrawable(str1, viewHolder.photo);

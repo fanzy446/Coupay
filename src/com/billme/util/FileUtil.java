@@ -84,11 +84,11 @@ public class FileUtil {
 	 */
 	public int getFileSize(String dir, String name) {
 		FileInputStream fis = null;
-		File file = new File(ROOTPATH + dir, name);
+		String n = name.replaceAll("/", "").replaceAll(":", "");
+		File file = new File(ROOTPATH + dir, n);
 		try {
 			if (file.exists()) {
 				fis = new FileInputStream(file);
-				Log.i("error", fis.available() + "");
 				return fis.available();
 			} else
 				return 0;
@@ -140,8 +140,9 @@ public class FileUtil {
 	 */
 	public File createSDFile(String dir, String name) {
 		File file = null;
+		String n = name.replaceAll("/", "").replaceAll(":", "");
 		try {
-			file = new File(ROOTPATH + dir, name);
+			file = new File(ROOTPATH + dir, n);
 			file.createNewFile();
 			if (!file.isFile()) {
 				return null;
@@ -206,7 +207,8 @@ public class FileUtil {
 	 * @return 是否存在文件
 	 */
 	public boolean isFileExists(String dir, String name) {
-		File file = new File(ROOTPATH + dir, name);
+		String n = name.replaceAll("/", "").replaceAll(":", "");
+		File file = new File(ROOTPATH + dir, n);
 		return file.exists();
 	}
 
@@ -238,7 +240,8 @@ public class FileUtil {
 	 * @return 是否为同一文件
 	 */
 	public boolean isSameFile(String dir, String name, int size) {
-		if (getFileSize(dir, name) == size) {
+		String n = name.replaceAll("/", "").replaceAll(":", "");
+		if (getFileSize(dir, n) == size) {
 			return true;
 		}
 		return false;
@@ -258,21 +261,24 @@ public class FileUtil {
 	 * @return 生成的文件
 	 */
 	public File writeToSDFromInputStream(String dir, String fileName,
-			InputStream input, boolean cover) {
-		File file = null;
+			InputStream input, boolean cover) {		
 		FileOutputStream output = null;
+		String fn = fileName.replaceAll("/", "").replaceAll(":", "");
+		File file = new File(ROOTPATH + dir, fileName);
 		try {
 			createSDDirectory(dir);
-			file = createSDFile(dir, fileName);
-			if (isFileExists(dir, fileName) && cover == false) {
+			if (isFileExists(dir, fn) && cover == false) {
+				output = new FileOutputStream(file, true);
 			} else {
+				file = createSDFile(dir, fn);
 				output = new FileOutputStream(file);
-				byte buffer[] = new byte[1024];
-				while (input.read(buffer) != -1) {
-					output.write(buffer);
-				}
-				output.flush();
+				
 			}
+			byte buffer[] = new byte[1024];
+			while (input.read(buffer) != -1) {
+				output.write(buffer);
+			}
+			output.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -295,7 +301,7 @@ public class FileUtil {
 	public String readFromSD(String path) {
 		StringBuffer sb = new StringBuffer();
 		String line = null;
-		File file = new File(path);
+		File file = new File(ROOTPATH + path);
 		BufferedReader buffer = null;
 		try {
 			buffer = new BufferedReader(new InputStreamReader(
@@ -327,7 +333,8 @@ public class FileUtil {
 	public String readFromSD(String dir, String name) {
 		StringBuffer sb = new StringBuffer();
 		String line = null;
-		File file = new File(ROOTPATH + dir, name);
+		String n = name.replaceAll("/", "").replaceAll(":", "");
+		File file = new File(ROOTPATH + dir, n);
 		BufferedReader buffer = null;
 		try {
 			buffer = new BufferedReader(new InputStreamReader(
@@ -389,7 +396,8 @@ public class FileUtil {
 	public Drawable readImageFromSD(String dir, String name) {
 		Drawable image = null;
 		FileInputStream inputStream = null;
-		File file = new File(ROOTPATH + dir, name);
+		String n = name.replaceAll("/", "").replaceAll(":", "");
+		File file = new File(ROOTPATH + dir, n);
 		if (isSDCardAvailable()) {
 			try {
 				inputStream = new FileInputStream(file);
@@ -413,7 +421,7 @@ public class FileUtil {
 	 * 
 	 * @param urlStr
 	 *            文件url地址
-	 * @param path
+	 * @param dir
 	 *            存储到sd目录路径
 	 * @param fileName
 	 *            存储的文件名
@@ -421,12 +429,13 @@ public class FileUtil {
 	 *            若文件已存在，是否覆盖
 	 * @return 下载是否成功
 	 */
-	public boolean downloadFile(String urlStr, String path, String fileName,
+	public boolean downloadFile(String urlStr, String dir, String fileName,
 			boolean cover) {
 		InputStream inputStream = null;
+		String n = fileName.replaceAll("/", "").replaceAll(":", "");
 		try {
 			inputStream = client.getInputStreamFromUrl(urlStr);
-			File file = writeToSDFromInputStream(path, fileName, inputStream,
+			File file = writeToSDFromInputStream(dir, n, inputStream,
 					cover);
 			if (file == null) {
 				return false;

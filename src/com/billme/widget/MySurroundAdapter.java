@@ -1,6 +1,7 @@
 package com.billme.widget;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -20,7 +21,7 @@ import com.futurePayment.model.ImageHelper;
 
 public class MySurroundAdapter extends BaseAdapter {
 	private Context context = null;
-	private ArrayList<EnterpriseBasicInfo> list;
+	private LinkedList<EnterpriseBasicInfo> list;
 	private LayoutInflater inflater = null;
 
 	/**
@@ -30,7 +31,7 @@ public class MySurroundAdapter extends BaseAdapter {
 	 * @param list list of EnterpriseBasicInfo
 	 */
 	public MySurroundAdapter(Context context,
-			ArrayList<EnterpriseBasicInfo> list) {
+			LinkedList<EnterpriseBasicInfo> list) {
 		super();
 		this.list = list;
 		this.context = context;
@@ -77,32 +78,14 @@ public class MySurroundAdapter extends BaseAdapter {
 			viewHolder.distance.setText(ebi.getDiatance() + "米内");
 			
 			String str = (String) ebi.getHead();
-				if (str.startsWith("http://")) {
-					// 从网络读取
-					ImageHelper imageHelper = MainService.getImageHelper();
-					Drawable temp = imageHelper.loadDrawable(str,
-							viewHolder.head);
-					if (temp != null)
-						viewHolder.head.setImageDrawable(temp);
-				} 
-				else {
-					// 从sd卡读取
-					FileUtil fu = new FileUtil(MainService.getUser().getName());
-					viewHolder.head.setImageDrawable(fu
-							.readImageFromSD(ebi.getHead()));
-				}
-//				viewHolder.text.setText((String) map.get("text"));
-//				viewHolder.end.setImageDrawable(context.getResources()
-//						.getDrawable((Integer) (map.get("end"))));				
-//				String str1 = (String) ci.getPhoto();
-//				if (str.startsWith("http://")) {
-//					// 从网络读取
-//					ImageHelper imageHelper = MainService.getImageHelper();
-//					Drawable temp = imageHelper.loadDrawable(str1,
-//							viewHolder.photo);
-//					if (temp != null)
-//						viewHolder.photo.setImageDrawable(temp);
-//				} 
+			if (str.startsWith("http://")) {
+				// 从网络读取
+				ImageHelper imageHelper = MainService.getImageHelper();
+				Drawable temp = imageHelper.loadDrawable(str,
+						viewHolder.head);
+				if (temp != null)
+					viewHolder.head.setImageDrawable(temp);
+			} 
 		}
 		return convertView;
 	}

@@ -45,6 +45,7 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bank_card);
+		addLayout();
 		addTitle("银行卡管理");
 
 		bankCardList = (ListView) findViewById(R.id.lv_bankcard_bankcards);

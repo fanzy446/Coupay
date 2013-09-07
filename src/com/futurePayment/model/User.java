@@ -1,15 +1,7 @@
 package com.futurePayment.model;
 
 import java.util.ArrayList;
-import java.sql.Date;
-import java.util.LinkedList;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import com.google.gson.Gson;
-
-import android.util.Log;
 
 /**
  * 
@@ -31,7 +23,7 @@ public class User {
 	private ArrayList<String> concernList = new ArrayList<String>();
 	private ArrayList<BankCard> bankCardList = new ArrayList<BankCard>();
 	private ArrayList<TradeRecord> tradeRecordList = new ArrayList<TradeRecord>();
-
+	
 	public User() {
 	}
 
@@ -219,8 +211,16 @@ public class User {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-
-	@Override
+	
+	public void addTradeRecordListAtEnd(ArrayList<TradeRecord> tradeRecordList){
+		this.tradeRecordList.addAll(tradeRecordList);
+	}
+	
+	public void addTradeRecordListAtBegin(ArrayList<TradeRecord> tradeRecordList){
+		this.tradeRecordList.addAll(0, tradeRecordList);
+		
+	}
+@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "{name:" + name + ",realName:" + realName + ",sex:" + sex
@@ -233,5 +233,4 @@ public class User {
 				+ bankCardList.toString() + ",tradeRecordList:"
 				+ tradeRecordList.toString() + "}";
 	}
-
 }

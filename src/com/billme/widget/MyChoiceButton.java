@@ -171,8 +171,10 @@ public class MyChoiceButton extends LinearLayout implements
 			default:
 				// intent.setClass(getContext(), AccountActivity.class);
 				break;
-			}
+			}		
 			 getContext().startActivity(intent);
+			 this.setVisibility(View.INVISIBLE);
+			isShown = false;
 			break;
 		case MotionEvent.ACTION_MOVE:
 			// this.setFocusable(false);
@@ -183,7 +185,7 @@ public class MyChoiceButton extends LinearLayout implements
 			ib[index].setImageResource(imgSource);
 			break;
 		}
-		return false;
+		return true;
 	}
 
 	private Handler handler = new Handler();

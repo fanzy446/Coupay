@@ -17,6 +17,7 @@ import com.futurePayment.http.MyResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import android.location.Location;
 import android.util.Log;
 
 /**
@@ -157,9 +158,9 @@ public class FuturePaymentSupport {
 	 *            the search condition
 	 * @return list of records 分页获取交易记录
 	 */
-	public LinkedList<TradeRecord> getBill(int page, int perPage,
+	public ArrayList<TradeRecord> getBill(int page, int perPage,
 			HashMap<String, Object> condition) throws PaymentException {
-		LinkedList<TradeRecord> records = null;
+		ArrayList<TradeRecord> records = null;
 		JSONObject jobj = new JSONObject();
 		try {
 			jobj.put("name", name);
@@ -170,15 +171,19 @@ public class FuturePaymentSupport {
 			MyResponse response = http.post(ServiceType.QUERY_BILL, jobj);
 			int resultCode = response.getResultCode();
 			if (resultCode != ResultCode.EMPTY) {
-				records = new LinkedList<TradeRecord>();
+				records = new ArrayList<TradeRecord>();
 				JSONArray array = response.getResultArray("tradeRecords");
 				for (int i = 0; i < array.length(); i++) {
 					JSONObject ob = array.getJSONObject(i);
 					TradeRecord record = new TradeRecord();
 					record.setSender(ob.getString("sender"));
 					record.setReceiver(ob.getString("receiver"));
+					record.setReceiverPic(ob.getString("reciverPic"));
 					record.setAmount(ob.getDouble("amount"));
 					record.setDate(ob.getString("date"));
+					record.setState(ob.getString("state"));
+					record.setType(ob.getInt("type"));
+					record.setTitle(ob.getString("title"));
 					records.add(record);
 				}
 			} else
@@ -189,6 +194,57 @@ public class FuturePaymentSupport {
 		}
 		return records;
 	}
+
+	public ArrayList<TradeRecord> getBill(String id, int flag)
+			throws PaymentException {
+		ArrayList<TradeRecord> records = null;
+		JSONObject jobj = new JSONObject();
+		try {
+			jobj.put("name", name);
+			jobj.put("recordId", id);
+			jobj.put("flag", flag);
+
+			MyResponse response = http.post(ServiceType.QUERY_BILL, jobj);
+			int resultCode = response.getResultCode();
+			if (resultCode != ResultCode.EMPTY) {
+				records = new ArrayList<TradeRecord>();
+				JSONArray array = response.getResultArray("tradeRecords");
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject ob = array.getJSONObject(i);
+					TradeRecord record = new TradeRecord();
+					record.setId(ob.getString("id"));
+					record.setSender(ob.getString("sender"));
+					record.setReceiver(ob.getString("receiver"));
+					record.setReceiverPic(ob.getString("reciverPic"));
+					record.setAmount(ob.getDouble("amount"));
+					record.setDate(ob.getString("date"));
+					record.setState(ob.getString("state"));
+					record.setType(ob.getInt("type"));
+					record.setTitle(ob.getString("title"));
+					records.add(record);
+				}
+			} else
+				throw new PaymentException(response.getResultCode());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return records;
+	}
+
+	// public String lookUpUserNameByCardNumber(String cardNumber){
+	// JSONObject jobj = new JSONObject();
+	// try {
+	// jobj.put("serviceType", ServiceType.LOOK_UP_NAME_BY_CARDNUMBER);
+	// MyResponse response = http.post(Uris.ACCOUNT_SERVICE, jobj);
+	// if(response.getResultCode() == ResultCode.SUCCESS){
+	// return response.getResponseBody().getString("userName");
+	// }
+	// } catch (JSONException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// return null;
+	// }
 
 	// public String lookUpUserNameByCardNumber(String cardNumber){
 	// JSONObject jobj = new JSONObject();
@@ -1057,17 +1113,21 @@ public class FuturePaymentSupport {
 	 * @return 周边商家
 	 * @throws PaymentException
 	 */
-	public ArrayList<EnterpriseBasicInfo> getSurroundingEnterprise()
+	public LinkedList<EnterpriseBasicInfo> getSurroundingEnterprise(Location location)
 			throws PaymentException {
-		ArrayList<EnterpriseBasicInfo> al = null;
+		LinkedList<EnterpriseBasicInfo> al = null;
+		JSONObject jo = new JSONObject();
 		Gson gson = new Gson();
 		try {
+			jo.put("longitude", location.getLongitude());
+			jo.put("latitude", location.getLatitude());
+			jo.put("accuracy", location.getAccuracy());
 			MyResponse response = http.post(
-					ServiceType.GET_SURROUNDIND_ENTERPRISE, null);
+					ServiceType.GET_SURROUNDIND_ENTERPRISE, jo);
 			if (response.getResultCode() == ResultCode.SUCCESS) {
-				JSONArray ja = response.getResultArray("enterprise");
+				JSONArray ja = response.getResultArray("sellers");
 				al = gson.fromJson(ja.toString(),
-						new TypeToken<ArrayList<EnterpriseBasicInfo>>() {
+						new TypeToken<LinkedList<EnterpriseBasicInfo>>() {
 						}.getType());
 			} else
 				throw new PaymentException(response.getResultCode());

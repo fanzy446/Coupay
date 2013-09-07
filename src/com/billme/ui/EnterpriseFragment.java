@@ -2,6 +2,7 @@ package com.billme.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import com.billme.logic.MainService;
 import com.billme.widget.MyListViewAdapter;
@@ -25,7 +26,7 @@ public class EnterpriseFragment extends Fragment{
 	private ListView list = null;
 	private ProgressDialog pd = null;
 	private MySurroundAdapter adapter = null;
-	private ArrayList<EnterpriseBasicInfo> el = new ArrayList<EnterpriseBasicInfo>();
+	private LinkedList<EnterpriseBasicInfo> el = new LinkedList<EnterpriseBasicInfo>();
 	
 	public void onCreate(Bundle savedInstanceState)
 	{

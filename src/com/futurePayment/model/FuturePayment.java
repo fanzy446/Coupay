@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import android.location.Location;
+
 import com.billme.util.FileUtil;
 
 /**
@@ -19,7 +21,6 @@ import com.billme.util.FileUtil;
 public class FuturePayment {
 	private static FuturePayment instance = null;
 	private User user = new User();
-	private FileUtil fileUtil = null;
 	private FuturePaymentSupport supporter;
 
 	/**
@@ -31,7 +32,7 @@ public class FuturePayment {
 	 */
 	private FuturePayment(String name) {
 		user.setName(name);
-		fileUtil = new FileUtil(name);
+		new FileUtil(name);
 		supporter = new FuturePaymentSupport(name);
 	}
 
@@ -109,7 +110,7 @@ public class FuturePayment {
 	 * @return list of records
 	 * 
 	 */
-	public LinkedList<TradeRecord> getBill(int page, int perpage,
+	public ArrayList<TradeRecord> getBill(int page, int perpage,
 			HashMap<String, Object> condition) throws PaymentException {
 		try {
 			return supporter.getBill(page, perpage, condition);
@@ -117,6 +118,23 @@ public class FuturePayment {
 			throw e;
 		}
 	}
+	
+	public ArrayList<TradeRecord> refreshBill(String id) throws PaymentException{
+		try{
+			return supporter.getBill(id,1);
+		} catch(PaymentException e){
+			throw e;
+		}
+	}
+	
+	public ArrayList<TradeRecord> loadBill(String id)throws PaymentException{
+		try{
+			return supporter.getBill(id,0);
+		}catch(PaymentException e){
+			throw e;
+		}
+	}
+
 
 	public User getUser() {
 		return user;
@@ -578,10 +596,10 @@ public class FuturePayment {
 	 * @return 周边商家基本信息
 	 * @throws PaymentException
 	 */
-	public ArrayList<EnterpriseBasicInfo> getSurroundingEnterprise()
+	public LinkedList<EnterpriseBasicInfo> getSurroundingEnterprise(Location location)
 			throws PaymentException {
 		try {
-			return supporter.getSurroundingEnterprise();
+			return supporter.getSurroundingEnterprise(location);
 		} catch (PaymentException e) {
 			throw e;
 		}

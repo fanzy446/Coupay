@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -22,6 +23,7 @@ import android.util.Log;
 
 import com.billme.ui.*;
 import com.billme.util.FileUtil;
+import com.billme.util.LocationUtil;
 
 import com.futurePayment.constant.Task;
 import com.futurePayment.model.*;
@@ -220,7 +222,7 @@ public class MainService extends Service implements Runnable {
 					// TODO 返回失败信息
 					ba.refresh(new Integer(SurroundActivity.GET_FAILURE), e);
 				} else {
-					ba.refresh(new Integer(SurroundActivity.GET_SECCUSS), null);
+					ba.refresh(new Integer(SurroundActivity.GET_SECCUSS), msg.obj);
 				}
 				break;
 			}
@@ -230,10 +232,10 @@ public class MainService extends Service implements Runnable {
 						.getActivityByName("SocietyActivity");
 				if (msg.obj != null)
 					ba.refresh(new Integer(SocietyActivity.INITIAL_SECCUSS),
-							(ArrayList<CommentInfo>) msg.obj);
+							(LinkedList<CommentInfo>) msg.obj);
 				else
 					ba.refresh(new Integer(SocietyActivity.INITIAL_FAILURE),
-							(ArrayList<CommentInfo>) msg.obj);
+							(LinkedList<CommentInfo>) msg.obj);
 				break;
 			}
 			case Task.INIT_SURROUND: {
@@ -263,6 +265,36 @@ public class MainService extends Service implements Runnable {
 				}
 				break;
 			}
+			case Task.TASK_GET_TRADING_REACORD: {
+				Log.i("error", "获取账单信息回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("TradeRecordActivity");
+				if (msg.obj instanceof PaymentException || msg.obj == null)
+					ba.refresh(TradeRecordActivity.GETRECORD_FAILED);
+				else
+					ba.refresh(TradeRecordActivity.INITRECORD_SECCUSS, msg.obj);
+			}
+				break;
+			case Task.TASK_REFRESH_TRADING_REACORD: {
+				Log.i("error", "下拉刷新账单信息");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("TradeRecordActivity");
+				if (msg.obj instanceof PaymentException || msg.obj == null)
+					ba.refresh(TradeRecordActivity.GETRECORD_FAILED);
+				else
+					ba.refresh(TradeRecordActivity.REFRESHRECORD_SECCUSS, msg.obj);
+			}
+				break;
+			case Task.TASK_LOAD_TRADING_REACORD: {
+				Log.i("error", "上拉加载账单信息");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("TradeRecordActivity");
+				if (msg.obj instanceof PaymentException || msg.obj == null)
+					ba.refresh(TradeRecordActivity.GETRECORD_FAILED);
+				else
+					ba.refresh(TradeRecordActivity.LOADRECORD_SECCUSS, msg.obj);
+			}
+			break;
 			default:
 				break;
 			}
@@ -419,7 +451,7 @@ public class MainService extends Service implements Runnable {
 			case Task.TASK_GET_AROUND_ENTERPRISE_INFO: {
 				Log.i("error", "获取周边商家信息");
 				try {
-					msg.obj = futurePayment.getSurroundingEnterprise();
+					msg.obj = futurePayment.getSurroundingEnterprise((Location)task.getTaskParam().get("location"));
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
@@ -430,10 +462,9 @@ public class MainService extends Service implements Runnable {
 				FileUtil fileUtil = new FileUtil(MainService.getUser()
 						.getName());
 				JSONArray ja = new JSONArray(fileUtil.readFromSD("society"));
-				Log.i("test", ja.toString());
 				Gson gson = new Gson();
-				ArrayList<CommentInfo> al = gson.fromJson(ja.toString(),
-						new TypeToken<ArrayList<CommentInfo>>() {
+				LinkedList<CommentInfo> al = gson.fromJson(ja.toString(),
+						new TypeToken<LinkedList<CommentInfo>>() {
 						}.getType());
 				msg.obj = al;
 				break;
@@ -444,9 +475,9 @@ public class MainService extends Service implements Runnable {
 						.getName());
 				JSONArray ja = new JSONArray(fileUtil.readFromSD("surround"));
 				Gson gson = new Gson();
-				ArrayList<EnterpriseBasicInfo> al = gson.fromJson(
+				LinkedList<EnterpriseBasicInfo> al = gson.fromJson(
 						ja.toString(),
-						new TypeToken<ArrayList<EnterpriseBasicInfo>>() {
+						new TypeToken<LinkedList<EnterpriseBasicInfo>>() {
 						}.getType());
 				msg.obj = al;
 				break;
@@ -460,6 +491,52 @@ public class MainService extends Service implements Runnable {
 				}
 				break;
 			}
+			case Task.TASK_GET_TRADING_REACORD: {
+				Log.i("error", "获取账单信息");
+				try {
+					ArrayList<TradeRecord> tempTr;
+					tempTr = MainService.getUser().getTradeRecordList();
+					if (tempTr == null) {
+						tempTr = futurePayment.getBill(1, 10, null);
+						MainService.getUser().setTradeRecordList(tempTr);
+					}
+					msg.obj = tempTr;
+				} catch (Exception e) {
+					msg.obj = e;
+				}
+			}
+				break;
+			case Task.TASK_REFRESH_TRADING_REACORD: {
+				Log.i("error", "下拉刷新账单信息");
+				try {
+					ArrayList<TradeRecord> tempTr;
+					String id = MainService.getUser().getTradeRecordList()
+							.get(0).getId();
+					tempTr = futurePayment.refreshBill(id);
+					MainService.getUser().addTradeRecordListAtBegin(tempTr);
+					msg.obj = tempTr;
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+			}
+				break;
+			case Task.TASK_LOAD_TRADING_REACORD: {
+				Log.i("error", "上拉加载账单信息");
+				try {
+					ArrayList<TradeRecord> tempTr;
+					String id = MainService
+							.getUser()
+							.getTradeRecordList()
+							.get(MainService.getUser().getTradeRecordList()
+									.size()).getId();
+					tempTr = futurePayment.loadBill(id);
+					MainService.getUser().addTradeRecordListAtEnd(tempTr);
+					msg.obj = tempTr;
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+			}
+				break;
 			default:
 				break;
 			}

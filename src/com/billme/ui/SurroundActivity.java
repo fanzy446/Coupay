@@ -2,9 +2,11 @@ package com.billme.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import com.billme.logic.BillMeActivity;
 import com.billme.logic.MainService;
+import com.billme.util.LocationUtil;
 import com.billme.widget.MyListViewAdapter;
 import com.billme.widget.MySocietyAdapter;
 import com.billme.widget.MySurroundAdapter;
@@ -17,6 +19,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,7 +36,7 @@ public class SurroundActivity extends BaseActivity implements BillMeActivity {
 
 	private ImageButton jumpButton = null;
 	private ImageButton refreshButton = null;
-	private ArrayList<EnterpriseBasicInfo> el = new ArrayList<EnterpriseBasicInfo>();
+	private LinkedList<EnterpriseBasicInfo> el = new LinkedList<EnterpriseBasicInfo>();
 	private MySurroundAdapter enterpriseAdapter = null;
 	private ListView enterpriseList = null;
 	private ProgressDialog pd = null;
@@ -68,7 +71,10 @@ public class SurroundActivity extends BaseActivity implements BillMeActivity {
 				}
 				pd.setMessage("Loading..");
 				pd.show();
-				Task task = new Task(Task.TASK_GET_AROUND_ENTERPRISE_INFO, null);
+				LocationUtil lu = new LocationUtil(SurroundActivity.this);
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				map.put("location", lu.getLocation());
+				Task task = new Task(Task.TASK_GET_AROUND_ENTERPRISE_INFO, map);
 				MainService.newTask(task);
 			}
 
@@ -99,10 +105,10 @@ public class SurroundActivity extends BaseActivity implements BillMeActivity {
 		return true;
 	}
 
-	protected void onResume() {
-		super.onResume();
-		this.init();
-	}
+//	protected void onResume() {
+//		super.onResume();
+//		this.init();
+//	}
 	
 	@Override
 	public void init() {
@@ -144,8 +150,8 @@ public class SurroundActivity extends BaseActivity implements BillMeActivity {
 		}
 		case GET_SECCUSS:{
 			pd.cancel();
-			el = (ArrayList<EnterpriseBasicInfo>) param[1];
-			enterpriseAdapter.notifyDataSetChanged();
+			el = (LinkedList<EnterpriseBasicInfo>) param[1];
+			bindAdapter();
 			break;
 		}
 			
@@ -156,7 +162,7 @@ public class SurroundActivity extends BaseActivity implements BillMeActivity {
 
 		case INITIAL_SECCUSS: {
 			pd.cancel();
-			ArrayList<EnterpriseBasicInfo> fresh = (ArrayList<EnterpriseBasicInfo>) param[1];
+			LinkedList<EnterpriseBasicInfo> fresh = (LinkedList<EnterpriseBasicInfo>) param[1];
 			el = fresh;
 			enterpriseAdapter.notifyDataSetChanged();
 			break;

@@ -75,7 +75,6 @@ public class MyListViewAdapter extends BaseAdapter {
 				.findViewById(R.id.tv_mylistitem_text);
 		viewHolder.end = (ImageView) convertView
 				.findViewById(R.id.iv_mylistitem_end);
-		Log.i("test", map.toString());
 		if (map != null) {
 			if (map.get("icon") instanceof String) {
 				String str = (String) map.get("icon");

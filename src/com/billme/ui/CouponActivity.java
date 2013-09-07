@@ -36,6 +36,7 @@ public class CouponActivity extends BaseActivity implements BillMeActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_coupon);
+		addLayout();
 
 		list = (ListView) findViewById(R.id.lv_coupon_list);
 		if (this.pd == null) {

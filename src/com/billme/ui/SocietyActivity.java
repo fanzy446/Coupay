@@ -1,5 +1,7 @@
 package com.billme.ui;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.LinkedList;
 import com.billme.logic.BillMeActivity;
@@ -13,6 +15,7 @@ import com.google.gson.Gson;
 import android.os.Bundle;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -54,6 +57,7 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 				Intent intent = new Intent();
 				intent.setClass(SocietyActivity.this, SurroundActivity.class);
 				startActivity(intent);
+				finish();
 			}
 
 		});
@@ -99,12 +103,6 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 		// // intent.setClass(SurroundActivity.this, );
 		// }
 		// });
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		
 	}
 
 	@Override
@@ -161,8 +159,8 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 		case INITIAL_SECCUSS: {
 			pd.cancel();
 			LinkedList<CommentInfo> fresh = (LinkedList<CommentInfo>) param[1];
-			cl.addAll(fresh);
-			commentAdapter.notifyDataSetChanged();
+			cl = fresh;
+			bindAdapter();
 			break;
 		}
 		case REFRESH_SECCUSS: {
@@ -184,23 +182,21 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 		}
 
 	}
-
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		
-		super.onPause();
+		FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
+		Gson gson = new Gson();
+		InputStream is = new ByteArrayInputStream(gson.toJson(cl).getBytes());
+		fileUtil.writeToSDFromInputStream("", "society", is, true);
+		super.onStop();
 	}
 
 	@Override
-	protected void onStop() {
+	protected void onResume() {
 		// TODO Auto-generated method stub
-		FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
-		Gson gson = new Gson();
-		String temp = gson.toJson(cl.subList(0, 10));
-		StringBufferInputStream sbis = new StringBufferInputStream(temp);
-		fileUtil.writeToSDFromInputStream("", "society", sbis, true);
-		super.onStop();
+		init();
+		super.onResume();
 	}
 	
 }

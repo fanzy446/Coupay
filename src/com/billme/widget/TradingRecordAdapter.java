@@ -9,19 +9,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.billme.ui.R;
 import com.billme.widget.TradingRecordListView.PinnedHeaderAdapter;
+import com.futurePayment.model.ImageHelper;
+import com.futurePayment.model.TradeRecord;
 
 public class TradingRecordAdapter extends BaseExpandableListAdapter implements
 		PinnedHeaderAdapter {
 
 	private ArrayList<String[]> group;
 	private ArrayList<ArrayList<String[]>> item;
+	private ArrayList<TradeRecord> trList;
 	// private Context context;
 	private LayoutInflater inflater;
 	private TradingRecordListView listView;
+	private ImageHelper ih = ImageHelper.getInstance();
 
 	public TradingRecordAdapter(Context context, ArrayList<String[]> group,
 			ArrayList<ArrayList<String[]>> item, TradingRecordListView listView) {
@@ -30,6 +35,55 @@ public class TradingRecordAdapter extends BaseExpandableListAdapter implements
 		this.group = group;
 		this.item = item;
 		this.listView = listView;
+	}
+
+	public TradingRecordAdapter(Context context, ArrayList<TradeRecord> tr,
+			TradingRecordListView listView) {
+		inflater = LayoutInflater.from(context);
+		this.listView = listView;
+		this.trList = tr;
+
+		ArrayList<String[]> tempGroup = new ArrayList<String[]>();
+		ArrayList<ArrayList<String[]>> tempItem = new ArrayList<ArrayList<String[]>>();
+		ArrayList<String[]> temp = new ArrayList<String[]>();
+		ArrayList<TradeRecord> tempTradeRecordList = tr;
+		double income = 0;
+		double outcome = 0;
+		String currMounth = tempTradeRecordList.get(0).getMounth();
+		for (int i = 0; i < tempTradeRecordList.size(); ++i) {
+			TradeRecord tempTradeRecord = tempTradeRecordList.get(i);
+
+			String[] tempStr;
+			if (currMounth != tempTradeRecord.getMounth()) {
+				tempItem.add(temp);
+
+				tempStr = new String[] { currMounth, String.valueOf(income),
+						String.valueOf(outcome) };
+				tempGroup.add(tempStr);
+
+				income = 0;
+				outcome = 0;
+				currMounth = tempTradeRecord.getMounth();
+				temp = new ArrayList<String[]>();
+			}
+
+			tempStr = new String[] { tempTradeRecord.getTitle(),
+					tempTradeRecord.getDate(),
+					String.valueOf(tempTradeRecord.getAmount()),
+					tempTradeRecord.getState(),
+					tempTradeRecord.getReceiverPic(),
+					tempTradeRecord.getReceiver() };
+			temp.add(tempStr);
+
+			if (tempTradeRecord.getType() == 1) {
+				income += tempTradeRecord.getAmount();
+			} else if (tempTradeRecord.getType() == -1) {
+				outcome += tempTradeRecord.getAmount();
+			}
+		}
+
+		this.group = tempGroup;
+		this.item = tempItem;
 	}
 
 	@Override
@@ -58,11 +112,17 @@ public class TradingRecordAdapter extends BaseExpandableListAdapter implements
 				.findViewById(R.id.tv_TRLVitem_trading_price);
 		TextView tradeState = (TextView) view
 				.findViewById(R.id.tv_TRLVitem_trading_state);
+		ImageView pic = (ImageView) view
+				.findViewById(R.id.iv_TRLVitem_enterprise_pic);
+		TextView reciver = (TextView) view
+				.findViewById(R.id.tv_TRLVitem_enterprise_name);
 		String[] tempItem = item.get(groupPosition).get(childPosition);
 		recordName.setText(tempItem[0]);
 		tradeDate.setText(tempItem[1]);
 		tradePrice.setText(tempItem[2]);
 		tradeState.setText(tempItem[3]);
+		ih.loadDrawable(tempItem[4], pic);
+		reciver.setText(tempItem[5]);
 		// recordName.setOnClickListener(new ChildOnClickListener());
 		// tradeDate.setOnClickListener(new ChildOnClickListener());
 		return view;
@@ -150,6 +210,173 @@ public class TradingRecordAdapter extends BaseExpandableListAdapter implements
 					.findViewById(R.id.tv_TRLVgroup_outcome_amount_label))
 					.setText(str[2]);
 		}
+	}
+
+	public void refreshRecord(ArrayList<TradeRecord> tr) {
+		this.trList.addAll(0, tr);
+
+		ArrayList<String[]> tempGroup = new ArrayList<String[]>();
+		ArrayList<ArrayList<String[]>> tempItem = new ArrayList<ArrayList<String[]>>();
+		ArrayList<String[]> temp = new ArrayList<String[]>();
+		ArrayList<TradeRecord> tempTradeRecordList = tr;
+		double income = 0;
+		double outcome = 0;
+		String currMounth = tempTradeRecordList.get(0).getMounth();
+		for (int i = 0; i < tempTradeRecordList.size(); ++i) {
+			TradeRecord tempTradeRecord = tempTradeRecordList.get(i);
+
+			String[] tempStr;
+			if (currMounth != tempTradeRecord.getMounth()) {
+				tempItem.add(temp);
+
+				tempStr = new String[] { currMounth, String.valueOf(income),
+						String.valueOf(outcome) };
+				tempGroup.add(tempStr);
+
+				income = 0;
+				outcome = 0;
+				currMounth = tempTradeRecord.getMounth();
+				temp = new ArrayList<String[]>();
+			}
+
+			tempStr = new String[] { tempTradeRecord.getTitle(),
+					tempTradeRecord.getDate(),
+					String.valueOf(tempTradeRecord.getAmount()),
+					tempTradeRecord.getState(),
+					tempTradeRecord.getReceiverPic(),
+					tempTradeRecord.getReceiver() };
+			temp.add(tempStr);
+
+			if (tempTradeRecord.getType() == 1) {
+				income += tempTradeRecord.getAmount();
+			} else if (tempTradeRecord.getType() == -1) {
+				outcome += tempTradeRecord.getAmount();
+			}
+		}
+
+		this.group.addAll(0, tempGroup);
+		this.item.addAll(0, tempItem);
+	}
+
+	public void loadRecord(ArrayList<TradeRecord> tr) {
+		this.trList.addAll(tr);
+
+		ArrayList<String[]> tempGroup = new ArrayList<String[]>();
+		ArrayList<ArrayList<String[]>> tempItem = new ArrayList<ArrayList<String[]>>();
+		ArrayList<String[]> temp = new ArrayList<String[]>();
+		ArrayList<TradeRecord> tempTradeRecordList = tr;
+		double income = 0;
+		double outcome = 0;
+		String currMounth = tempTradeRecordList.get(0).getMounth();
+		for (int i = 0; i < tempTradeRecordList.size(); ++i) {
+			TradeRecord tempTradeRecord = tempTradeRecordList.get(i);
+
+			String[] tempStr;
+			if (currMounth != tempTradeRecord.getMounth()) {
+				tempItem.add(temp);
+
+				tempStr = new String[] { currMounth, String.valueOf(income),
+						String.valueOf(outcome) };
+				tempGroup.add(tempStr);
+
+				income = 0;
+				outcome = 0;
+				currMounth = tempTradeRecord.getMounth();
+				temp = new ArrayList<String[]>();
+			}
+
+			tempStr = new String[] { tempTradeRecord.getTitle(),
+					tempTradeRecord.getDate(),
+					String.valueOf(tempTradeRecord.getAmount()),
+					tempTradeRecord.getState(),
+					tempTradeRecord.getReceiverPic(),
+					tempTradeRecord.getReceiver() };
+			temp.add(tempStr);
+
+			if (tempTradeRecord.getType() == 1) {
+				income += tempTradeRecord.getAmount();
+			} else if (tempTradeRecord.getType() == -1) {
+				outcome += tempTradeRecord.getAmount();
+			}
+		}
+
+		this.group.addAll(tempGroup);
+		this.item.addAll(tempItem);
+	}
+
+	public void sort() {
+		TradeRecord tempTR;
+		for (int i = 0; i < this.trList.size(); ++i) {
+			for (int j = i; j < this.trList.size() - 1; ++j) {
+				int year1 = Integer.valueOf(trList.get(j).getYear());
+				int year2 = Integer.valueOf(trList.get(j + 1).getYear());
+				if (year1 > year2) {
+					tempTR = this.trList.get(j);
+					this.trList.set(j, trList.get(j + 1));
+					this.trList.set(j + 1, tempTR);
+				} else {
+					int mounth1 = Integer.valueOf(trList.get(j).getMounth());
+					int mounth2 = Integer
+							.valueOf(trList.get(j + 1).getMounth());
+					if (mounth1 > mounth2) {
+						tempTR = this.trList.get(j);
+						this.trList.set(j, trList.get(j + 1));
+						this.trList.set(j + 1, tempTR);
+					} else {
+						int day1 = Integer.valueOf(trList.get(j).getDay());
+						int day2 = Integer.valueOf(trList.get(j + 1).getDay());
+						if (day1 > day2) {
+							tempTR = this.trList.get(j);
+							this.trList.set(j, trList.get(j + 1));
+							this.trList.set(j + 1, tempTR);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void setTradeRecored(ArrayList<TradeRecord> tr) {
+		ArrayList<String[]> tempGroup = new ArrayList<String[]>();
+		ArrayList<ArrayList<String[]>> tempItem = new ArrayList<ArrayList<String[]>>();
+		ArrayList<String[]> temp = new ArrayList<String[]>();
+		ArrayList<TradeRecord> tempTradeRecordList = tr;
+		double income = 0;
+		double outcome = 0;
+		String currMounth = tempTradeRecordList.get(0).getMounth();
+		for (int i = 0; i < tempTradeRecordList.size(); ++i) {
+			TradeRecord tempTradeRecord = tempTradeRecordList.get(i);
+
+			String[] tempStr;
+			if (currMounth != tempTradeRecord.getMounth()) {
+				tempItem.add(temp);
+
+				tempStr = new String[] { currMounth, String.valueOf(income),
+						String.valueOf(outcome) };
+				tempGroup.add(tempStr);
+
+				income = 0;
+				outcome = 0;
+				currMounth = tempTradeRecord.getMounth();
+				temp = new ArrayList<String[]>();
+			}
+
+			tempStr = new String[] { tempTradeRecord.getTitle(),
+					tempTradeRecord.getDate(),
+					String.valueOf(tempTradeRecord.getAmount()),
+					tempTradeRecord.getState(),
+					tempTradeRecord.getReceiverPic(),
+					tempTradeRecord.getReceiver() };
+			temp.add(tempStr);
+
+			if (tempTradeRecord.getType() == 1) {
+				income += tempTradeRecord.getAmount();
+			} else if (tempTradeRecord.getType() == -1) {
+				outcome += tempTradeRecord.getAmount();
+			}
+		}
+		this.group = tempGroup;
+		this.item = tempItem;
 	}
 
 	class ChildOnClickListener implements OnClickListener {

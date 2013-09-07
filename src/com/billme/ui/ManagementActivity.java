@@ -30,6 +30,7 @@ public class ManagementActivity extends BaseActivity implements BillMeActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_management);
+		addLayout();
 
 		
 		head = (ImageButton) findViewById(R.id.ib_management_head);

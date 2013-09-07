@@ -26,7 +26,6 @@ public class BaseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		MainService.allActivities.add(this);
-		addLayout();
 		super.onCreate(savedInstanceState);
 
 	}
@@ -64,15 +63,26 @@ public class BaseActivity extends Activity {
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public boolean dispatchTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-		if(event.getAction() == MotionEvent.ACTION_DOWN)
-		Log.i("test","hahaniam");
-		if (myLayout != null && myLayout.isShown())
-			return myLayout.onTouchEvent(event);
+		boolean b = false;
 		if(gd != null)
-			return gd.onTouchEvent(event);
-		return super.onTouchEvent(event);
+		{
+			if (myLayout != null && myLayout.isShown())
+			{
+				Log.i("error","myLayout");
+				myLayout.onTouchEvent(event);
+				b = true;
+			}
+			else
+			{
+				Log.i("error","gd");
+				gd.onTouchEvent(event);
+			}		
+		}				
+		if(b)
+			return b;
+		return super.dispatchTouchEvent(event);
 	}
 
 	@Override
