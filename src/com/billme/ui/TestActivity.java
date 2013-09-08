@@ -9,8 +9,8 @@ import com.billme.widget.TradingRecordAdapter;
 import com.billme.widget.TradingRecordListView;
 import com.billme.widget.TradingRecordListView.IXListViewListener;
 
-public class TestActivity extends BaseActivity implements
-		BillMeActivity, IXListViewListener {
+public class TestActivity extends BaseActivity implements BillMeActivity,
+		IXListViewListener {
 	TradingRecordListView expandableListView;
 
 	@Override

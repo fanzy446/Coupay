@@ -65,6 +65,7 @@ public class Transfer {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "{sender:" + sender + ",receiver:" + receiver + ",amount:"
-		+ amount + ",bank:" + bank + ",cardNumber:" + cardNumber + ",method:" + method + "}";
+				+ amount + ",bank:" + bank + ",cardNumber:" + cardNumber
+				+ ",method:" + method + "}";
 	}
 }

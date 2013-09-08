@@ -261,7 +261,7 @@ public class FileUtil {
 	 * @return 生成的文件
 	 */
 	public File writeToSDFromInputStream(String dir, String fileName,
-			InputStream input, boolean cover) {		
+			InputStream input, boolean cover) {
 		FileOutputStream output = null;
 		String fn = fileName.replaceAll("/", "").replaceAll(":", "");
 		File file = new File(ROOTPATH + dir, fileName);
@@ -272,7 +272,7 @@ public class FileUtil {
 			} else {
 				file = createSDFile(dir, fn);
 				output = new FileOutputStream(file);
-				
+
 			}
 			byte buffer[] = new byte[1024];
 			while (input.read(buffer) != -1) {
@@ -435,8 +435,7 @@ public class FileUtil {
 		String n = fileName.replaceAll("/", "").replaceAll(":", "");
 		try {
 			inputStream = client.getInputStreamFromUrl(urlStr);
-			File file = writeToSDFromInputStream(dir, n, inputStream,
-					cover);
+			File file = writeToSDFromInputStream(dir, n, inputStream, cover);
 			if (file == null) {
 				return false;
 			}

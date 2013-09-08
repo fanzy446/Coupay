@@ -74,30 +74,32 @@ public class SurroundActivity extends BaseActivity implements BillMeActivity {
 				LocationUtil lu = new LocationUtil(SurroundActivity.this);
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("location", lu.getLocation());
-				Task task = new Task(Task.TASK_GET_AROUND_ENTERPRISE_INFO, map);
+				Task task = new Task(Task.TASK_GET_AROUND_ENTERPRISES, map);
 				MainService.newTask(task);
 			}
 
 		});
 		bindAdapter();
-		
+
 	}
 
 	private void bindAdapter() {
 		enterpriseAdapter = new MySurroundAdapter(this, el);
 		enterpriseList.setAdapter(enterpriseAdapter);
-		enterpriseList.setOnItemClickListener(new ListView.OnItemClickListener() {
+		enterpriseList
+				.setOnItemClickListener(new ListView.OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
-				// 选中某个商家
-//				Intent intent = new Intent();
-//				intent.setClass(SurroundActivity.this, );
-			}
-		});
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						// TODO Auto-generated method stub
+						// 选中某个商家
+						// Intent intent = new Intent();
+						// intent.setClass(SurroundActivity.this, );
+					}
+				});
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -105,11 +107,11 @@ public class SurroundActivity extends BaseActivity implements BillMeActivity {
 		return true;
 	}
 
-//	protected void onResume() {
-//		super.onResume();
-//		this.init();
-//	}
-	
+	// protected void onResume() {
+	// super.onResume();
+	// this.init();
+	// }
+
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
@@ -126,7 +128,7 @@ public class SurroundActivity extends BaseActivity implements BillMeActivity {
 	public void refresh(Object... param) {
 		// TODO Auto-generated method stub
 		switch (((Integer) param[0]).intValue()) {
-		case GET_FAILURE:{
+		case GET_FAILURE: {
 			// int state = ((PaymentException) param[1]).getResultCode();
 			// String hint = null;
 			// switch (state) {
@@ -148,13 +150,13 @@ public class SurroundActivity extends BaseActivity implements BillMeActivity {
 					.show();
 			break;
 		}
-		case GET_SECCUSS:{
+		case GET_SECCUSS: {
 			pd.cancel();
 			el = (LinkedList<EnterpriseBasicInfo>) param[1];
 			bindAdapter();
 			break;
 		}
-			
+
 		case INITIAL_FAILURE: {
 			pd.cancel();
 			break;

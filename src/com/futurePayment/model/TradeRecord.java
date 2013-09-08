@@ -19,7 +19,7 @@ public class TradeRecord {
 	private String state;
 	private int type;
 	private String title;
-	
+
 	public String getMounth() {
 		return mounth;
 	}
@@ -82,7 +82,7 @@ public class TradeRecord {
 
 	public void setDate(String date) {
 		this.date = date;
-		String []temp = date.split("/");
+		String[] temp = date.split("/");
 		setYear(temp[0]);
 		setMounth(temp[1]);
 		setDay(temp[2]);
@@ -127,6 +127,5 @@ public class TradeRecord {
 	public void setReceiverPic(String receiverPic) {
 		this.receiverPic = receiverPic;
 	}
-	
-	
+
 }

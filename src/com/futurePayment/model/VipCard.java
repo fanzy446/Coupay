@@ -25,5 +25,5 @@ public class VipCard {
 		// TODO Auto-generated method stub
 		return "{enterpriseName:" + enterpriseName + ",grade:" + grade + "}";
 	}
-	
+
 }

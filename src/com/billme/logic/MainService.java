@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.json.JSONArray;
 
@@ -21,6 +22,9 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
+import com.baidupush.Utils;
 import com.billme.ui.*;
 import com.billme.util.FileUtil;
 import com.billme.util.LocationUtil;
@@ -62,17 +66,17 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "登陆回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("LoginActivity");
-				 if (msg.obj instanceof PaymentException) {
-				 PaymentException e = (PaymentException) msg.obj;
-				 // TODO 返回失败信息
-				 ba.refresh(new Integer(LoginActivity.LOGIN_FAILURE), e);
-				 } else if (msg.obj instanceof BasicInformation) {
-				 BasicInformation bi = (BasicInformation) msg.obj;
-				 futurePayment.getUser().setName(bi.getName());
-				 futurePayment.getUser().setBalance(bi.getBalance());
-				 futurePayment.getUser().setGrade(bi.getGrade());
-				ba.refresh(new Integer(LoginActivity.LOGIN_SECCUSS));
-				 }
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO 返回失败信息
+					ba.refresh(new Integer(LoginActivity.LOGIN_FAILURE), e);
+				} else if (msg.obj instanceof BasicInformation) {
+					BasicInformation bi = (BasicInformation) msg.obj;
+					futurePayment.getUser().setName(bi.getName());
+					futurePayment.getUser().setBalance(bi.getBalance());
+					futurePayment.getUser().setGrade(bi.getGrade());
+					ba.refresh(new Integer(LoginActivity.LOGIN_SECCUSS));
+				}
 			}
 				break;
 			case Task.TASK_GET_USER_INFO: {
@@ -118,9 +122,9 @@ public class MainService extends Service implements Runnable {
 					// TODO 返回失败信息
 					ba.refresh(new Integer(
 							BankCardActivity.GET_BANK_CARD_FAILURE), e);
-				} else if (msg.obj instanceof ArrayList<?>) {
+				} else if (msg.obj instanceof LinkedList<?>) {
 					futurePayment.getUser().setBankCardList(
-							(ArrayList<BankCard>) msg.obj);
+							(LinkedList<BankCard>) msg.obj);
 					ba.refresh(new Integer(
 							BankCardActivity.GET_BANK_CARD_SECCUSS));
 				}
@@ -135,7 +139,7 @@ public class MainService extends Service implements Runnable {
 					// TODO 返回失败信息
 					ba.refresh(new Integer(
 							BankCardActivity.ADD_BANK_CARD_FAILURE), e);
-				} else if (msg.obj instanceof ArrayList<?>) {
+				} else if (msg.obj instanceof BankCard) {
 					ba.refresh(new Integer(
 							BankCardActivity.ADD_BANK_CARD_SUCCESS), msg.obj);
 				}
@@ -144,16 +148,16 @@ public class MainService extends Service implements Runnable {
 			case Task.TASK_GET_FRIENDS: {
 				Log.i("error", "查询好友列表回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
-						.getActivityByName("FriendActivity");
+						.getActivityByName("RelationActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
-					ba.refresh(new Integer(FriendActivity.GET_FRIEND_SUCCESS),
-							e);
-				} else if (msg.obj instanceof ArrayList<?>) {
+					ba.refresh(
+							new Integer(RelationActivity.GET_FRIEND_FAILURE), e);
+				} else if (msg.obj instanceof LinkedList<?>) {
 					futurePayment.getUser().setFriendList(
-							(ArrayList<Friend>) msg.obj);
-					ba.refresh(new Integer(FriendActivity.GET_FRIEND_FAILURE));
+							(LinkedList<Friend>) msg.obj);
+					ba.refresh(new Integer(RelationActivity.GET_FRIEND_SUCCESS));
 				}
 				break;
 			}
@@ -209,11 +213,12 @@ public class MainService extends Service implements Runnable {
 					// TODO 返回失败信息
 					ba.refresh(new Integer(SocietyActivity.GET_FAILURE), e);
 				} else {
-					ba.refresh(new Integer(SocietyActivity.GET_SECCUSS), (LinkedList<CommentInfo>) msg.obj);
+					ba.refresh(new Integer(SocietyActivity.GET_SECCUSS),
+							msg.obj);
 				}
 				break;
 			}
-			case Task.TASK_GET_AROUND_ENTERPRISE_INFO: {
+			case Task.TASK_GET_AROUND_ENTERPRISES: {
 				Log.i("error", "获取周边商家信息回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("SurroundActivity");
@@ -222,7 +227,8 @@ public class MainService extends Service implements Runnable {
 					// TODO 返回失败信息
 					ba.refresh(new Integer(SurroundActivity.GET_FAILURE), e);
 				} else {
-					ba.refresh(new Integer(SurroundActivity.GET_SECCUSS), msg.obj);
+					ba.refresh(new Integer(SurroundActivity.GET_SECCUSS),
+							msg.obj);
 				}
 				break;
 			}
@@ -250,18 +256,18 @@ public class MainService extends Service implements Runnable {
 							(ArrayList<EnterpriseBasicInfo>) msg.obj);
 				break;
 			}
-			case Task.TASK_GET_COUPON:{
+			case Task.TASK_GET_COUPON: {
 				Log.i("error", "获得优惠券列表回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("CouponActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
-					ba.refresh(new Integer(
-							CouponActivity.GET_COUPON_FAILURE), e);
-				} else if (msg.obj instanceof ArrayList<?>) {
-					ba.refresh(new Integer(
-							CouponActivity.GET_COUPON_SECCUSS), msg.obj);
+					ba.refresh(new Integer(CouponActivity.GET_COUPON_FAILURE),
+							e);
+				} else if (msg.obj instanceof LinkedList<?>) {
+					ba.refresh(new Integer(CouponActivity.GET_COUPON_SECCUSS),
+							msg.obj);
 				}
 				break;
 			}
@@ -282,7 +288,8 @@ public class MainService extends Service implements Runnable {
 				if (msg.obj instanceof PaymentException || msg.obj == null)
 					ba.refresh(TradeRecordActivity.GETRECORD_FAILED);
 				else
-					ba.refresh(TradeRecordActivity.REFRESHRECORD_SECCUSS, msg.obj);
+					ba.refresh(TradeRecordActivity.REFRESHRECORD_SECCUSS,
+							msg.obj);
 			}
 				break;
 			case Task.TASK_LOAD_TRADING_REACORD: {
@@ -294,7 +301,90 @@ public class MainService extends Service implements Runnable {
 				else
 					ba.refresh(TradeRecordActivity.LOADRECORD_SECCUSS, msg.obj);
 			}
-			break;
+				break;
+			case Task.TASK_GET_ENTERPRISES: {
+				Log.i("error", "得到关注商家列表回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("RelationActivity");
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO 返回失败信息
+					ba.refresh(new Integer(
+							RelationActivity.GET_ENTERPRISE_FAILURE), e);
+				} else if (msg.obj instanceof LinkedList<?>) {
+					futurePayment.getUser().setConcernList(
+							(LinkedList<EnterpriseBasicInfo>) msg.obj);
+					ba.refresh(new Integer(
+							RelationActivity.GET_ENTERPRISE_SUCCESS));
+				}
+				break;
+			}
+			case Task.TASK_SEARCH_ENTERPRISE: {
+				Log.i("error", "搜索商家回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("SearchEnterpriseActivity");
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO 返回失败信息
+					ba.refresh(
+							new Integer(
+									SearchEnterpriseActivity.SEARCH_ENTERPRISE_FAILURE),
+							e);
+				} else if (msg.obj instanceof LinkedList<?>) {
+					ba.refresh(
+							new Integer(
+									SearchEnterpriseActivity.SEARCH_ENTERPRISE_SUCCESS),
+							msg.obj);
+				}
+				break;
+			}
+			case Task.TASK_SEARCH_FRIEND: {
+				Log.i("error", "搜索好友回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("SearchFriendActivity");
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO 返回失败信息
+					ba.refresh(new Integer(
+							SearchFriendActivity.SEARCH_FRIEND_FAILURE), e);
+				} else if (msg.obj instanceof LinkedList<?>) {
+					ba.refresh(new Integer(
+							SearchFriendActivity.SEARCH_FRIEND_SUCCESS),
+							msg.obj);
+				}
+				break;
+			}
+			case Task.TASK_FOLLOW_ENTERPRISE: {
+				Log.i("error", "关注商家回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("SearchEnterpriseActivity");
+				if (msg.obj instanceof PaymentException) {
+					// TODO 返回失败信息
+					ba.refresh(
+							new Integer(
+									SearchEnterpriseActivity.ATTENT_ENTERPRISE_FAILURE),
+							msg.obj);
+				} else {
+					ba.refresh(new Integer(
+							SearchEnterpriseActivity.ATTENT_ENTERPRISE_SUCCESS));
+				}
+				break;
+			}
+			case Task.TASK_ADD_FRIEND: {
+				Log.i("error", "添加好友回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("SearchFriendActivity");
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO 返回失败信息
+					ba.refresh(new Integer(
+							SearchFriendActivity.ADD_FRIEND_FAILURE), e);
+				} else {
+					ba.refresh(new Integer(
+							SearchFriendActivity.ADD_FRIEND_SUCCESS));
+				}
+				break;
+			}
 			default:
 				break;
 			}
@@ -308,17 +398,16 @@ public class MainService extends Service implements Runnable {
 		try {
 			switch (task.getTaskId()) {
 			case Task.TASK_USER_LOGIN: {
-				 Log.i("error", "登陆中");
-				 String userName = (String)
-				 task.getTaskParam().get("userName");
-				 String userPassword = (String) task.getTaskParam().get(
-				 "userPassword");
-				 futurePayment = FuturePayment.getInstance(userName);
-				 try {
-				 msg.obj = futurePayment.loginUser(userPassword);
-				 } catch (PaymentException e) {
-				 msg.obj = e;
-				 }
+				Log.i("error", "登陆中");
+				String userName = (String) task.getTaskParam().get("userName");
+				String userPassword = (String) task.getTaskParam().get(
+						"userPassword");
+				futurePayment = FuturePayment.getInstance(userName);
+				try {
+					msg.obj = futurePayment.loginUser(userPassword);
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
 				break;
 			}
 			case Task.TASK_GET_USER_INFO: {
@@ -372,11 +461,13 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "添加银行卡");
 				try {
 					BankCard bc = new BankCard();
-					bc.setBankName((String) task.getTaskParam().get("bank"));
-					bc.setCardNumber((String) task.getTaskParam().get(
-							"cardNumber"));
+					String cardNumber = (String) task.getTaskParam().get(
+							"cardNumber");
+					String bank = futurePayment.bindAccount(cardNumber,
+							(String) task.getTaskParam().get("password"));
+					bc.setBankName(bank);
+					bc.setCardNumber(cardNumber);
 					msg.obj = bc;
-					futurePayment.bindAccount(bc);
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
@@ -389,6 +480,7 @@ public class MainService extends Service implements Runnable {
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
+				break;
 			}
 			case Task.TASK_SINGLE_USER_PAY: {
 				Log.i("error", "个人支付");
@@ -448,10 +540,12 @@ public class MainService extends Service implements Runnable {
 				}
 				break;
 			}
-			case Task.TASK_GET_AROUND_ENTERPRISE_INFO: {
+			case Task.TASK_GET_AROUND_ENTERPRISES: {
 				Log.i("error", "获取周边商家信息");
 				try {
-					msg.obj = futurePayment.getSurroundingEnterprise((Location)task.getTaskParam().get("location"));
+					msg.obj = futurePayment
+							.getSurroundingEnterprise((Location) task
+									.getTaskParam().get("location"));
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
@@ -482,7 +576,7 @@ public class MainService extends Service implements Runnable {
 				msg.obj = al;
 				break;
 			}
-			case Task.TASK_GET_COUPON:{
+			case Task.TASK_GET_COUPON: {
 				Log.i("error", "获取优惠券列表");
 				try {
 					msg.obj = futurePayment.queryCoupon();
@@ -537,6 +631,55 @@ public class MainService extends Service implements Runnable {
 				}
 			}
 				break;
+			case Task.TASK_GET_ENTERPRISES: {
+				Log.i("error", "获取关注的商家列表");
+				try {
+					msg.obj = futurePayment.queryEnterprise();
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+				break;
+			}
+			case Task.TASK_SEARCH_ENTERPRISE: {
+				Log.i("error", "搜索商家");
+				try {
+					msg.obj = futurePayment.searchEnterprise((String) task
+							.getTaskParam().get("name"));
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+				break;
+			}
+			case Task.TASK_SEARCH_FRIEND: {
+				Log.i("error", "搜索好友");
+				try {
+					msg.obj = futurePayment.searchFriend((String) task
+							.getTaskParam().get("name"));
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+				break;
+			}
+			case Task.TASK_FOLLOW_ENTERPRISE: {
+				Log.i("error", "关注商家");
+				try {
+					futurePayment.attentEnterprise((String) task.getTaskParam()
+							.get("name"));
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+				break;
+			}
+			case Task.TASK_ADD_FRIEND: {
+				Log.i("error", "添加好友");
+				try {
+					futurePayment.addFriend((String) task.getTaskParam().get(
+							"name"));
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+				break;
+			}
 			default:
 				break;
 			}
@@ -561,7 +704,8 @@ public class MainService extends Service implements Runnable {
 		this.isRun = true;
 		Thread t = new Thread(this);
 		t.start();
-
+		PushManager.startWork(getApplicationContext(),
+				PushConstants.LOGIN_TYPE_API_KEY, Utils.API_KEY);
 	}
 
 	@Override

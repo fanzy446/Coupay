@@ -58,5 +58,7 @@
     <string name="title_activity_grade">GradeActivity</string>
     <string name="title_activity_relation">RelationActivity</string>
     <string name="title_activity_trade_record">TradeRecordActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search_enterprise">SearchEnterpriseActivity</string>
 
 </resources>

@@ -1,14 +1,15 @@
 package com.billme.ui;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import com.billme.logic.MainService;
 import com.billme.widget.MyListViewAdapter;
+import com.futurePayment.constant.ResultCode;
 import com.futurePayment.constant.Task;
-import com.futurePayment.model.BankCard;
 import com.futurePayment.model.Friend;
+import com.futurePayment.model.PaymentException;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,30 +19,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class FriendFragment extends Fragment{
-	
+public class FriendFragment extends Fragment {
+
 	private View view = null;
 	private ListView list = null;
 	private ProgressDialog pd = null;
 	private MyListViewAdapter adapter = null;
 	private ArrayList<HashMap<String, Object>> fl = new ArrayList<HashMap<String, Object>>();
-	
-	public void onCreate(Bundle savedInstanceState)
-	{
+
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState)
-	{
+			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_friend, container, false);
-		list = (ListView)view.findViewById(R.id.lv_fragment_friend);
-		
+		list = (ListView) view.findViewById(R.id.lv_fragment_friend);
+
 		if (MainService.getFuturePayment().getUser().getFriendList().size() == 0) {
 			if (this.pd == null) {
 				this.pd = new ProgressDialog(this.getActivity());
@@ -49,16 +48,17 @@ public class FriendFragment extends Fragment{
 			pd.setMessage("Loading..");
 			pd.show();
 
-			Task task = new Task(Task.TASK_GET_BANK_CARD);
+			Task task = new Task(Task.TASK_GET_FRIENDS);
 			MainService.newTask(task);
 		} else {
 			bindAdapter();
 		}
 		// TODO Auto-generated method stub
 		return view;
-	}	
+	}
+
 	private void bindAdapter() {
-		ArrayList<Friend> al = MainService.getFuturePayment().getUser()
+		LinkedList<Friend> al = MainService.getFuturePayment().getUser()
 				.getFriendList();
 		for (int i = 0; i < al.size(); i++) {
 			Friend f = al.get(i);
@@ -79,5 +79,24 @@ public class FriendFragment extends Fragment{
 				// 选中某位好友
 			}
 		});
+	}
+
+	public void refresh(Object... param) {
+		switch (((Integer) param[0]).intValue()) {
+		case RelationActivity.GET_FRIEND_FAILURE:
+			int state = ((PaymentException) param[1]).getResultCode();
+			String hint = null;
+			switch (state) {
+			case ResultCode.EMPTY:
+				hint = "No friend";
+				pd.cancel();
+				Toast.makeText(getActivity(), hint, Toast.LENGTH_SHORT).show();
+				break;
+			}
+		case RelationActivity.GET_FRIEND_SUCCESS:
+			bindAdapter();
+			pd.cancel();
+			break;
+		}
 	}
 }

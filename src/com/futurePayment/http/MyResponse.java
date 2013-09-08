@@ -12,12 +12,13 @@ public class MyResponse {
 	private JSONObject responseJson;
 	private JSONObject data;
 
-	public MyResponse(String response) {
+	public MyResponse(JSONObject response) {
 		// int pos = response.lastIndexOf("{");
 		// JSONTokener parser = new JSONTokener(response.substring(pos));
-		JSONTokener parser = new JSONTokener(response);
+		// JSONTokener parser = new JSONTokener(response);
 		try {
-			this.responseJson = (JSONObject) parser.nextValue();
+			// this.responseJson = (JSONObject) parser.nextValue();
+			this.responseJson = response;
 			data = responseJson.getJSONObject("data");
 		} catch (JSONException e) {
 			e.printStackTrace();

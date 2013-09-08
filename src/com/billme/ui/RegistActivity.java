@@ -183,7 +183,7 @@ public class RegistActivity extends BaseActivity implements BillMeActivity {
 				@SuppressWarnings("deprecation")
 				Date date = new Date(birthday.getYear() - 1900, birthday
 						.getMonth(), birthday.getDayOfMonth());
-				Log.i("test",date.toString());
+				Log.i("test", date.toString());
 
 				if (n != null && lp1 != null && lp2 != null && pp1 != null
 						&& pp2 != null && rn != null && p != null && e != null) {

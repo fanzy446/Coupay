@@ -91,7 +91,7 @@ public class ImageHelper {
 	 */
 	public Drawable loadDrawable(final String imageUrl,
 			final ImageView imageView) {
-		FileUtil fileUtil = new FileUtil(MainService.getUser().getName());		
+		FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
 		if (imagesCache.containsKey(imageUrl)) {
 			// 从缓存中获取
 			SoftReference<Drawable> softReference = imagesCache.get(imageUrl);
@@ -101,7 +101,7 @@ public class ImageHelper {
 			}
 		}
 		if (fileUtil.isFileExists("cache", imageUrl)) {
-			//从sd卡中获取
+			// 从sd卡中获取
 			return fileUtil.readImageFromSD("cache", imageUrl);
 		}
 		final Handler handler = new Handler() {

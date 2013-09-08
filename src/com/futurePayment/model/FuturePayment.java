@@ -118,23 +118,23 @@ public class FuturePayment {
 			throw e;
 		}
 	}
-	
-	public ArrayList<TradeRecord> refreshBill(String id) throws PaymentException{
-		try{
-			return supporter.getBill(id,1);
-		} catch(PaymentException e){
-			throw e;
-		}
-	}
-	
-	public ArrayList<TradeRecord> loadBill(String id)throws PaymentException{
-		try{
-			return supporter.getBill(id,0);
-		}catch(PaymentException e){
+
+	public ArrayList<TradeRecord> refreshBill(String id)
+			throws PaymentException {
+		try {
+			return supporter.getBill(id, 1);
+		} catch (PaymentException e) {
 			throw e;
 		}
 	}
 
+	public ArrayList<TradeRecord> loadBill(String id) throws PaymentException {
+		try {
+			return supporter.getBill(id, 0);
+		} catch (PaymentException e) {
+			throw e;
+		}
+	}
 
 	public User getUser() {
 		return user;
@@ -201,7 +201,7 @@ public class FuturePayment {
 	 * @return 银行帐号信息
 	 * @throws PaymentException
 	 */
-	public ArrayList<BankCard> queryAccount() throws PaymentException {
+	public LinkedList<BankCard> queryAccount() throws PaymentException {
 		try {
 			return supporter.queryAccount();
 		} catch (PaymentException e) {
@@ -212,16 +212,17 @@ public class FuturePayment {
 	/**
 	 * 银行卡绑定
 	 * 
-	 * @param bank
-	 *            银行
 	 * @param cardNumber
-	 *            银行卡号码
+	 *            银行卡
+	 * @param password
+	 *            密码
 	 * @return 绑定结果
 	 * @throws PaymentException
 	 */
-	public boolean bindAccount(BankCard bc) throws PaymentException {
+	public String bindAccount(String cardNumber, String password)
+			throws PaymentException {
 		try {
-			return supporter.bindAccount(bc);
+			return supporter.bindAccount(cardNumber, password);
 		} catch (PaymentException e) {
 			throw e;
 		}
@@ -306,7 +307,7 @@ public class FuturePayment {
 		}
 	}
 
-	public ArrayList<Coupon> getSwapList() throws PaymentException {
+	public LinkedList<Coupon> getSwapList() throws PaymentException {
 		try {
 			return supporter.getSwapList();
 		} catch (PaymentException e) {
@@ -339,7 +340,7 @@ public class FuturePayment {
 	 * @return 查询结果
 	 * @throws PaymentException
 	 */
-	public ArrayList<Coupon> queryCoupon() throws PaymentException {
+	public LinkedList<Coupon> queryCoupon() throws PaymentException {
 		try {
 			return supporter.queryCoupon();
 		} catch (PaymentException e) {
@@ -437,13 +438,29 @@ public class FuturePayment {
 	 * @return 好友列表
 	 * @throws PaymentException
 	 */
-	public ArrayList<Friend> queryFriend() throws PaymentException {
+	public LinkedList<Friend> queryFriend() throws PaymentException {
 		try {
-			ArrayList<Friend> friend = supporter.queryFriend();
+			LinkedList<Friend> friend = supporter.queryFriend();
 			// for (int i = 0; i < friend.size(); i++) {
 			// fileUtil.modelToAddress(friend.get(i));
 			// }
 			return friend;
+		} catch (PaymentException e) {
+			throw e;
+		}
+	}
+
+	/**
+	 * 以前匹配方式检索商家
+	 * 
+	 * @param name
+	 *            检索字段
+	 * @return 搜索结果
+	 * @throws PaymentException
+	 */
+	public LinkedList<Friend> searchFriend(String name) throws PaymentException {
+		try {
+			return supporter.searchFriend(name);
 		} catch (PaymentException e) {
 			throw e;
 		}
@@ -457,9 +474,9 @@ public class FuturePayment {
 	 * @return 添加结果
 	 * @throws PaymentException
 	 */
-	public boolean addFriend(String friendId) throws PaymentException {
+	public boolean addFriend(String name) throws PaymentException {
 		try {
-			return supporter.addFriend(friendId);
+			return supporter.addFriend(name);
 		} catch (PaymentException e) {
 			throw e;
 		}
@@ -482,17 +499,48 @@ public class FuturePayment {
 	}
 
 	/**
+	 * 得到关注的商家列表
+	 * 
+	 * @return 商家基本列表
+	 * @throws PaymentException
+	 */
+	public LinkedList<EnterpriseBasicInfo> queryEnterprise()
+			throws PaymentException {
+		try {
+			return supporter.queryEnterprise();
+		} catch (PaymentException e) {
+			throw e;
+		}
+	}
+
+	/**
+	 * 以前匹配方式检索商家
+	 * 
+	 * @param name
+	 *            检索字段
+	 * @return 搜索结果
+	 * @throws PaymentException
+	 */
+	public LinkedList<EnterpriseBasicInfo> searchEnterprise(String name)
+			throws PaymentException {
+		try {
+			return supporter.searchEnterprise(name);
+		} catch (PaymentException e) {
+			throw e;
+		}
+	}
+
+	/**
 	 * 关注商家
 	 * 
-	 * @param enterpriseId
+	 * @param name
 	 *            商家id
 	 * @return 关注结果
 	 * @throws PaymentException
 	 */
-	public boolean attentEnterprise(String enterpriseId)
-			throws PaymentException {
+	public boolean attentEnterprise(String name) throws PaymentException {
 		try {
-			return supporter.attentEnterprise(enterpriseId);
+			return supporter.attentEnterprise(name);
 		} catch (PaymentException e) {
 			throw e;
 		}
@@ -537,6 +585,12 @@ public class FuturePayment {
 		}
 	}
 
+	/**
+	 * 获得消费体验
+	 * 
+	 * @return 消费体验列表
+	 * @throws PaymentException
+	 */
 	public List<CommentInfo> getExperience() throws PaymentException {
 		try {
 			return supporter.getExperience();
@@ -596,8 +650,8 @@ public class FuturePayment {
 	 * @return 周边商家基本信息
 	 * @throws PaymentException
 	 */
-	public LinkedList<EnterpriseBasicInfo> getSurroundingEnterprise(Location location)
-			throws PaymentException {
+	public LinkedList<EnterpriseBasicInfo> getSurroundingEnterprise(
+			Location location) throws PaymentException {
 		try {
 			return supporter.getSurroundingEnterprise(location);
 		} catch (PaymentException e) {

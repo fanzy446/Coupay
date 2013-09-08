@@ -99,8 +99,9 @@ public class RegistInformation {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "{name:" + name + ",loginPassword:" + loginPassword + ",payPassword:"
-		+ payPassword + ",realName:" + realName + ",birthday:" + birthday
-		+ ",sex:" + sex + ",contact:" + contact.toString() + "}";
+		return "{name:" + name + ",loginPassword:" + loginPassword
+				+ ",payPassword:" + payPassword + ",realName:" + realName
+				+ ",birthday:" + birthday + ",sex:" + sex + ",contact:"
+				+ contact.toString() + "}";
 	}
 }

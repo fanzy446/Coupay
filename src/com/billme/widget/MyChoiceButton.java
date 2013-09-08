@@ -157,23 +157,23 @@ public class MyChoiceButton extends LinearLayout implements
 			Intent intent = new Intent();
 			switch (index) {
 			case 0:
-				 intent.setClass(getContext(), MainActivity.class);
+				intent.setClass(getContext(), MainActivity.class);
 				break;
 			case 1:
-				 intent.setClass(getContext(), SocietyActivity.class);
+				intent.setClass(getContext(), SocietyActivity.class);
 				break;
 			case 2:
 				intent.setClass(getContext(), MainActivity.class);
 				break;
 			case 3:
-				 intent.setClass(getContext(), ManagementActivity.class);
+				intent.setClass(getContext(), ManagementActivity.class);
 				break;
 			default:
 				// intent.setClass(getContext(), AccountActivity.class);
 				break;
-			}		
-			 getContext().startActivity(intent);
-			 this.setVisibility(View.INVISIBLE);
+			}
+			getContext().startActivity(intent);
+			this.setVisibility(View.INVISIBLE);
 			isShown = false;
 			break;
 		case MotionEvent.ACTION_MOVE:
@@ -220,8 +220,10 @@ public class MyChoiceButton extends LinearLayout implements
 				FrameLayout.LayoutParams.WRAP_CONTENT);
 		currentX = (int) event.getX() - this.getLayoutWidth() / 2;
 		currentY = (int) event.getY() - this.getLayoutHeight() / 2;
-		layoutParams.setMargins(currentX, currentY - MainService.getStatusBarHeight()
-				- MainService.getTitleBarHeight(), 0, 0);
+		layoutParams.setMargins(
+				currentX,
+				currentY - MainService.getStatusBarHeight()
+						- MainService.getTitleBarHeight(), 0, 0);
 		this.setLayoutParams(layoutParams);
 		Animation animation = AnimationUtils.loadAnimation(getContext(),
 				R.anim.show_anim);

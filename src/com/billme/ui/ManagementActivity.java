@@ -32,7 +32,6 @@ public class ManagementActivity extends BaseActivity implements BillMeActivity {
 		setContentView(R.layout.activity_management);
 		addLayout();
 
-		
 		head = (ImageButton) findViewById(R.id.ib_management_head);
 		name = (TextView) findViewById(R.id.tv_management_name);
 		list = (ListView) findViewById(R.id.lv_management_list);
@@ -90,41 +89,47 @@ public class ManagementActivity extends BaseActivity implements BillMeActivity {
 					long arg3) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
-				switch(arg2)
-				{
-				case 0:{
-					//选中账号余额
-					intent.setClass(ManagementActivity.this, BankCardActivity.class);
+				switch (arg2) {
+				case 0: {
+					// 选中账号余额
+					intent.setClass(ManagementActivity.this,
+							BankCardActivity.class);
 					break;
 				}
-				case 1:{
-					//选中账户积分
-					intent.setClass(ManagementActivity.this, GradeActivity.class);
+				case 1: {
+					// 选中账户积分
+					intent.setClass(ManagementActivity.this,
+							GradeActivity.class);
 					break;
 				}
-				case 2:{
-					//选中查优惠券
-					intent.setClass(ManagementActivity.this, CouponActivity.class);
+				case 2: {
+					// 选中查优惠券
+					intent.setClass(ManagementActivity.this,
+							CouponActivity.class);
 					break;
 				}
-				case 3:{
-					//选中查账单
-					intent.setClass(ManagementActivity.this, BankCardActivity.class);
+				case 3: {
+					// 选中查账单
+					intent.setClass(ManagementActivity.this,
+							BankCardActivity.class);
 					break;
 				}
-				case 4:{
-					//选中管理银行卡
-					intent.setClass(ManagementActivity.this, BankCardActivity.class);
+				case 4: {
+					// 选中管理银行卡
+					intent.setClass(ManagementActivity.this,
+							BankCardActivity.class);
 					break;
 				}
-				case 5:{
-					//选中社交管理
-					intent.setClass(ManagementActivity.this, RelationActivity.class);
+				case 5: {
+					// 选中社交管理
+					intent.setClass(ManagementActivity.this,
+							RelationActivity.class);
 					break;
 				}
-				case 6:{
-					//选中个人设置
-					intent.setClass(ManagementActivity.this, BankCardActivity.class);
+				case 6: {
+					// 选中个人设置
+					intent.setClass(ManagementActivity.this,
+							BankCardActivity.class);
 					break;
 				}
 				default:

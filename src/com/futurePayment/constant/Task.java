@@ -5,7 +5,7 @@ import java.util.Map;
 public class Task {
 	private int taskId; // 任务编号
 	private Map taskParam; // 任务参数
-	// now there are total 39 tasks;
+	// now there are total 42 tasks;
 	public static final int TASK_USER_LOGIN = 1000;
 	public static final int TASK_USER_LOGOUT = 1001;
 	public static final int TASK_GET_USER_INFO = 1002;
@@ -30,7 +30,7 @@ public class Task {
 	public static final int TASK_DEL_COUPON = 1012;
 	public static final int TASK_EXCHANGE_COUPON = 1014;
 	public static final int TASK_USE_COUPON = 1025;
-	
+
 	public static final int TASK_GET_VIP_CARDS = 1007;
 	public static final int TASK_GET_VIP_CARD_INFO = 1009;
 	public static final int TASK_APPLY_VIP_CARD = 1023;
@@ -48,16 +48,19 @@ public class Task {
 	public static final int TASK_GET_FRIENDS = 1025;
 	public static final int TASK_ADD_FRIEND = 1026;
 	public static final int TASK_DEL_FRIEND = 1027;
+	public static final int TASK_SEARCH_FRIEND = 1041;
 	public static final int TASK_FOLLOW_ENTERPRISE = 1028;
 	public static final int TASK_UNFOLLOW_ENTERPRISE = 1029;
+	public static final int TASK_GET_ENTERPRISES = 1040;
+	public static final int TASK_SEARCH_ENTERPRISE = 1042;
 
 	public static final int TASK_GET_PIC = 1030;
 	public static final int TASK_GET_ADVERTISING = 1031;
 	public static final int TASK_GET_ENTERPRISE_INFO = 1032;
-	public static final int TASK_GET_AROUND_ENTERPRISE_INFO = 1033;
+	public static final int TASK_GET_AROUND_ENTERPRISES = 1033;
 
 	// initial operation
-	// 2 init mission 
+	// 2 init mission
 	public static final int INIT_SOCIETY = 2000;
 	public static final int INIT_SURROUND = 2001;
 

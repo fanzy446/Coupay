@@ -26,5 +26,4 @@ public class BankCard {
 		return "{cardNumber:" + cardNumber + ",bankName:" + bankName + "}";
 	}
 
-	
 }

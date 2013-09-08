@@ -29,7 +29,8 @@ public class MyListViewAdapter extends BaseAdapter {
 	 * @param context
 	 *            the context of current activity
 	 * @param list
-	 *            every hashmap have three keys:"icon":string/int,"text":string,"end":string/int
+	 *            every hashmap have three
+	 *            keys:"icon":string/int,"text":string,"end":string/int
 	 */
 	public MyListViewAdapter(Context context,
 			ArrayList<HashMap<String, Object>> list) {
@@ -85,21 +86,38 @@ public class MyListViewAdapter extends BaseAdapter {
 							viewHolder.icon);
 					if (temp != null)
 						viewHolder.icon.setImageDrawable(temp);
-				} else {
-					// 从sd卡读取
-					FileUtil fu = new FileUtil(MainService.getUser().getName());
-					viewHolder.icon.setImageDrawable(fu
-							.readImageFromSD((String) map.get("icon")));
-				}			
-			}
-			else
-			{
+				}
+				// else {
+				// // 从sd卡读取
+				// FileUtil fu = new FileUtil(MainService.getUser().getName());
+				// viewHolder.icon.setImageDrawable(fu
+				// .readImageFromSD((String) map.get("icon")));
+				// }
+			} else if (map.get("icon") instanceof Integer) {
 				viewHolder.icon.setImageDrawable(context.getResources()
 						.getDrawable((Integer) (map.get("icon"))));
 			}
 			viewHolder.text.setText((String) map.get("text"));
-			viewHolder.end.setImageDrawable(context.getResources()
-					.getDrawable((Integer) (map.get("end"))));
+			if (map.get("end") instanceof String) {
+				String str = (String) map.get("end");
+				if (str.startsWith("http://")) {
+					// 从网络读取
+					ImageHelper imageHelper = MainService.getImageHelper();
+					Drawable temp = imageHelper.loadDrawable(str,
+							viewHolder.end);
+					if (temp != null)
+						viewHolder.end.setImageDrawable(temp);
+				}
+				// else {
+				// // 从sd卡读取
+				// FileUtil fu = new FileUtil(MainService.getUser().getName());
+				// viewHolder.icon.setImageDrawable(fu
+				// .readImageFromSD((String) map.get("icon")));
+				// }
+			} else if (map.get("end") instanceof Integer) {
+				viewHolder.end.setImageDrawable(context.getResources()
+						.getDrawable((Integer) (map.get("end"))));
+			}
 		}
 		return convertView;
 	}

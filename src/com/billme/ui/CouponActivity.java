@@ -2,6 +2,7 @@ package com.billme.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import com.billme.logic.BillMeActivity;
 import com.billme.logic.MainService;
@@ -16,6 +17,7 @@ import com.futurePayment.model.PaymentException;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +32,7 @@ public class CouponActivity extends BaseActivity implements BillMeActivity {
 	private ListView list = null;
 	private ProgressDialog pd = null;
 	private MyCouponAdapter adapter = null;
-	private ArrayList<Coupon> cl = new ArrayList<Coupon>();
+	private LinkedList<Coupon> cl;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class CouponActivity extends BaseActivity implements BillMeActivity {
 		// TODO Auto-generated method stub
 		switch (((Integer) param[0]).intValue()) {
 		case GET_COUPON_SECCUSS:
-			cl = (ArrayList<Coupon>) param[1];
+			cl = (LinkedList<Coupon>) param[1];
 			bindAdapter();
 			pd.cancel();
 			break;

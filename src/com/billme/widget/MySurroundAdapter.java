@@ -2,6 +2,7 @@ package com.billme.widget;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -21,17 +22,17 @@ import com.futurePayment.model.ImageHelper;
 
 public class MySurroundAdapter extends BaseAdapter {
 	private Context context = null;
-	private LinkedList<EnterpriseBasicInfo> list;
+	private List<EnterpriseBasicInfo> list;
 	private LayoutInflater inflater = null;
 
 	/**
 	 * 
 	 * @param context
 	 *            the context of current activity
-	 * @param list list of EnterpriseBasicInfo
+	 * @param list
+	 *            list of EnterpriseBasicInfo
 	 */
-	public MySurroundAdapter(Context context,
-			LinkedList<EnterpriseBasicInfo> list) {
+	public MySurroundAdapter(Context context, List<EnterpriseBasicInfo> list) {
 		super();
 		this.list = list;
 		this.context = context;
@@ -62,7 +63,8 @@ public class MySurroundAdapter extends BaseAdapter {
 		EnterpriseBasicInfo ebi = list.get(position);
 		// TODO Auto-generated method stub
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.my_society_list_item, null);
+			convertView = inflater
+					.inflate(R.layout.my_surround_list_item, null);
 		}
 		viewHolder.head = (ImageView) convertView
 				.findViewById(R.id.iv_surroundlistitem_head);
@@ -72,20 +74,19 @@ public class MySurroundAdapter extends BaseAdapter {
 				.findViewById(R.id.tv_surroundlistitem_introduction);
 		viewHolder.distance = (TextView) convertView
 				.findViewById(R.id.tv_surroundlistitem_distance);
-		if (ebi != null) {			
+		if (ebi != null) {
 			viewHolder.name.setText(ebi.getName());
 			viewHolder.introduction.setText(ebi.getIntroduction());
-			viewHolder.distance.setText(ebi.getDiatance() + "米内");
-			
+			viewHolder.distance.setText(ebi.getDistance() + "米内");
+
 			String str = (String) ebi.getHead();
 			if (str.startsWith("http://")) {
 				// 从网络读取
 				ImageHelper imageHelper = MainService.getImageHelper();
-				Drawable temp = imageHelper.loadDrawable(str,
-						viewHolder.head);
+				Drawable temp = imageHelper.loadDrawable(str, viewHolder.head);
 				if (temp != null)
 					viewHolder.head.setImageDrawable(temp);
-			} 
+			}
 		}
 		return convertView;
 	}

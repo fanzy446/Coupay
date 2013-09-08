@@ -45,15 +45,13 @@ public class MainActivity extends BaseActivity implements BillMeActivity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, CaptureActivity.class);
-				//startActivityForResult(intent, 0);
+				// startActivityForResult(intent, 0);
 				startActivity(intent);
 			}
 
 		});
 
 	}
-
-
 
 	@Override
 	public void init() {

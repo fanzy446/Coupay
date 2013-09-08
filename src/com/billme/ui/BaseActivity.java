@@ -2,7 +2,6 @@ package com.billme.ui;
 
 import com.billme.logic.MainService;
 import com.billme.widget.MyChoiceButton;
-
 import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BaseActivity extends Activity {
 	protected GestureDetector gd;
@@ -66,21 +66,15 @@ public class BaseActivity extends Activity {
 	public boolean dispatchTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
 		boolean b = false;
-		if(gd != null)
-		{
-			if (myLayout != null && myLayout.isShown())
-			{
-				Log.i("error","myLayout");
+		if (gd != null) {
+			if (myLayout != null && myLayout.isShown()) {
 				myLayout.onTouchEvent(event);
 				b = true;
-			}
-			else
-			{
-				Log.i("error","gd");
+			} else {
 				gd.onTouchEvent(event);
-			}		
-		}				
-		if(b)
+			}
+		}
+		if (b)
 			return b;
 		return super.dispatchTouchEvent(event);
 	}
@@ -94,7 +88,7 @@ public class BaseActivity extends Activity {
 	public void pushMessage() {
 
 	}
- 
+
 	protected class MyGestureListener extends
 			GestureDetector.SimpleOnGestureListener {
 		@Override
@@ -129,6 +123,23 @@ public class BaseActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		MainService.allActivities.remove(this);
+	}
+
+	private long firstTime;
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		if (System.currentTimeMillis() - firstTime < 3000) {
+			// if (!mSpUtil.getMsgNotify() && PushManager.isPushEnabled(this))
+			// PushManager.stopWork(this);
+			finish();
+		} else {
+			firstTime = System.currentTimeMillis();
+
+			Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT)
+					.show();
+		}
 	}
 
 }

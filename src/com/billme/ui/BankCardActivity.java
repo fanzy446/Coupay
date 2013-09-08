@@ -2,10 +2,12 @@ package com.billme.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -35,11 +37,11 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 	private MyListViewAdapter adapter = null;
 	private ArrayList<HashMap<String, Object>> al = new ArrayList<HashMap<String, Object>>();
 
-	Dialog addBankCard = null;
-	EditText bank = null;
-	EditText cardNumber = null;
-	Button add = null;
-	Button cancel = null;
+	private Dialog addBankCard = null;
+	private EditText cardNumber = null;
+	private EditText password = null;
+	private Button add = null;
+	private Button cancel = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,8 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 				addBankCard = new Dialog(BankCardActivity.this, R.style.Dialog);
 				View temp = getLayoutInflater().inflate(
 						R.layout.dialog_add_bank_card, null);
-				bank = (EditText) temp.findViewById(R.id.et_addbankcard_bank);
+				password = (EditText) temp
+						.findViewById(R.id.et_addbankcard_password);
 				cardNumber = (EditText) temp
 						.findViewById(R.id.et_addbankcard_card_number);
 				add = (Button) temp.findViewById(R.id.btn_addbankcard_add);
@@ -75,15 +78,17 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 						}
 						pd.setMessage("Adding..");
 						pd.show();
-//						HashMap<String, String> map = new HashMap<String, String>();
-//						map.put("bank", bank.getText().toString());
-//						map.put("cardNumber", cardNumber.getText().toString());
-//						Task task = new Task(Task.TASK_ADD_BANK_CARD, map);
-//						MainService.newTask(task);
-						HashMap<String, Object> map = new HashMap<String, Object>();
-						map.put("text", bank.getText().toString() + ":" + cardNumber.getText().toString());
-						al.add(map);
-						adapter.notifyDataSetChanged();
+						HashMap<String, String> map = new HashMap<String, String>();
+						map.put("password", password.getText().toString());
+						map.put("cardNumber", cardNumber.getText().toString());
+						Task task = new Task(Task.TASK_ADD_BANK_CARD, map);
+						MainService.newTask(task);
+						// HashMap<String, Object> map = new HashMap<String,
+						// Object>();
+						// map.put("text", bank.getText().toString() + ":" +
+						// cardNumber.getText().toString());
+						// al.add(map);
+						// adapter.notifyDataSetChanged();
 						addBankCard.cancel();
 					}
 
@@ -106,18 +111,18 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 		});
 		bindAdapter();
 
-//		if (MainService.getFuturePayment().getUser().getBankCardList().size() == 0) {
-//			if (this.pd == null) {
-//				this.pd = new ProgressDialog(this);
-//			}
-//			pd.setMessage("Loading..");
-//			pd.show();
-//
-//			Task task = new Task(Task.TASK_GET_BANK_CARD);
-//			MainService.newTask(task);
-//		} else {
-//			bindAdapter();
-//		}
+		if (MainService.getFuturePayment().getUser().getBankCardList().size() == 0) {
+			if (this.pd == null) {
+				this.pd = new ProgressDialog(this);
+			}
+			pd.setMessage("Loading..");
+			pd.show();
+
+			Task task = new Task(Task.TASK_GET_BANK_CARD);
+			MainService.newTask(task);
+		} else {
+			bindAdapter();
+		}
 
 	}
 
@@ -129,7 +134,7 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 	// return true;
 	// }
 	private void bindAdapter() {
-		ArrayList<BankCard> bcl = MainService.getFuturePayment().getUser()
+		LinkedList<BankCard> bcl = MainService.getFuturePayment().getUser()
 				.getBankCardList();
 		al = new ArrayList<HashMap<String, Object>>();
 		for (int i = 0; i < bcl.size(); i++) {
@@ -175,7 +180,9 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 				hint = "No account binded";
 				pd.cancel();
 				Toast.makeText(this, hint, Toast.LENGTH_SHORT).show();
-				
+			default:
+				pd.cancel();
+				Toast.makeText(this, state + "", Toast.LENGTH_SHORT).show();
 			}
 			break;
 		case ADD_BANK_CARD_SUCCESS:

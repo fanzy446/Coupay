@@ -6,9 +6,9 @@ public class ShareInfo {
 	private int grade = 0;
 	private String content = null;
 	private double money;
-	//上传时的照片
+	// 上传时的照片
 	private byte[] photo = null;
-	//下载时的照片地址
+	// 下载时的照片地址
 	private String picture = null;
 
 	public int getGrade() {
@@ -70,8 +70,9 @@ public class ShareInfo {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "{head:" + head + ",enterpriseName:" + enterpriseName + ",grade:"
-		+ grade + ",content:" + content + ",money:" + money + "}";
+		return "{head:" + head + ",enterpriseName:" + enterpriseName
+				+ ",grade:" + grade + ",content:" + content + ",money:" + money
+				+ "}";
 	}
 
 }

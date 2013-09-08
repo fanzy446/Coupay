@@ -1,9 +1,10 @@
 package com.billme.widget;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import com.futurePayment.model.ImageHelper;
 
 public class MyCouponAdapter extends BaseAdapter {
 	private Context context = null;
-	private ArrayList<Coupon> list;
+	private List<Coupon> list;
 	private LayoutInflater inflater = null;
 
 	/**
@@ -30,7 +31,7 @@ public class MyCouponAdapter extends BaseAdapter {
 	 *            list of CommentInfo
 	 * 
 	 */
-	public MyCouponAdapter(Context context, ArrayList<Coupon> list) {
+	public MyCouponAdapter(Context context, List<Coupon> list) {
 		super();
 		this.list = list;
 		this.context = context;
@@ -61,7 +62,7 @@ public class MyCouponAdapter extends BaseAdapter {
 		Coupon c = list.get(position);
 		// TODO Auto-generated method stub
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.my_society_list_item, null);
+			convertView = inflater.inflate(R.layout.my_coupon_list_item, null);
 		}
 		viewHolder.picture = (ImageView) convertView
 				.findViewById(R.id.iv_couponlistitem_picture);
@@ -77,15 +78,14 @@ public class MyCouponAdapter extends BaseAdapter {
 				.findViewById(R.id.tv_couponlistitem_amount);
 		if (c != null) {
 			viewHolder.name.setText(c.getEnterpriseName());
-			viewHolder.time.setText(c.getStartTime() + " ----- "
-					+ c.getEndTime());
+			viewHolder.time.setText(c.getStartTime() + " - " + c.getEndTime());
 			if ("discount".equals(c.getType())) {
 				viewHolder.value.setText("打" + c.getValue() + "折");
 			} else if ("substitute".equals(c.getType())) {
 				viewHolder.value.setText("抵" + c.getValue() + "元");
 			}
 			viewHolder.least.setText("最低消费" + c.getLeast() + "元");
-			viewHolder.amount.setText("最低消费" + c.getLeast() + "元");
+			viewHolder.amount.setText("X " + c.getAmount());
 			String str = (String) c.getPicture();
 			if (str.startsWith("http://")) {
 				// 从网络读取
@@ -94,11 +94,12 @@ public class MyCouponAdapter extends BaseAdapter {
 						viewHolder.picture);
 				if (temp != null)
 					viewHolder.picture.setImageDrawable(temp);
-			} else {
-				// 从sd卡读取
-				FileUtil fu = new FileUtil(MainService.getUser().getName());
-				viewHolder.picture.setImageDrawable(fu.readImageFromSD(str));
 			}
+			// else {
+			// // 从sd卡读取
+			// FileUtil fu = new FileUtil(MainService.getUser().getName());
+			// viewHolder.picture.setImageDrawable(fu.readImageFromSD(str));
+			// }
 		}
 		return convertView;
 	}

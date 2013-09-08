@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
-public class NFCPaymentActivity extends BaseActivity implements BillMeActivity{
+public class NFCPaymentActivity extends BaseActivity implements BillMeActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +24,13 @@ public class NFCPaymentActivity extends BaseActivity implements BillMeActivity{
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void refresh(Object... param) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

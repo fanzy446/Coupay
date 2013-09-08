@@ -39,4 +39,6 @@ public class ServiceType {
 	public static int QUERY_ACCOUNT = -230;
 	public static int QUERY_FRIEND = -231;
 	public static int QUERY_SWAP = -232;
+	public static int SEARCH_FRIEND = -233;
+	public static int SEARCH_ENTERPRISE = -234;
 }

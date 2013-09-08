@@ -15,6 +15,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import com.futurePayment.constant.Uris;
 import android.util.Log;
@@ -31,8 +32,9 @@ public class MyHttpClient {
 
 	public MyHttpClient(String name) {
 		// 请求超时
-		http.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 5000);
-        // 读取超时
+		http.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT,
+				5000);
+		// 读取超时
 		http.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 10000);
 		this.name = name;
 	}
@@ -66,8 +68,13 @@ public class MyHttpClient {
 			int statusCode = res.getStatusLine().getStatusCode();
 			Log.i("test", "statusCode:" + statusCode);
 			if (statusCode == OK) {
-				response = new MyResponse(EntityUtils.toString(res.getEntity(),
-						"utf-8"));
+				JSONTokener parser = new JSONTokener(EntityUtils.toString(
+						res.getEntity(), "utf-8"));
+				response = new MyResponse((JSONObject) parser.nextValue());
+			} else {
+				JSONObject temp = new JSONObject();
+				temp.put("result", statusCode);
+				response = new MyResponse(temp);
 			}
 			Log.i("test", "response:" + response.toString());
 		} catch (Exception e) {

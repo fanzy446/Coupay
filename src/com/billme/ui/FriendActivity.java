@@ -2,6 +2,7 @@ package com.billme.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import com.billme.logic.BillMeActivity;
 import com.billme.logic.MainService;
@@ -78,7 +79,7 @@ public class FriendActivity extends BaseActivity implements BillMeActivity {
 	private void bindAdapter() {
 		Intent intent = getIntent();
 		ArrayList<String> nl = intent.getStringArrayListExtra("name");
-		ArrayList<Friend> al = MainService.getFuturePayment().getUser()
+		LinkedList<Friend> al = MainService.getFuturePayment().getUser()
 				.getFriendList();
 		for (int i = 0; i < al.size(); i++) {
 			Friend f = al.get(i);

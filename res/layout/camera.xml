@@ -2,9 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-	
-    
-    
+
     <SurfaceView
         android:id="@+id/preview_view"
         android:layout_width="wrap_content"
@@ -22,8 +20,8 @@
         android:layout_gravity="center"
         android:orientation="vertical" >
 
-        
-        <!-- TextView
+        <!--
+             TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -35,10 +33,11 @@
             android:text="Scan Barcode"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:textStyle="bold" /-->
-        
-		<include layout="@layout/my_title"/>
-		
+            android:textStyle="bold" /
+        -->
+
+        <include layout="@layout/my_title" />
+
         <Button
             android:id="@+id/btn_cancel_scan"
             android:layout_width="230dp"
@@ -49,7 +48,6 @@
             android:text="Cancel"
             android:textSize="15sp"
             android:textStyle="bold" />
-
     </RelativeLayout>
 
 </FrameLayout>

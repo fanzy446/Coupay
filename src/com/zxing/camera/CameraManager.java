@@ -102,8 +102,8 @@ public final class CameraManager {
 		// useOneShotPreviewCallback = Integer.parseInt(Build.VERSION.SDK) >
 		// Build.VERSION_CODES.CUPCAKE;
 		useOneShotPreviewCallback = Build.VERSION.SDK_INT > 3; // 3
-																				// =
-																				// Cupcake
+																// =
+																// Cupcake
 
 		previewCallback = new PreviewCallback(configManager,
 				useOneShotPreviewCallback);
@@ -310,11 +310,11 @@ public final class CameraManager {
 		// This is the standard Android format which all devices are REQUIRED to
 		// support.
 		// In theory, it's the only one we should ever care about.
-		case  ImageFormat.NV21 :
+		case ImageFormat.NV21:
 			// This format has never been seen in the wild, but is compatible as
 			// we only care
 			// about the Y channel, so allow it.
-		case  ImageFormat.NV16 :
+		case ImageFormat.NV16:
 			return new PlanarYUVLuminanceSource(data, width, height, rect.left,
 					rect.top, rect.width(), rect.height());
 		default:

@@ -13,16 +13,16 @@
         android:textSize="30sp" />
 
     <EditText
-        android:id="@+id/et_addbankcard_bank"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="银行" />
-
-    <EditText
         android:id="@+id/et_addbankcard_card_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="卡号" />
+
+    <EditText
+        android:id="@+id/et_addbankcard_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="密码" />
 
     <LinearLayout
         android:layout_width="match_parent"

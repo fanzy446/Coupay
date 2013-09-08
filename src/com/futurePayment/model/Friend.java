@@ -47,8 +47,7 @@ public class Friend implements Parcelable {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "{name:" + name + ",path:" + path + ",size:"
-		+ size + "}";
+		return "{name:" + name + ",path:" + path + ",size:" + size + "}";
 	}
-	
+
 }

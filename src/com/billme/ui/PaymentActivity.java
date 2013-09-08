@@ -72,7 +72,7 @@ public class PaymentActivity extends BaseActivity implements BillMeActivity {
 				receiver = (String) intent.getStringExtra("receiver");
 				param.put("receiver", receiver);
 				money = (Double) intent.getDoubleExtra("money", 0);
-				param.put("money", money);				
+				param.put("money", money);
 				param.put("method", (String) intent.getStringExtra("method"));
 
 				Task task = new Task(Task.TASK_SINGLE_USER_PAY, param);

@@ -28,7 +28,8 @@ public class MySocietyAdapter extends BaseAdapter {
 	 * 
 	 * @param context
 	 *            the context of current activity
-	 * @param list list of CommentInfo
+	 * @param list
+	 *            list of CommentInfo
 	 */
 	public MySocietyAdapter(Context context, List<CommentInfo> list) {
 		super();
@@ -92,12 +93,12 @@ public class MySocietyAdapter extends BaseAdapter {
 				if (temp != null)
 					viewHolder.head.setImageDrawable(temp);
 			}
-//			else {
-//				// 从sd卡读取
-//				FileUtil fu = new FileUtil(MainService.getUser().getName());
-//				viewHolder.head.setImageDrawable(fu.readImageFromSD(ci
-//						.getHead()));
-//			}
+			// else {
+			// // 从sd卡读取
+			// FileUtil fu = new FileUtil(MainService.getUser().getName());
+			// viewHolder.head.setImageDrawable(fu.readImageFromSD(ci
+			// .getHead()));
+			// }
 			// viewHolder.text.setText((String) map.get("text"));
 			// viewHolder.end.setImageDrawable(context.getResources()
 			// .getDrawable((Integer) (map.get("end"))));
@@ -109,14 +110,14 @@ public class MySocietyAdapter extends BaseAdapter {
 						.loadDrawable(str1, viewHolder.photo);
 				if (temp != null)
 					viewHolder.photo.setImageDrawable(temp);
-			} 
-//			else {
-//				// 从sd卡读取
-//				Log.i("test","hehe2");
-//				FileUtil fu = new FileUtil(MainService.getUser().getName());
-//				viewHolder.photo.setImageDrawable(fu.readImageFromSD(ci
-//						.getPhoto()));
-//			}
+			}
+			// else {
+			// // 从sd卡读取
+			// Log.i("test","hehe2");
+			// FileUtil fu = new FileUtil(MainService.getUser().getName());
+			// viewHolder.photo.setImageDrawable(fu.readImageFromSD(ci
+			// .getPhoto()));
+			// }
 		}
 		return convertView;
 	}

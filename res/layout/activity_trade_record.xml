@@ -13,5 +13,4 @@
         android:groupIndicator="@null" >
     </com.billme.widget.TradingRecordListView>
 
-
 </LinearLayout>

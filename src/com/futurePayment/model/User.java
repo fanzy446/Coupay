@@ -1,7 +1,7 @@
 package com.futurePayment.model;
 
 import java.util.ArrayList;
-
+import java.util.LinkedList;
 
 /**
  * 
@@ -19,11 +19,11 @@ public class User {
 	private double balance;
 	private ArrayList<VipCard> vipCardList = new ArrayList<VipCard>();
 	private ArrayList<Coupon> couponList = new ArrayList<Coupon>();
-	private ArrayList<Friend> friendList = new ArrayList<Friend>();
-	private ArrayList<String> concernList = new ArrayList<String>();
-	private ArrayList<BankCard> bankCardList = new ArrayList<BankCard>();
+	private LinkedList<Friend> friendList = new LinkedList<Friend>();
+	private LinkedList<EnterpriseBasicInfo> enterpriseList = new LinkedList<EnterpriseBasicInfo>();
+	private LinkedList<BankCard> bankCardList = new LinkedList<BankCard>();
 	private ArrayList<TradeRecord> tradeRecordList = new ArrayList<TradeRecord>();
-	
+
 	public User() {
 	}
 
@@ -144,27 +144,27 @@ public class User {
 		this.couponList = couponList;
 	}
 
-	public ArrayList<Friend> getFriendList() {
+	public LinkedList<Friend> getFriendList() {
 		return friendList;
 	}
 
-	public void setFriendList(ArrayList<Friend> friendList) {
+	public void setFriendList(LinkedList<Friend> friendList) {
 		this.friendList = friendList;
 	}
 
-	public ArrayList<String> getConcernList() {
-		return concernList;
+	public LinkedList<EnterpriseBasicInfo> getConcernList() {
+		return enterpriseList;
 	}
 
-	public void setConcernList(ArrayList<String> concernList) {
-		this.concernList = concernList;
+	public void setConcernList(LinkedList<EnterpriseBasicInfo> concernList) {
+		this.enterpriseList = concernList;
 	}
 
-	public ArrayList<BankCard> getBankCardList() {
+	public LinkedList<BankCard> getBankCardList() {
 		return bankCardList;
 	}
 
-	public void setBankCardList(ArrayList<BankCard> bankCardList) {
+	public void setBankCardList(LinkedList<BankCard> bankCardList) {
 		this.bankCardList = bankCardList;
 	}
 
@@ -211,16 +211,25 @@ public class User {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	
-	public void addTradeRecordListAtEnd(ArrayList<TradeRecord> tradeRecordList){
+
+	public void addTradeRecordListAtEnd(ArrayList<TradeRecord> tradeRecordList) {
 		this.tradeRecordList.addAll(tradeRecordList);
 	}
-	
-	public void addTradeRecordListAtBegin(ArrayList<TradeRecord> tradeRecordList){
+
+	public void addTradeRecordListAtBegin(ArrayList<TradeRecord> tradeRecordList) {
 		this.tradeRecordList.addAll(0, tradeRecordList);
-		
+
 	}
-@Override
+
+	public void appendEnterpriseList(EnterpriseBasicInfo ebi) {
+		enterpriseList.add(ebi);
+	}
+
+	public void appendFriendList(Friend f) {
+		friendList.add(f);
+	}
+
+	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "{name:" + name + ",realName:" + realName + ",sex:" + sex

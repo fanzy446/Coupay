@@ -32,6 +32,7 @@ public class BasicInformation {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "{name:" + name + ",grade:" + grade + ",balance:" + balance + "}";
+		return "{name:" + name + ",grade:" + grade + ",balance:" + balance
+				+ "}";
 	}
 }

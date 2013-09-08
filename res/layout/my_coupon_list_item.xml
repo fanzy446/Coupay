@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+    android:orientation="horizontal" >
+
     <ImageView
         android:id="@+id/iv_couponlistitem_picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0" />
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_weight="0"
+        android:scaleType="fitCenter" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -16,50 +17,63 @@
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:orientation="horizontal" >
+            android:padding="5dp" >
 
             <TextView
                 android:id="@+id/tv_couponlistitem_name"
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_gravity="center_vertical"
-                android:clickable="true" />
+                android:clickable="true"
+                android:text="name" />
+
+            <TextView
+                android:id="@+id/tv_couponlistitem_amount"
+                style="@style/DefaultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right|center_vertical"
+                android:text="amount" />
+
             <TextView
                 android:id="@+id/tv_couponlistitem_value"
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical" />
-             <TextView
-                android:id="@+id/tv_couponlistitem_amount"
-                style="@style/DefaultText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical" />
-        </LinearLayout>
-        <LinearLayout 
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/tv_couponlistitem_name"
+                android:text="value" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:orientation="horizontal">
+            android:padding="5dp" >
+
             <TextView
                 android:id="@+id/tv_couponlistitem_time"
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical" />
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center_vertical"
+                android:text="time" />
+
             <TextView
                 android:id="@+id/tv_couponlistitem_least"
                 style="@style/DefaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical" />
-        </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:text="least" />
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

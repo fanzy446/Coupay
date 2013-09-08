@@ -44,7 +44,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
 	private Vector<BarcodeFormat> decodeFormats;
 	private String characterSet;
 	private InactivityTimer inactivityTimer;
-	
+
 	private MediaPlayer mediaPlayer;
 	private boolean playBeep;
 	private static final float BEEP_VOLUME = 0.10f;
@@ -77,12 +77,12 @@ public class CaptureActivity extends BaseActivity implements Callback {
 			initCamera(surfaceHolder);
 		} else {
 			surfaceHolder.addCallback(this);
-			//surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+			// surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		}
 		decodeFormats = null;
 		characterSet = null;
 
-		//…Ë÷√œÏ…˘
+		// …Ë÷√œÏ…˘
 		playBeep = true;
 		AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);
 		if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
@@ -136,7 +136,8 @@ public class CaptureActivity extends BaseActivity implements Callback {
 			Intent resultIntent = new Intent();
 			resultIntent.putExtra("result", resultString);
 			this.setResult(RESULT_OK, resultIntent);
-			resultIntent.setClass(CaptureActivity.this, PaymentConfirmActivity.class);
+			resultIntent.setClass(CaptureActivity.this,
+					PaymentConfirmActivity.class);
 			startActivity(resultIntent);
 		}
 		CaptureActivity.this.finish();
@@ -150,7 +151,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
 		} catch (RuntimeException e) {
 			return;
 		}
-		 
+
 		if (handler == null) {
 			handler = new CaptureActivityHandler(this, decodeFormats,
 					characterSet);

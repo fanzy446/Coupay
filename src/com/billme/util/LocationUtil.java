@@ -17,7 +17,7 @@ public class LocationUtil {
 	}
 
 	public Location getLocationByGPS() {
-		Log.i("error","使用GPS定位中");
+		Log.i("error", "使用GPS定位中");
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
 				0, locationListener);
 		Location location = locationManager
@@ -41,7 +41,7 @@ public class LocationUtil {
 				.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 			return getLocationByNetwork();
 		} else {
-			Log.i("error","使用被动定位中");
+			Log.i("error", "使用被动定位中");
 			locationManager.requestLocationUpdates(
 					LocationManager.PASSIVE_PROVIDER, 0, 0, locationListener);
 			return locationManager

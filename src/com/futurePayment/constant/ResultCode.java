@@ -12,4 +12,6 @@ public class ResultCode {
 	public final static int NOT_ENOUGH_MONEY = -107;
 	public final static int ACCOUNT_NOT_EXISTS = -108;
 	public final static int VIP_NOT_SUPPLY = -109;
+	public final static int SERVER_NOT_FOUND = 404;
+	public final static int SERVER_ERROR = 500;
 }

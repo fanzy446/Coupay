@@ -45,9 +45,8 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 		setContentView(R.layout.activity_society);
 
 		jumpButton = (ImageButton) findViewById(R.id.ib_society_jump);
-		refreshButton =  (Button) findViewById(R.id.btn_society_refresh);
+		refreshButton = (Button) findViewById(R.id.btn_society_refresh);
 		commentList = (ListView) findViewById(R.id.lv_society_list);
-
 
 		jumpButton.setOnClickListener(new ImageButton.OnClickListener() {
 
@@ -166,12 +165,13 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 		case REFRESH_SECCUSS: {
 			LinkedList<CommentInfo> fresh = (LinkedList<CommentInfo>) param[1];
 			cl.addAll(0, fresh);
-//			// 不确定，待改进
-//			FileUtil fileUtil = new FileUtil(MainService.getUser().getName());
-//			Gson gson = new Gson();
-//			String temp = gson.toJson(fresh.subList(0, 10));
-//			StringBufferInputStream sbis = new StringBufferInputStream(temp);
-//			fileUtil.writeToSDFromInputStream("", "society", sbis, true);
+			// // 不确定，待改进
+			// FileUtil fileUtil = new
+			// FileUtil(MainService.getUser().getName());
+			// Gson gson = new Gson();
+			// String temp = gson.toJson(fresh.subList(0, 10));
+			// StringBufferInputStream sbis = new StringBufferInputStream(temp);
+			// fileUtil.writeToSDFromInputStream("", "society", sbis, true);
 			commentAdapter.notifyDataSetChanged();
 			break;
 		}
@@ -182,6 +182,7 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 		}
 
 	}
+
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
@@ -198,5 +199,5 @@ public class SocietyActivity extends BaseActivity implements BillMeActivity {
 		init();
 		super.onResume();
 	}
-	
+
 }
