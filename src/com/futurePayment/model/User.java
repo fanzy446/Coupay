@@ -2,7 +2,6 @@ package com.futurePayment.model;
 
 import java.util.ArrayList;
 
-
 /**
  * 
  * @author luo
@@ -17,13 +16,14 @@ public class User {
 	private String email;
 	private int grade;
 	private double balance;
+	private double maxtransfer;
 	private ArrayList<VipCard> vipCardList = new ArrayList<VipCard>();
 	private ArrayList<Coupon> couponList = new ArrayList<Coupon>();
 	private ArrayList<Friend> friendList = new ArrayList<Friend>();
 	private ArrayList<String> concernList = new ArrayList<String>();
 	private ArrayList<BankCard> bankCardList = new ArrayList<BankCard>();
 	private ArrayList<TradeRecord> tradeRecordList = new ArrayList<TradeRecord>();
-	
+
 	public User() {
 	}
 
@@ -196,6 +196,14 @@ public class User {
 		this.birthday = birthday;
 	}
 
+	public double getMaxtransfer() {
+		return maxtransfer;
+	}
+
+	public void setMaxtransfer(double maxtransfer) {
+		this.maxtransfer = maxtransfer;
+	}
+
 	public ArrayList<TradeRecord> getTradeRecordList() {
 		return tradeRecordList;
 	}
@@ -211,16 +219,17 @@ public class User {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	
-	public void addTradeRecordListAtEnd(ArrayList<TradeRecord> tradeRecordList){
+
+	public void addTradeRecordListAtEnd(ArrayList<TradeRecord> tradeRecordList) {
 		this.tradeRecordList.addAll(tradeRecordList);
 	}
-	
-	public void addTradeRecordListAtBegin(ArrayList<TradeRecord> tradeRecordList){
+
+	public void addTradeRecordListAtBegin(ArrayList<TradeRecord> tradeRecordList) {
 		this.tradeRecordList.addAll(0, tradeRecordList);
-		
+
 	}
-@Override
+
+	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "{name:" + name + ",realName:" + realName + ",sex:" + sex

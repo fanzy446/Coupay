@@ -32,7 +32,8 @@ public class NFCPaymentActivity extends BaseActivity implements BillMeActivity,
 	private TextView mInfoText;
 	private EditText money;
 	private static final int MESSAGE_SENT = -100;
-
+	public static final int NFCPAY_SUCCESS = -101;
+	public static final int NFCPAY_FAILURE = -102;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

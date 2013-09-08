@@ -5,7 +5,7 @@ import java.util.Map;
 public class Task {
 	private int taskId; // 任务编号
 	private Map taskParam; // 任务参数
-	// now there are total 40 tasks;
+	// now there are total 41 tasks;
 	public static final int TASK_USER_LOGIN = 1000;
 	public static final int TASK_USER_LOGOUT = 1001;
 	public static final int TASK_GET_USER_INFO = 1002;
@@ -15,6 +15,7 @@ public class Task {
 	public static final int TASK_SINGLE_USER_PAY = 1003;
 	public static final int TASK_MULTI_USER_PAY = 1021;
 	public static final int TASK_NFC_PAY=1039;
+	public static final int TASK_TRANSFER_TO_USER=1040;
 	
 	public static final int TASK_GET_TRADING_REACORD = 1004;
 	public static final int TASK_REFRESH_TRADING_REACORD = 1037;

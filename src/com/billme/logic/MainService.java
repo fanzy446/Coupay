@@ -305,12 +305,26 @@ public class MainService extends Service implements Runnable {
 				// if (msg.obj instanceof PaymentException ||(Boolean)msg.obj) {
 				// PaymentException e = (PaymentException) msg.obj;
 				// // TODO 返回失败信息
-				// ba.refresh(new Integer(PaymentActivity.PAY_FAILURE), e);
+				// ba.refresh(new Integer(NFCPaymentActivity.NFCPAY_FAILURE),
+				// e);
 				// } else {
-					ba.refresh(new Integer(PaymentActivity.PAY_SUCCESS));
+				ba.refresh(new Integer(NFCPaymentActivity.NFCPAY_SUCCESS));
 				// }
 			}
 				break;
+			case Task.TASK_TRANSFER_TO_USER: {
+				Log.i("error", "转账回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("PaymentActivity");
+				// if (msg.obj instanceof PaymentException ||(Boolean)msg.obj) {
+				// PaymentException e = (PaymentException) msg.obj;
+				// // TODO 返回失败信息
+				// ba.refresh(new
+				// Integer(NFCTransferActivity.NFCTRANSFER_FAILURE), e);
+				// } else {
+				ba.refresh(new Integer(NFCTransferActivity.NFCTRANSFER_SUCCESS));
+				// }
+			}
 			default:
 				break;
 			}
@@ -563,6 +577,25 @@ public class MainService extends Service implements Runnable {
 					t.setAmount((Double) task.getTaskParam().get("money"));
 					t.setMethod((String) task.getTaskParam().get("method"));
 					msg.obj = futurePayment.personalPay(t);
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+			}
+				break;
+			case Task.TASK_TRANSFER_TO_USER: {
+				Log.i("error", "用户转账");
+				try {
+					Transfer t = new Transfer();
+					t.setSender((String) task.getTaskParam().get("sender"));
+					t.setReceiver(getUser().getName());
+					t.setAmount((Double) task.getTaskParam().get("money"));
+					t.setMethod((String) task.getTaskParam().get("method"));
+					if ((Double) task.getTaskParam().get("money") <= getUser()
+							.getMaxtransfer())
+						msg.obj = futurePayment.personalPay(t);
+					else
+						msg.obj = futurePayment.personalPay(t, (String) task
+								.getTaskParam().get("password"));
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
