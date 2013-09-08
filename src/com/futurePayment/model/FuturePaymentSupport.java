@@ -110,6 +110,38 @@ public class FuturePaymentSupport {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param transfer
+	 * @param password
+	 */
+	public boolean personalPay(Transfer transfer)
+			throws PaymentException {
+		JSONObject jobj = new JSONObject();
+		try {
+			jobj.put("sender", transfer.getSender());
+			jobj.put("receiver", transfer.getReceiver());
+			jobj.put("amount", transfer.getAmount());
+			jobj.put("method", transfer.getMethod());
+			String bank = transfer.getBank();
+			String cardNumber = transfer.getCardNumber();
+			if (bank != null && cardNumber != null) {
+				jobj.put("bank", bank);
+				jobj.put("cardNumber", cardNumber);
+			}
+
+			MyResponse response = http.post(ServiceType.PERSONAL_PAY, jobj);
+			if (response.getResultCode() == ResultCode.SUCCESS)
+				return true;
+			else
+				throw new PaymentException(response.getResultCode());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// throw new PaymentException(ResultCode.TRANSFER_FAILURE);
+		return false;
+	}
+
 	// public boolean get(Transfer transfer)throws PaymentException{
 	// JSONObject jobj = new JSONObject();
 	// try{
@@ -1019,14 +1051,12 @@ public class FuturePaymentSupport {
 		Gson gson = new Gson();
 		try {
 			MyResponse response = http.post(ServiceType.GET_COMMENT, null);
-			if (response.getResultCode() == ResultCode.SUCCESS)
-			{
+			if (response.getResultCode() == ResultCode.SUCCESS) {
 				al = gson.fromJson(response.getResultArray("comment")
 						.toString(), new TypeToken<LinkedList<CommentInfo>>() {
 				}.getType());
-				
-			}
-			else
+
+			} else
 				throw new PaymentException(response.getResultCode());
 
 		} catch (Exception e) {
@@ -1113,8 +1143,8 @@ public class FuturePaymentSupport {
 	 * @return ÷‹±ﬂ…Ãº“
 	 * @throws PaymentException
 	 */
-	public LinkedList<EnterpriseBasicInfo> getSurroundingEnterprise(Location location)
-			throws PaymentException {
+	public LinkedList<EnterpriseBasicInfo> getSurroundingEnterprise(
+			Location location) throws PaymentException {
 		LinkedList<EnterpriseBasicInfo> al = null;
 		JSONObject jo = new JSONObject();
 		Gson gson = new Gson();

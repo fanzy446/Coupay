@@ -66,21 +66,16 @@ public class BaseActivity extends Activity {
 	public boolean dispatchTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
 		boolean b = false;
-		if(gd != null)
-		{
-			if (myLayout != null && myLayout.isShown())
-			{
-				Log.i("error","myLayout");
+		if (gd != null) {
+			if (myLayout != null && myLayout.isShown()) {
+				Log.i("error", "myLayout");
 				myLayout.onTouchEvent(event);
 				b = true;
-			}
-			else
-			{
-				Log.i("error","gd");
+			} else {
 				gd.onTouchEvent(event);
-			}		
-		}				
-		if(b)
+			}
+		}
+		if (b)
 			return b;
 		return super.dispatchTouchEvent(event);
 	}
@@ -94,7 +89,7 @@ public class BaseActivity extends Activity {
 	public void pushMessage() {
 
 	}
- 
+
 	protected class MyGestureListener extends
 			GestureDetector.SimpleOnGestureListener {
 		@Override

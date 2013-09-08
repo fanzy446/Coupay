@@ -62,17 +62,17 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "登陆回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("LoginActivity");
-				 if (msg.obj instanceof PaymentException) {
-				 PaymentException e = (PaymentException) msg.obj;
-				 // TODO 返回失败信息
-				 ba.refresh(new Integer(LoginActivity.LOGIN_FAILURE), e);
-				 } else if (msg.obj instanceof BasicInformation) {
-				 BasicInformation bi = (BasicInformation) msg.obj;
-				 futurePayment.getUser().setName(bi.getName());
-				 futurePayment.getUser().setBalance(bi.getBalance());
-				 futurePayment.getUser().setGrade(bi.getGrade());
+				// if (msg.obj instanceof PaymentException) {
+				// PaymentException e = (PaymentException) msg.obj;
+				// // TODO 返回失败信息
+				// ba.refresh(new Integer(LoginActivity.LOGIN_FAILURE), e);
+				// } else if (msg.obj instanceof BasicInformation) {
+				// BasicInformation bi = (BasicInformation) msg.obj;
+				// futurePayment.getUser().setName(bi.getName());
+				// futurePayment.getUser().setBalance(bi.getBalance());
+				// futurePayment.getUser().setGrade(bi.getGrade());
 				ba.refresh(new Integer(LoginActivity.LOGIN_SECCUSS));
-				 }
+				// }
 			}
 				break;
 			case Task.TASK_GET_USER_INFO: {
@@ -148,12 +148,12 @@ public class MainService extends Service implements Runnable {
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
-					ba.refresh(new Integer(FriendActivity.GET_FRIEND_SUCCESS),
+					ba.refresh(new Integer(FriendActivity.GET_FRIEND_FAILURE),
 							e);
 				} else if (msg.obj instanceof ArrayList<?>) {
 					futurePayment.getUser().setFriendList(
 							(ArrayList<Friend>) msg.obj);
-					ba.refresh(new Integer(FriendActivity.GET_FRIEND_FAILURE));
+					ba.refresh(new Integer(FriendActivity.GET_FRIEND_SUCCESS));
 				}
 				break;
 			}
@@ -161,10 +161,10 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "单人支付回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("PaymentActivity");
-				if (msg.obj instanceof PaymentException) {
+				if (msg.obj instanceof PaymentException || (Boolean) msg.obj) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
-					ba.refresh(new Integer(PaymentActivity.PAY_SUCCESS), e);
+					ba.refresh(new Integer(PaymentActivity.PAY_FAILURE), e);
 				} else {
 					ba.refresh(new Integer(PaymentActivity.PAY_SUCCESS), null);
 				}
@@ -174,7 +174,7 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "多人支付回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("PaymentConfirmActivity");
-				if (msg.obj instanceof PaymentException) {
+				if (msg.obj instanceof PaymentException || (Boolean) msg.obj) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
 					ba.refresh(
@@ -191,7 +191,7 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "分享消费体验回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("ShareActivity");
-				if (msg.obj instanceof PaymentException) {
+				if (msg.obj instanceof PaymentException || (Boolean) msg.obj) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
 					ba.refresh(new Integer(ShareActivity.SHARE_FAILURE), e);
@@ -209,7 +209,8 @@ public class MainService extends Service implements Runnable {
 					// TODO 返回失败信息
 					ba.refresh(new Integer(SocietyActivity.GET_FAILURE), e);
 				} else {
-					ba.refresh(new Integer(SocietyActivity.GET_SECCUSS), (LinkedList<CommentInfo>) msg.obj);
+					ba.refresh(new Integer(SocietyActivity.GET_SECCUSS),
+							(LinkedList<CommentInfo>) msg.obj);
 				}
 				break;
 			}
@@ -222,7 +223,8 @@ public class MainService extends Service implements Runnable {
 					// TODO 返回失败信息
 					ba.refresh(new Integer(SurroundActivity.GET_FAILURE), e);
 				} else {
-					ba.refresh(new Integer(SurroundActivity.GET_SECCUSS), msg.obj);
+					ba.refresh(new Integer(SurroundActivity.GET_SECCUSS),
+							msg.obj);
 				}
 				break;
 			}
@@ -250,18 +252,18 @@ public class MainService extends Service implements Runnable {
 							(ArrayList<EnterpriseBasicInfo>) msg.obj);
 				break;
 			}
-			case Task.TASK_GET_COUPON:{
+			case Task.TASK_GET_COUPON: {
 				Log.i("error", "获得优惠券列表回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("CouponActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
-					ba.refresh(new Integer(
-							CouponActivity.GET_COUPON_FAILURE), e);
+					ba.refresh(new Integer(CouponActivity.GET_COUPON_FAILURE),
+							e);
 				} else if (msg.obj instanceof ArrayList<?>) {
-					ba.refresh(new Integer(
-							CouponActivity.GET_COUPON_SECCUSS), msg.obj);
+					ba.refresh(new Integer(CouponActivity.GET_COUPON_SECCUSS),
+							msg.obj);
 				}
 				break;
 			}
@@ -282,7 +284,8 @@ public class MainService extends Service implements Runnable {
 				if (msg.obj instanceof PaymentException || msg.obj == null)
 					ba.refresh(TradeRecordActivity.GETRECORD_FAILED);
 				else
-					ba.refresh(TradeRecordActivity.REFRESHRECORD_SECCUSS, msg.obj);
+					ba.refresh(TradeRecordActivity.REFRESHRECORD_SECCUSS,
+							msg.obj);
 			}
 				break;
 			case Task.TASK_LOAD_TRADING_REACORD: {
@@ -294,7 +297,20 @@ public class MainService extends Service implements Runnable {
 				else
 					ba.refresh(TradeRecordActivity.LOADRECORD_SECCUSS, msg.obj);
 			}
-			break;
+				break;
+			case Task.TASK_NFC_PAY: {
+				Log.i("error", "NFC 支付回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("PaymentActivity");
+				// if (msg.obj instanceof PaymentException ||(Boolean)msg.obj) {
+				// PaymentException e = (PaymentException) msg.obj;
+				// // TODO 返回失败信息
+				// ba.refresh(new Integer(PaymentActivity.PAY_FAILURE), e);
+				// } else {
+					ba.refresh(new Integer(PaymentActivity.PAY_SUCCESS));
+				// }
+			}
+				break;
 			default:
 				break;
 			}
@@ -308,17 +324,16 @@ public class MainService extends Service implements Runnable {
 		try {
 			switch (task.getTaskId()) {
 			case Task.TASK_USER_LOGIN: {
-				 Log.i("error", "登陆中");
-				 String userName = (String)
-				 task.getTaskParam().get("userName");
-				 String userPassword = (String) task.getTaskParam().get(
-				 "userPassword");
-				 futurePayment = FuturePayment.getInstance(userName);
-				 try {
-				 msg.obj = futurePayment.loginUser(userPassword);
-				 } catch (PaymentException e) {
-				 msg.obj = e;
-				 }
+				Log.i("error", "登陆中");
+				String userName = (String) task.getTaskParam().get("userName");
+				String userPassword = (String) task.getTaskParam().get(
+						"userPassword");
+				// futurePayment = FuturePayment.getInstance(userName);
+				// try {
+				// msg.obj = futurePayment.loginUser(userPassword);
+				// } catch (PaymentException e) {
+				// msg.obj = e;
+				// }
 				break;
 			}
 			case Task.TASK_GET_USER_INFO: {
@@ -398,8 +413,8 @@ public class MainService extends Service implements Runnable {
 					t.setReceiver((String) task.getTaskParam().get("receiver"));
 					t.setAmount((Double) task.getTaskParam().get("money"));
 					t.setMethod((String) task.getTaskParam().get("method"));
-					futurePayment.personalPay(t, (String) task.getTaskParam()
-							.get("password"));
+					msg.obj = futurePayment.personalPay(t, (String) task
+							.getTaskParam().get("password"));
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
@@ -417,7 +432,7 @@ public class MainService extends Service implements Runnable {
 						map.put("amount", paramList.get(i).get("money"));
 						tempList.add(map);
 					}
-					futurePayment.multiplePay(tempList);
+					msg.obj = futurePayment.multiplePay(tempList);
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
@@ -433,7 +448,7 @@ public class MainService extends Service implements Runnable {
 					si.setContent((String) task.getTaskParam().get("content"));
 					si.setMoney((Double) task.getTaskParam().get("money"));
 					si.setPhoto((byte[]) task.getTaskParam().get("photo"));
-					futurePayment.shareExperience(si);
+					msg.obj = futurePayment.shareExperience(si);
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
@@ -451,7 +466,9 @@ public class MainService extends Service implements Runnable {
 			case Task.TASK_GET_AROUND_ENTERPRISE_INFO: {
 				Log.i("error", "获取周边商家信息");
 				try {
-					msg.obj = futurePayment.getSurroundingEnterprise((Location)task.getTaskParam().get("location"));
+					msg.obj = futurePayment
+							.getSurroundingEnterprise((Location) task
+									.getTaskParam().get("location"));
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
@@ -482,7 +499,7 @@ public class MainService extends Service implements Runnable {
 				msg.obj = al;
 				break;
 			}
-			case Task.TASK_GET_COUPON:{
+			case Task.TASK_GET_COUPON: {
 				Log.i("error", "获取优惠券列表");
 				try {
 					msg.obj = futurePayment.queryCoupon();
@@ -532,6 +549,20 @@ public class MainService extends Service implements Runnable {
 					tempTr = futurePayment.loadBill(id);
 					MainService.getUser().addTradeRecordListAtEnd(tempTr);
 					msg.obj = tempTr;
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+			}
+				break;
+			case Task.TASK_NFC_PAY: {
+				Log.i("error", "NFC 支付");
+				try {
+					Transfer t = new Transfer();
+					t.setSender(getUser().getName());
+					t.setReceiver((String) task.getTaskParam().get("receiver"));
+					t.setAmount((Double) task.getTaskParam().get("money"));
+					t.setMethod((String) task.getTaskParam().get("method"));
+					msg.obj = futurePayment.personalPay(t);
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}

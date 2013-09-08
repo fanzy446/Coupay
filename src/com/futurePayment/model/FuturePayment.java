@@ -98,6 +98,13 @@ public class FuturePayment {
 		}
 	}
 
+	public boolean personalPay(Transfer transfer) throws PaymentException{
+		try{
+			return supporter.personalPay(transfer);
+		} catch(PaymentException e){
+			throw e;
+		}
+	}
 	/**
 	 * 分页获取交易记录
 	 * 
