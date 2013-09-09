@@ -432,8 +432,9 @@ public class FuturePaymentSupport {
 		boolean result = false;
 		try {
 			Gson gson = new Gson();
-			MyResponse response = http.post(ServiceType.MUTIPLE_PAY,
-					new JSONObject(gson.toJson(payerlist)));
+			JSONObject temp = new JSONObject();
+			temp.put("payerlist", new JSONArray(gson.toJson(payerlist)));
+			MyResponse response = http.post(ServiceType.MUTIPLE_PAY, temp);
 			if (response.getResultCode() == ResultCode.SUCCESS)
 				return true;
 			else
@@ -1011,7 +1012,7 @@ public class FuturePaymentSupport {
 		JSONObject jobj = new JSONObject();
 		boolean result = false;
 		try {
-			jobj.put("name", name);
+			jobj.put("friend", name);
 			MyResponse response = http.post(ServiceType.ADD_FRIEND, jobj);
 			if (response.getResultCode() == ResultCode.SUCCESS)
 				return true;
@@ -1081,7 +1082,7 @@ public class FuturePaymentSupport {
 		try {
 			Gson gson = new Gson();
 			JSONObject jo = new JSONObject();
-			jo.put("name", name);
+			jo.put("enterprise", name);
 			MyResponse response = http.post(ServiceType.SEARCH_ENTERPRISE, jo);
 			if (response.getResultCode() == ResultCode.SUCCESS) {
 				JSONArray ja = response.getResultArray("enterpriseList");
@@ -1111,7 +1112,7 @@ public class FuturePaymentSupport {
 		JSONObject jobj = new JSONObject();
 		boolean result = false;
 		try {
-			jobj.put("name", name);
+			jobj.put("enterprise", name);
 			MyResponse response = http
 					.post(ServiceType.ATTENT_ENTERPRISE, jobj);
 			if (response.getResultCode() == ResultCode.SUCCESS)

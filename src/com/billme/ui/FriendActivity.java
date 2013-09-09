@@ -15,6 +15,7 @@ import com.futurePayment.model.PaymentException;
 import android.os.Bundle;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -69,7 +70,7 @@ public class FriendActivity extends BaseActivity implements BillMeActivity {
 					}
 				}
 				Intent intent = new Intent();
-				intent.putExtra("friend", al);
+				intent.putParcelableArrayListExtra("friend", al);
 				setResult(0, intent);
 				finish();
 			}
@@ -79,6 +80,7 @@ public class FriendActivity extends BaseActivity implements BillMeActivity {
 	private void bindAdapter() {
 		Intent intent = getIntent();
 		ArrayList<String> nl = intent.getStringArrayListExtra("name");
+		Log.i("error", "friendActivity:" + nl.toString());
 		LinkedList<Friend> al = MainService.getFuturePayment().getUser()
 				.getFriendList();
 		for (int i = 0; i < al.size(); i++) {
@@ -112,6 +114,7 @@ public class FriendActivity extends BaseActivity implements BillMeActivity {
 					fl.get(arg2).put("back", R.drawable.click);
 					isChosen.set(arg2, true);
 				}
+				adapter.notifyDataSetChanged();
 			}
 		});
 	}

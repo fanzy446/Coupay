@@ -82,7 +82,7 @@ public class PaymentActivity extends BaseActivity implements BillMeActivity {
 					param.put("money", money);
 					param.put("method",
 							(String) intent.getStringExtra("method"));
-
+					param.put("couponId", intent.getIntExtra("couponId", -1));
 					Task task = new Task(Task.TASK_SINGLE_USER_PAY, param);
 					MainService.newTask(task);
 				}

@@ -192,7 +192,7 @@
 
                 <data android:scheme="package" />
             </intent-filter>
-        </receiver>
+        </receiver>
         -->
         <!-- Push 服务 -->
         <service
@@ -200,6 +200,10 @@
             android:exported="true"
             android:process=":bdservice_v1" />
         <!-- push service end -->
+        <activity
+            android:name="com.billme.ui.Day1404_IOActivity"
+            android:label="@string/title_activity_day1404__io" >
+        </activity>
     </application>
 
 </manifest>

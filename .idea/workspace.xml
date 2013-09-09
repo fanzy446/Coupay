@@ -937,11 +937,11 @@
             type="WebApp" >
 
             <Host>
-localhost
+localhost
             </Host>
 
             <Port>
-5050
+5050
             </Port>
         </configuration>
     </component>
@@ -1013,7 +1013,7 @@ localhost
             value="false" />
 
         <myIsUseDefaultProxy>
-false
+false
         </myIsUseDefaultProxy>
     </component>
 
@@ -1030,11 +1030,11 @@ false
                 comment="" />
 
             <created>
-1368951149268
+1368951149268
             </created>
 
             <updated>
-1368951149268
+1368951149268
             </updated>
 
             <workItem

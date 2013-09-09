@@ -71,7 +71,8 @@ public class ImageHelper {
 		InputStream is;
 		try {
 			is = client.getInputStreamFromUrl(uri);
-			fileUtil.writeToSDFromInputStream("cache", uri, is, false);
+			// fileUtil.writeToSDFromInputStream("cache", uri, is, false);
+			fileUtil.writeToSDFromInputStream("cache", uri, is, 1024, 1, false);
 			drawable = Drawable.createFromStream(is, "src");
 			is.close();
 			return drawable;

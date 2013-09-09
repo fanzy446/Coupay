@@ -24,18 +24,6 @@ public class Friend implements Parcelable {
 		this.path = path;
 	}
 
-	@Override
-	public int describeContents() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(Parcel arg0, int arg1) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public int getSize() {
 		return size;
 	}
@@ -49,5 +37,33 @@ public class Friend implements Parcelable {
 		// TODO Auto-generated method stub
 		return "{name:" + name + ",path:" + path + ",size:" + size + "}";
 	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		dest.writeString(name);
+		dest.writeString(path);
+		dest.writeInt(size);
+	}
+
+	public static final Parcelable.Creator<Friend> CREATOR = new Creator<Friend>() {
+		public Friend createFromParcel(Parcel source) {
+			Friend friend = new Friend();
+			friend.name = source.readString();
+			friend.path = source.readString();
+			friend.size = source.readInt();
+			return friend;
+		}
+
+		public Friend[] newArray(int size) {
+			return new Friend[size];
+		}
+	};
 
 }

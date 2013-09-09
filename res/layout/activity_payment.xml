@@ -19,7 +19,7 @@
             style="@style/DefaultText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="BillMe" />
+            android:text="BillMe账户" />
 
         <LinearLayout
             android:layout_width="match_parent"

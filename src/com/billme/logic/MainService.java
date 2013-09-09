@@ -66,17 +66,17 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "登陆回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("LoginActivity");
-				// if (msg.obj instanceof PaymentException) {
-				// PaymentException e = (PaymentException) msg.obj;
-				// // TODO 返回失败信息
-				// ba.refresh(new Integer(LoginActivity.LOGIN_FAILURE), e);
-				// } else if (msg.obj instanceof BasicInformation) {
-				// BasicInformation bi = (BasicInformation) msg.obj;
-				// futurePayment.getUser().setName(bi.getName());
-				// futurePayment.getUser().setBalance(bi.getBalance());
-				// futurePayment.getUser().setGrade(bi.getGrade());
-				ba.refresh(new Integer(LoginActivity.LOGIN_SECCUSS));
-				// }
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO 返回失败信息
+					ba.refresh(new Integer(LoginActivity.LOGIN_FAILURE), e);
+				} else if (msg.obj instanceof BasicInformation) {
+					BasicInformation bi = (BasicInformation) msg.obj;
+					futurePayment.getUser().setName(bi.getName());
+					futurePayment.getUser().setBalance(bi.getBalance());
+					futurePayment.getUser().setGrade(bi.getGrade());
+					ba.refresh(new Integer(LoginActivity.LOGIN_SECCUSS));
+				}
 			}
 				break;
 			case Task.TASK_GET_USER_INFO: {

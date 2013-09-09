@@ -1,5 +1,8 @@
 package com.billme.ui;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,8 +48,20 @@ public class MainActivity extends BaseActivity implements BillMeActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, CaptureActivity.class);
+				// intent.setClass(MainActivity.this, CaptureActivity.class);
+				intent.setClass(MainActivity.this, PaymentConfirmActivity.class);
 				// startActivityForResult(intent, 0);
+				JSONObject json = new JSONObject();
+				try {
+
+					json.put("receiver", "hello");
+					json.put("money", 200);
+					json.put("method", "QDCode");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				intent.putExtra("result", json.toString());
 				startActivity(intent);
 			}
 
