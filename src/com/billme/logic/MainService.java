@@ -385,6 +385,23 @@ public class MainService extends Service implements Runnable {
 				}
 				break;
 			}
+			case Task.TASK_GET_AVAILABLE_COUPON: {
+				Log.i("error", "查询本次消费所能使用的优惠券回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("PaymentConfirmActivity");
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO 返回失败信息
+					ba.refresh(
+							new Integer(PaymentConfirmActivity.QUERY_FAILURE),
+							e);
+				} else if(msg.obj instanceof LinkedList<?>){
+					ba.refresh(
+							new Integer(PaymentConfirmActivity.QUERY_SUCCESS),
+							msg.obj);
+				}
+				break;
+			}
 			default:
 				break;
 			}
@@ -675,6 +692,17 @@ public class MainService extends Service implements Runnable {
 				try {
 					futurePayment.addFriend((String) task.getTaskParam().get(
 							"name"));
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+				break;
+			}
+			case Task.TASK_GET_AVAILABLE_COUPON: {
+				Log.i("error", "查询本次消费所能使用的优惠券");
+				try {
+					msg.obj = futurePayment.queryAvailableCoupon((String) task
+							.getTaskParam().get("name"), (Double) task
+							.getTaskParam().get("money"));
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}

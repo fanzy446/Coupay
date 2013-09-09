@@ -58,7 +58,7 @@ public class SearchFriendActivity extends BaseActivity implements
 				if (pd == null) {
 					pd = new ProgressDialog(SearchFriendActivity.this);
 				}
-				pd.setMessage("Loading..");
+				pd.setMessage("Searching..");
 				pd.show();
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("name", name.getText().toString());

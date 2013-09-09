@@ -107,7 +107,7 @@ public class ShareActivity extends BaseActivity implements BillMeActivity {
 						"photo",
 						MainService.getImageHelper().drawableToByte(
 								photo.getDrawable()));
-				Task task = new Task(Task.TASK_USER_LOGIN, param);
+				Task task = new Task(Task.TASK_SHARE_MOMENT, param);
 				MainService.newTask(task);
 			}
 

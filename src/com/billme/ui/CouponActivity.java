@@ -17,12 +17,17 @@ import com.futurePayment.model.PaymentException;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class CouponActivity extends BaseActivity implements BillMeActivity {
 
@@ -73,6 +78,56 @@ public class CouponActivity extends BaseActivity implements BillMeActivity {
 		getMenuInflater().inflate(R.menu.activity_coupon, menu);
 		return true;
 	}
+
+//	public void onCreateContextMenu(ContextMenu menu, View v,
+//			ContextMenuInfo menuInfo) {
+//		// TODO Auto-generated method stub
+//		CouponActivity.this.getMenuInflater().inflate(R.menu.pog_fragment_c, menu);
+//		MenuItem item = menu.getItem(0);
+//		if (MainActivity.show)
+//			item.setTitle("Í¨»°");
+//		else
+//			item.setTitle("±à¼­");
+//		super.onCreateContextMenu(menu, v, menuInfo);
+//	}
+//
+//	public boolean onContextItemSelected(MenuItem item) {
+//		// TODO Auto-generated method stub
+//		AdapterContextMenuInfo infor = (AdapterContextMenuInfo) item
+//				.getMenuInfo();
+//		switch (item.getItemId()) {
+//		case R.id.menu_pog_fragment_call: {
+//			if (MainActivity.show) {
+//
+//			} else {
+//				Intent intent = new Intent();
+//				intent.setClass(getActivity(), GroupEditor.class);
+//				intent.putExtra("id",
+//						MainActivity.group_position_id.get(infor.position));
+//				startActivityForResult(intent, 2);
+//			}
+//		}
+//			return true;
+//		case R.id.menu_pog_fragment_delete: {
+//			if (MainActivity.show) {
+//				MainActivity.db
+//						.deletePerson((int) MainActivity.person_position_id
+//								.get(infor.position));
+//				MainActivity.person_id_name_number_List.remove(infor.position);
+//				personAdapter.notifyDataSetChanged();
+//			} else {
+//				MainActivity.db
+//						.deleteGroup((int) MainActivity.group_position_id
+//								.get(infor.position));
+//				MainActivity.group_id_name_number_List.remove(infor.position);
+//				groupAdapter.notifyDataSetChanged();
+//			}
+//		}
+//			return true;
+//		default:
+//			return super.onContextItemSelected(item);
+//		}
+//	}
 
 	@Override
 	public void init() {

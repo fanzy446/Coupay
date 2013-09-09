@@ -28,7 +28,7 @@ public class FriendFragment extends Fragment {
 	private ListView list = null;
 	private ProgressDialog pd = null;
 	private MyListViewAdapter adapter = null;
-	private ArrayList<HashMap<String, Object>> fl = new ArrayList<HashMap<String, Object>>();
+	private ArrayList<HashMap<String, Object>> fl = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -60,6 +60,7 @@ public class FriendFragment extends Fragment {
 	private void bindAdapter() {
 		LinkedList<Friend> al = MainService.getFuturePayment().getUser()
 				.getFriendList();
+		fl = new ArrayList<HashMap<String, Object>>();
 		for (int i = 0; i < al.size(); i++) {
 			Friend f = al.get(i);
 			HashMap<String, Object> map = new HashMap<String, Object>();

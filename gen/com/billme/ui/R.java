@@ -492,6 +492,7 @@ public final class R {
 
          Customize dimensions originally defined in res/values/dimens.xml (such as
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
+
     
          */
         public static final int activity_horizontal_margin=0x7f070000;
@@ -580,7 +581,7 @@ public final class R {
         public static final int et_search_enterprise_name=0x7f08003e;
         public static final int et_search_friend_name=0x7f080041;
         public static final int et_share_content=0x7f080047;
-        public static final int grout_main=0x7f08008e;
+        public static final int grout_main=0x7f080090;
         public static final int gv_payment_confirm_people=0x7f080028;
         public static final int ib_management_head=0x7f080020;
         public static final int ib_mychoicebutton_image0=0x7f08005c;
@@ -624,8 +625,10 @@ public final class R {
         public static final int lv_society_list=0x7f08004d;
         public static final int lv_surround_list=0x7f080050;
         public static final int lv_trading_records=0x7f080051;
-        public static final int menu_1=0x7f08008f;
-        public static final int menu_2=0x7f080090;
+        public static final int menu_1=0x7f080091;
+        public static final int menu_2=0x7f080092;
+        public static final int menu_pog_fragment_call=0x7f08008e;
+        public static final int menu_pog_fragment_delete=0x7f08008f;
         public static final int menu_settings=0x7f08008d;
         public static final int nima=0x7f080017;
         public static final int pb_TRLVfooter_progressbar=0x7f08007a;
@@ -735,7 +738,8 @@ public final class R {
         public static final int activity_society=0x7f0b000a;
         public static final int activity_surround=0x7f0b000b;
         public static final int activity_trade_record=0x7f0b000c;
-        public static final int menu=0x7f0b000d;
+        public static final int context_coupon=0x7f0b000d;
+        public static final int menu=0x7f0b000e;
     }
     public static final class raw {
         public static final int beep=0x7f050000;
@@ -809,11 +813,13 @@ public final class R {
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
     
 
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
+
         
 
         Base application theme for API 11+. This theme completely replaces

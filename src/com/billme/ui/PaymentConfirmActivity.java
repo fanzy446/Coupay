@@ -2,16 +2,21 @@ package com.billme.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import com.billme.logic.BillMeActivity;
 
 import com.billme.logic.MainService;
+import com.billme.widget.MyCouponAdapter;
 import com.billme.widget.MyListViewAdapter;
 import com.futurePayment.constant.Task;
+import com.futurePayment.model.Coupon;
 import com.futurePayment.model.Friend;
 
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -27,6 +32,8 @@ public class PaymentConfirmActivity extends BaseActivity implements
 		BillMeActivity {
 	public final static int APPLY_SUCCESS = 1;
 	public final static int APPLY_FAILURE = -1;
+	public final static int QUERY_SUCCESS = 2;
+	public final static int QUERY_FAILURE = -2;
 
 	private TextView text = null;
 	private ListView choiceList = null;
@@ -45,6 +52,8 @@ public class PaymentConfirmActivity extends BaseActivity implements
 	private String method;
 	boolean mutipay = false;
 
+	private MyCouponAdapter couponAdapter = null;
+	private LinkedList<Coupon> ll = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -93,6 +102,25 @@ public class PaymentConfirmActivity extends BaseActivity implements
 			}
 
 		});
+		new AlertDialog.Builder(this).setTitle("是否使用优惠券")
+				.setPositiveButton("是", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						if (pd == null) {
+							pd = new ProgressDialog(PaymentConfirmActivity.this);
+						}
+						pd.setMessage("Loading..");
+						pd.show();
+						HashMap<String, Object> map = new HashMap<String, Object>();
+						map.put("name", receiver);
+						map.put("money", money);
+						Task task = new Task(Task.TASK_GET_COUPON, map);
+						MainService.newTask(task);
+					}
+
+				}).setNegativeButton("否", null).create();
 	}
 
 	@Override
@@ -201,8 +229,8 @@ public class PaymentConfirmActivity extends BaseActivity implements
 	@Override
 	public void refresh(Object... param) {
 		// TODO Auto-generated method stub
-		if (((Integer) param[0]).intValue() == APPLY_SUCCESS) {
-			// 跳转到申请成功成功页面
+		switch (((Integer) param[0]).intValue()) {
+		case APPLY_SUCCESS: {
 			Toast.makeText(this, "Send messages successfully",
 					Toast.LENGTH_SHORT).show();
 			// 跳转页面
@@ -214,10 +242,57 @@ public class PaymentConfirmActivity extends BaseActivity implements
 			intent.putExtra("method", method);
 			intent.setClass(PaymentConfirmActivity.this, PaymentActivity.class);
 			startActivity(intent);
-		} else if (((Integer) param[0]).intValue() == APPLY_FAILURE) {
+		}
+			break;
+		case APPLY_FAILURE: {
 			pd.cancel();
 			Toast.makeText(this, "Send messages failurily", Toast.LENGTH_SHORT)
 					.show();
+		}
+			break;
+		case QUERY_SUCCESS: {
+			ll = (LinkedList<Coupon>)param[1];
+			couponAdapter = new MyCouponAdapter(PaymentConfirmActivity.this, ll) ;
+			
+			new AlertDialog.Builder(this).setTitle("选择优惠券")
+//			.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//
+//				@Override
+//				public void onClick(DialogInterface dialog, int which) {
+//					// TODO Auto-generated method stub
+//					if (pd == null) {
+//						pd = new ProgressDialog(PaymentConfirmActivity.this);
+//					}
+//					pd.setMessage("Loading..");
+//					pd.show();
+//					HashMap<String, Object> map = new HashMap<String, Object>();
+//					map.put("name", receiver);
+//					map.put("money", money);
+//					Task task = new Task(Task.TASK_GET_COUPON, map);
+//					MainService.newTask(task);
+//				}
+//
+//			})
+//			.setNegativeButton("取消", null)
+			.setAdapter(couponAdapter, new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					//选中优惠券
+					ll.get(which);
+				}
+				
+			}).
+			create();
+		}
+			break;
+		case QUERY_FAILURE: {
+			pd.cancel();
+			Toast.makeText(this, "Get coupons failurily", Toast.LENGTH_SHORT)
+					.show();
+		}
+			break;
 		}
 	}
 

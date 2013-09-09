@@ -349,6 +349,20 @@ public class FuturePayment {
 	}
 
 	/**
+	 * 查询本次消费能够使用的优惠券
+	 * @param name 商家名
+	 * @param money 此次消费金额
+	 * @return 优惠券列表
+	 * @throws PaymentException
+	 */
+	public LinkedList<Coupon> queryAvailableCoupon(String name, Double money) throws PaymentException {
+		try {
+			return supporter.queryAvailableCoupon(name, money);
+		} catch (PaymentException e) {
+			throw e;
+		}
+	}
+	/**
 	 * 赠送优惠券
 	 * 
 	 * @param receiver

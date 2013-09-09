@@ -715,6 +715,29 @@ public class FuturePaymentSupport {
 		return al;
 	}
 
+	public LinkedList<Coupon> queryAvailableCoupon(String name, Double money) throws PaymentException {
+		LinkedList<Coupon> al = null;
+		Gson gson = new Gson();
+		try {
+			JSONObject temp = new JSONObject();
+			temp.put("name", name);
+			temp.put("money", money);
+			MyResponse response = http.post(ServiceType.QUERY_AVAILABLE_COUPON, temp);
+			if (response.getResultCode() == ResultCode.SUCCESS) {
+				al = gson.fromJson(response.getResultArray("couponList")
+						.toString(), new TypeToken<LinkedList<Coupon>>() {
+				}.getType());
+			} else
+				throw new PaymentException(response.getResultCode());
+
+		} catch (PaymentException e) {
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return al;
+	}
+	
 	/**
 	 * 
 	 * 查询优惠券详细信息
@@ -1002,7 +1025,7 @@ public class FuturePaymentSupport {
 		LinkedList<EnterpriseBasicInfo> al = null;
 		try {
 			Gson gson = new Gson();
-			MyResponse response = http.post(ServiceType.QUERY_FRIEND, null);
+			MyResponse response = http.post(ServiceType.QUERY_ENTERPRISE, null);
 			if (response.getResultCode() == ResultCode.SUCCESS) {
 				JSONArray ja = response.getResultArray("enterpriseList");
 				al = gson.fromJson(ja.toString(),
