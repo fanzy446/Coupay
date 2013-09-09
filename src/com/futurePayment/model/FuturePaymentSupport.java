@@ -114,6 +114,38 @@ public class FuturePaymentSupport {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param transfer
+	 * @param password
+	 */
+	public boolean personalPay(Transfer transfer)
+			throws PaymentException {
+		JSONObject jobj = new JSONObject();
+		try {
+			jobj.put("sender", transfer.getSender());
+			jobj.put("receiver", transfer.getReceiver());
+			jobj.put("amount", transfer.getAmount());
+			jobj.put("method", transfer.getMethod());
+			String bank = transfer.getBank();
+			String cardNumber = transfer.getCardNumber();
+			if (bank != null && cardNumber != null) {
+				jobj.put("bank", bank);
+				jobj.put("cardNumber", cardNumber);
+			}
+
+			MyResponse response = http.post(ServiceType.PERSONAL_PAY, jobj);
+			if (response.getResultCode() == ResultCode.SUCCESS)
+				return true;
+			else
+				throw new PaymentException(response.getResultCode());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// throw new PaymentException(ResultCode.TRANSFER_FAILURE);
+		return false;
+	}
+
 	// public boolean get(Transfer transfer)throws PaymentException{
 	// JSONObject jobj = new JSONObject();
 	// try{
