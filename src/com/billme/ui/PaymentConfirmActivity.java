@@ -54,6 +54,7 @@ public class PaymentConfirmActivity extends BaseActivity implements
 
 	private MyCouponAdapter couponAdapter = null;
 	private LinkedList<Coupon> ll = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -251,40 +252,41 @@ public class PaymentConfirmActivity extends BaseActivity implements
 		}
 			break;
 		case QUERY_SUCCESS: {
-			ll = (LinkedList<Coupon>)param[1];
-			couponAdapter = new MyCouponAdapter(PaymentConfirmActivity.this, ll) ;
-			
-			new AlertDialog.Builder(this).setTitle("选择优惠券")
-//			.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//
-//				@Override
-//				public void onClick(DialogInterface dialog, int which) {
-//					// TODO Auto-generated method stub
-//					if (pd == null) {
-//						pd = new ProgressDialog(PaymentConfirmActivity.this);
-//					}
-//					pd.setMessage("Loading..");
-//					pd.show();
-//					HashMap<String, Object> map = new HashMap<String, Object>();
-//					map.put("name", receiver);
-//					map.put("money", money);
-//					Task task = new Task(Task.TASK_GET_COUPON, map);
-//					MainService.newTask(task);
-//				}
-//
-//			})
-//			.setNegativeButton("取消", null)
-			.setAdapter(couponAdapter, new DialogInterface.OnClickListener(){
+			ll = (LinkedList<Coupon>) param[1];
+			couponAdapter = new MyCouponAdapter(PaymentConfirmActivity.this, ll);
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					//选中优惠券
-					ll.get(which);
-				}
-				
-			}).
-			create();
+			new AlertDialog.Builder(this).setTitle("选择优惠券")
+			// .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			//
+			// @Override
+			// public void onClick(DialogInterface dialog, int which) {
+			// // TODO Auto-generated method stub
+			// if (pd == null) {
+			// pd = new ProgressDialog(PaymentConfirmActivity.this);
+			// }
+			// pd.setMessage("Loading..");
+			// pd.show();
+			// HashMap<String, Object> map = new HashMap<String, Object>();
+			// map.put("name", receiver);
+			// map.put("money", money);
+			// Task task = new Task(Task.TASK_GET_COUPON, map);
+			// MainService.newTask(task);
+			// }
+			//
+			// })
+			// .setNegativeButton("取消", null)
+					.setAdapter(couponAdapter,
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// TODO Auto-generated method stub
+									// 选中优惠券
+									ll.get(which);
+								}
+
+							}).create();
 		}
 			break;
 		case QUERY_FAILURE: {

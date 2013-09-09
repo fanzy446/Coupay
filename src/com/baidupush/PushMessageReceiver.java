@@ -3,7 +3,6 @@ package com.baidupush;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -51,7 +50,7 @@ public class PushMessageReceiver extends BroadcastReceiver {
 			// // 消息的用户自定义内容读取方式
 			// Log.i(TAG, "onMessage: " + message);
 			//
-			// // 用户在此自定义处理消恄1�7,以下代码为demo界面展示甄1�7
+			// // 用户在此自定义处理消恄1�7�1�7以下代码为demo界面展示甄1�7�1�7
 			// Intent responseIntent = null;
 			// responseIntent = new Intent(Utils.ACTION_MESSAGE);
 			// responseIntent.putExtra(Utils.EXTRA_MESSAGE, message);
@@ -61,15 +60,15 @@ public class PushMessageReceiver extends BroadcastReceiver {
 
 		} else if (intent.getAction().equals(PushConstants.ACTION_RECEIVE)) {
 			// 处理绑定等方法的返回数据
-			// PushManager.startWork()的返回�1�7��1�7�过PushConstants.METHOD_BIND得到
+			// PushManager.startWork()的返回�1ￄ1�7��1ￄ1�7�过PushConstants.METHOD_BIND得到
 
 			// 获取方法
 			final String method = intent
 					.getStringExtra(PushConstants.EXTRA_METHOD);
-			// 方法返回错误码�1�7�若绑定返回错误（非0），则应用将不能正常接收消息〄1�7
-			// 绑定失败的原因有多种，如网络原因，或access token过期〄1�7
-			// 请不要在出错时进行简单的startWork调用，这有可能导致死循环〄1�7
-			// 可以通过限制重试次数，或者在其他时机重新调用来解决�1�7�1�7
+			// 方法返回错误码�1ￄ1�7�若绑定返回错误（非0），则应用将不能正常接收消息〄1�7�1�7
+			// 绑定失败的原因有多种，如网络原因，或access token过期〄1�7�1�7
+			// 请不要在出错时进行简单的startWork调用，这有可能导致死循环〄1�7�1�7
+			// 可以通过限制重试次数，或者在其他时机重新调用来解决�1ￄ1�7�1�7�1�7
 			final int errorCode = intent
 					.getIntExtra(PushConstants.EXTRA_ERROR_CODE,
 							PushConstants.ERROR_SUCCESS);
@@ -77,7 +76,7 @@ public class PushMessageReceiver extends BroadcastReceiver {
 			final String content = new String(
 					intent.getByteArrayExtra(PushConstants.EXTRA_CONTENT));
 
-			// 用户在此自定义处理消恄1�7,以下代码为demo界面展示甄1�7
+			// 用户在此自定义处理消恄1�7�1�7以下代码为demo界面展示甄1�7�1�7
 			Log.i("error", "onMessage: method : " + method);
 			Log.i("error", "onMessage: result : " + errorCode);
 			Log.i("error", "onMessage: content : " + content);
@@ -98,7 +97,7 @@ public class PushMessageReceiver extends BroadcastReceiver {
 			// responseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			// context.startActivity(responseIntent);
 
-			// 可�1�7��1�7��1�7�知用户点击事件处理
+			// 可�1ￄ1�7��1ￄ1�7��1ￄ1�7�知用户点击事件处理
 		} else if (intent.getAction().equals(
 				PushConstants.ACTION_RECEIVER_NOTIFICATION_CLICK)) {
 			// Log.d(TAG, "intent=" + intent.toUri(0));
@@ -121,7 +120,7 @@ public class PushMessageReceiver extends BroadcastReceiver {
 	private void showNotify(Context context, JSONObject message) {
 		// TODO Auto-generated method stub
 		NOTIFY_ID++;
-		// 更新通知栏
+		// 更新通知栄1�7
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		Intent intent = new Intent();
@@ -140,9 +139,9 @@ public class PushMessageReceiver extends BroadcastReceiver {
 				mNotificationBuilder.setContentTitle(data.getString("sponsor")
 						+ "请求多人支付");
 				mNotificationBuilder.setContentText("总共"
-						+ data.getInt("number") + "人参与，您需向 "
+						+ data.getInt("number") + "人参与，您需各1�7 "
 						+ data.getString("receiver") + " 支付"
-						+ data.getDouble("money") + "元");
+						+ data.getDouble("money") + "兄1�7");
 				intent.putExtra("receiver", data.getString("receiver"));
 				intent.putExtra("money", data.getDouble("money"));
 			}
@@ -150,14 +149,15 @@ public class PushMessageReceiver extends BroadcastReceiver {
 			case PushType.RECEIVE_MONEY: {
 				intent.setClass(context, TradeRecordActivity.class);
 				JSONObject data = message.getJSONObject("data");
-				mNotificationBuilder.setTicker("收到来自 " + data.getString("name")
-						+ " 的汇款" + data.getDouble("money") + "元");
+				mNotificationBuilder.setTicker("收到来自 "
+						+ data.getString("name") + " 的汇欄1�7"
+						+ data.getDouble("money") + "兄1�7");
 				mNotificationBuilder.setContentTitle("收到来自 "
-						+ data.getString("name") + " 的汇款"
-						+ data.getDouble("money") + "元");
+						+ data.getString("name") + " 的汇欄1�7"
+						+ data.getDouble("money") + "兄1�7");
 				mNotificationBuilder.setContentText("收到来自 "
-						+ data.getString("name") + " 的汇款"
-						+ data.getDouble("money") + "元");
+						+ data.getString("name") + " 的汇欄1�7"
+						+ data.getDouble("money") + "兄1�7");
 			}
 				break;
 			}
@@ -195,7 +195,7 @@ public class PushMessageReceiver extends BroadcastReceiver {
 		n.flags |= Notification.FLAG_NO_CLEAR;
 		n.defaults |= Notification.DEFAULT_VIBRATE;
 		mNotificationManager.notify(NOTIFY_ID, n);
-		// 通知一下才会生效哦
+		// 通知丄1�7下才会生效哦
 	}
 
 	/**
@@ -231,10 +231,10 @@ public class PushMessageReceiver extends BroadcastReceiver {
 			// util.setUserId(userid);
 		} else {
 			if (errorCode == 30607) {
-				Log.i("error", "账号已过期，请重新登录");
+				Log.i("error", "账号已过期，请重新登彄1�7");
 				// 跳转到重新登录的界面
 			} else {
-				Log.i("error", "启动失败，正在重试...");
+				Log.i("error", "启动失败，正在重评1�7...");
 				new Handler().postDelayed(new Runnable() {
 
 					@Override
@@ -245,7 +245,7 @@ public class PushMessageReceiver extends BroadcastReceiver {
 										PushConstants.LOGIN_TYPE_API_KEY,
 										Utils.API_KEY);
 					}
-				}, 2000);// 两秒后重新开始验证
+				}, 2000);// 两秒后重新开始验评1�7
 			}
 		}
 	}

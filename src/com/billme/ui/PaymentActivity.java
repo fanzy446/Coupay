@@ -1,8 +1,11 @@
 package com.billme.ui;
 
 import java.util.HashMap;
+import java.util.concurrent.Callable;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable.Callback;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -60,23 +63,29 @@ public class PaymentActivity extends BaseActivity implements BillMeActivity {
 				// TODO Auto-generated method stub
 				Intent intent = getIntent();
 				String p = password.getText().toString();
+				if (intent.getBooleanExtra("transfer", false)) {
+					Intent resultIntent = new Intent();
+					intent.putExtra("paymentPassword", p);
+					PaymentActivity.this.setResult(RESULT_OK, resultIntent);
+				} else {
+					if (pd == null) {
+						pd = new ProgressDialog(PaymentActivity.this);
+					}
+					pd.setMessage("Paying..");
+					pd.show();
+					HashMap<String, Object> param = new HashMap<String, Object>();
+					param.put("password", p);
+					param.put("sender", MainService.getUser().getName());
+					receiver = (String) intent.getStringExtra("receiver");
+					param.put("receiver", receiver);
+					money = (Double) intent.getDoubleExtra("money", 0);
+					param.put("money", money);
+					param.put("method",
+							(String) intent.getStringExtra("method"));
 
-				if (pd == null) {
-					pd = new ProgressDialog(PaymentActivity.this);
+					Task task = new Task(Task.TASK_SINGLE_USER_PAY, param);
+					MainService.newTask(task);
 				}
-				pd.setMessage("Paying..");
-				pd.show();
-				HashMap<String, Object> param = new HashMap<String, Object>();
-				param.put("password", p);
-				param.put("sender", MainService.getUser().getName());
-				receiver = (String) intent.getStringExtra("receiver");
-				param.put("receiver", receiver);
-				money = (Double) intent.getDoubleExtra("money", 0);
-				param.put("money", money);
-				param.put("method", (String) intent.getStringExtra("method"));
-
-				Task task = new Task(Task.TASK_SINGLE_USER_PAY, param);
-				MainService.newTask(task);
 			}
 
 		});

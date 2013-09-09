@@ -3,7 +3,6 @@ package com.zxing.activity;
 import java.io.IOException;
 import java.util.Vector;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;

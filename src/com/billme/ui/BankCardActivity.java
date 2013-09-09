@@ -37,8 +37,6 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 	private MyListViewAdapter adapter = null;
 	private ArrayList<HashMap<String, Object>> al = new ArrayList<HashMap<String, Object>>();
 
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,6 +53,7 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 			private EditText password = null;
 			private Button add = null;
 			private Button cancel = null;
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub

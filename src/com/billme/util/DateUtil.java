@@ -1,12 +1,12 @@
 package com.billme.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import android.text.format.Time;
 
 public class DateUtil {
+
 	public static String getDate() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm");
-		String s = dateFormat.format(new Date());
-		return s;
+		Time time = new Time();
+		time.setToNow();
+		return time.format("%m/%d %H:%M");
 	}
 }

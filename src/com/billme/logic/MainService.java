@@ -66,17 +66,17 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "登陆回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("LoginActivity");
-				if (msg.obj instanceof PaymentException) {
-					PaymentException e = (PaymentException) msg.obj;
-					// TODO 返回失败信息
-					ba.refresh(new Integer(LoginActivity.LOGIN_FAILURE), e);
-				} else if (msg.obj instanceof BasicInformation) {
-					BasicInformation bi = (BasicInformation) msg.obj;
-					futurePayment.getUser().setName(bi.getName());
-					futurePayment.getUser().setBalance(bi.getBalance());
-					futurePayment.getUser().setGrade(bi.getGrade());
-					ba.refresh(new Integer(LoginActivity.LOGIN_SECCUSS));
-				}
+				// if (msg.obj instanceof PaymentException) {
+				// PaymentException e = (PaymentException) msg.obj;
+				// // TODO 返回失败信息
+				// ba.refresh(new Integer(LoginActivity.LOGIN_FAILURE), e);
+				// } else if (msg.obj instanceof BasicInformation) {
+				// BasicInformation bi = (BasicInformation) msg.obj;
+				// futurePayment.getUser().setName(bi.getName());
+				// futurePayment.getUser().setBalance(bi.getBalance());
+				// futurePayment.getUser().setGrade(bi.getGrade());
+				ba.refresh(new Integer(LoginActivity.LOGIN_SECCUSS));
+				// }
 			}
 				break;
 			case Task.TASK_GET_USER_INFO: {
@@ -155,6 +155,7 @@ public class MainService extends Service implements Runnable {
 					ba.refresh(
 							new Integer(RelationActivity.GET_FRIEND_FAILURE), e);
 				} else if (msg.obj instanceof LinkedList<?>) {
+
 					futurePayment.getUser().setFriendList(
 							(LinkedList<Friend>) msg.obj);
 					ba.refresh(new Integer(RelationActivity.GET_FRIEND_SUCCESS));
@@ -165,10 +166,10 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "单人支付回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("PaymentActivity");
-				if (msg.obj instanceof PaymentException) {
+				if (msg.obj instanceof PaymentException || (Boolean) msg.obj) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
-					ba.refresh(new Integer(PaymentActivity.PAY_SUCCESS), e);
+					ba.refresh(new Integer(PaymentActivity.PAY_FAILURE), e);
 				} else {
 					ba.refresh(new Integer(PaymentActivity.PAY_SUCCESS), null);
 				}
@@ -178,7 +179,7 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "多人支付回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("PaymentConfirmActivity");
-				if (msg.obj instanceof PaymentException) {
+				if (msg.obj instanceof PaymentException || (Boolean) msg.obj) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
 					ba.refresh(
@@ -195,7 +196,7 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "分享消费体验回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("ShareActivity");
-				if (msg.obj instanceof PaymentException) {
+				if (msg.obj instanceof PaymentException || (Boolean) msg.obj) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
 					ba.refresh(new Integer(ShareActivity.SHARE_FAILURE), e);
@@ -215,6 +216,7 @@ public class MainService extends Service implements Runnable {
 				} else {
 					ba.refresh(new Integer(SocietyActivity.GET_SECCUSS),
 							msg.obj);
+
 				}
 				break;
 			}
@@ -266,6 +268,7 @@ public class MainService extends Service implements Runnable {
 					ba.refresh(new Integer(CouponActivity.GET_COUPON_FAILURE),
 							e);
 				} else if (msg.obj instanceof LinkedList<?>) {
+
 					ba.refresh(new Integer(CouponActivity.GET_COUPON_SECCUSS),
 							msg.obj);
 				}
@@ -383,7 +386,34 @@ public class MainService extends Service implements Runnable {
 					ba.refresh(new Integer(
 							SearchFriendActivity.ADD_FRIEND_SUCCESS));
 				}
+			}
 				break;
+			case Task.TASK_NFC_PAY: {
+				Log.i("error", "NFC 支付回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("PaymentActivity");
+				// if (msg.obj instanceof PaymentException ||(Boolean)msg.obj) {
+				// PaymentException e = (PaymentException) msg.obj;
+				// // TODO 返回失败信息
+				// ba.refresh(new Integer(NFCPaymentActivity.NFCPAY_FAILURE),
+				// e);
+				// } else {
+				ba.refresh(new Integer(NFCPaymentActivity.NFCPAY_SUCCESS));
+				// }
+			}
+				break;
+			case Task.TASK_TRANSFER_TO_USER: {
+				Log.i("error", "转账回调中");
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("PaymentActivity");
+				// if (msg.obj instanceof PaymentException ||(Boolean)msg.obj) {
+				// PaymentException e = (PaymentException) msg.obj;
+				// // TODO 返回失败信息
+				// ba.refresh(new
+				// Integer(NFCTransferActivity.NFCTRANSFER_FAILURE), e);
+				// } else {
+				ba.refresh(new Integer(NFCTransferActivity.NFCTRANSFER_SUCCESS));
+				// }
 			}
 			case Task.TASK_GET_AVAILABLE_COUPON: {
 				Log.i("error", "查询本次消费所能使用的优惠券回调中");
@@ -395,7 +425,7 @@ public class MainService extends Service implements Runnable {
 					ba.refresh(
 							new Integer(PaymentConfirmActivity.QUERY_FAILURE),
 							e);
-				} else if(msg.obj instanceof LinkedList<?>){
+				} else if (msg.obj instanceof LinkedList<?>) {
 					ba.refresh(
 							new Integer(PaymentConfirmActivity.QUERY_SUCCESS),
 							msg.obj);
@@ -507,8 +537,8 @@ public class MainService extends Service implements Runnable {
 					t.setReceiver((String) task.getTaskParam().get("receiver"));
 					t.setAmount((Double) task.getTaskParam().get("money"));
 					t.setMethod((String) task.getTaskParam().get("method"));
-					futurePayment.personalPay(t, (String) task.getTaskParam()
-							.get("password"));
+					msg.obj = futurePayment.personalPay(t, (String) task
+							.getTaskParam().get("password"));
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
@@ -526,7 +556,7 @@ public class MainService extends Service implements Runnable {
 						map.put("amount", paramList.get(i).get("money"));
 						tempList.add(map);
 					}
-					futurePayment.multiplePay(tempList);
+					msg.obj = futurePayment.multiplePay(tempList);
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
@@ -542,7 +572,7 @@ public class MainService extends Service implements Runnable {
 					si.setContent((String) task.getTaskParam().get("content"));
 					si.setMoney((Double) task.getTaskParam().get("money"));
 					si.setPhoto((byte[]) task.getTaskParam().get("photo"));
-					futurePayment.shareExperience(si);
+					msg.obj = futurePayment.shareExperience(si);
 				} catch (PaymentException e) {
 					msg.obj = e;
 				}
@@ -697,6 +727,39 @@ public class MainService extends Service implements Runnable {
 				}
 				break;
 			}
+			case Task.TASK_NFC_PAY: {
+				Log.i("error", "NFC 支付");
+				try {
+					Transfer t = new Transfer();
+					t.setSender(getUser().getName());
+					t.setReceiver((String) task.getTaskParam().get("receiver"));
+					t.setAmount((Double) task.getTaskParam().get("money"));
+					t.setMethod((String) task.getTaskParam().get("method"));
+					msg.obj = futurePayment.personalPay(t);
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+			}
+				break;
+			case Task.TASK_TRANSFER_TO_USER: {
+				Log.i("error", "用户转账");
+				try {
+					Transfer t = new Transfer();
+					t.setSender((String) task.getTaskParam().get("sender"));
+					t.setReceiver(getUser().getName());
+					t.setAmount((Double) task.getTaskParam().get("money"));
+					t.setMethod((String) task.getTaskParam().get("method"));
+					if ((Double) task.getTaskParam().get("money") <= getUser()
+							.getMaxtransfer())
+						msg.obj = futurePayment.personalPay(t);
+					else
+						msg.obj = futurePayment.personalPay(t, (String) task
+								.getTaskParam().get("password"));
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
+			}
+				break;
 			case Task.TASK_GET_AVAILABLE_COUPON: {
 				Log.i("error", "查询本次消费所能使用的优惠券");
 				try {
@@ -708,10 +771,10 @@ public class MainService extends Service implements Runnable {
 				}
 				break;
 			}
-			default:
+			default: {
 				break;
 			}
-
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

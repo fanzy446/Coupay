@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.NFC" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -92,6 +93,13 @@
         <activity
             android:name="com.billme.ui.NFCPaymentActivity"
             android:label="@string/title_activity_nfcpayment" >
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/com.billme.ui" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.billme.ui.PaymentConfirmActivity"
@@ -171,7 +179,8 @@
         </receiver>
         <!-- Push服务接收客户端发送的各种请求 -->
         <!-- 注意：RegistrationReceiver 在2.1.1及之前版本有拼写失误，为RegistratonReceiver ，用新版本SDK时请更改为如下代码 -->
-        <!--  <receiver
+        <!--
+        <receiver
             android:name="com.baidu.android.pushservice.RegistrationReceiver"
             android:process=":bdservice_v1" >
             <intent-filter>
@@ -183,7 +192,7 @@
 
                 <data android:scheme="package" />
             </intent-filter>
-        </receiver>
+        </receiver>
         -->
         <!-- Push 服务 -->
         <service

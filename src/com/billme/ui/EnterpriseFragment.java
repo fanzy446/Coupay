@@ -83,8 +83,8 @@ public class EnterpriseFragment extends Fragment {
 				break;
 			default:
 				pd.cancel();
-				Toast.makeText(getActivity(), "error:" + state, Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(getActivity(), "error:" + state,
+						Toast.LENGTH_SHORT).show();
 			}
 		case RelationActivity.GET_ENTERPRISE_SUCCESS:
 			bindAdapter();

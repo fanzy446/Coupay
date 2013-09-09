@@ -32,9 +32,10 @@ public class MainActivity extends BaseActivity implements BillMeActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				// Intent intent = new Intent();
-				// intent.setClass(this, cls)
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, NFCPaymentActivity.class);
+				// startActivityForResult(intent, 0);
+				startActivity(intent);
 			}
 
 		});

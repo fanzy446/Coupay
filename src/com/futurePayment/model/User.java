@@ -17,6 +17,7 @@ public class User {
 	private String email;
 	private int grade;
 	private double balance;
+	private double maxtransfer;
 	private ArrayList<VipCard> vipCardList = new ArrayList<VipCard>();
 	private ArrayList<Coupon> couponList = new ArrayList<Coupon>();
 	private LinkedList<Friend> friendList = new LinkedList<Friend>();
@@ -194,6 +195,14 @@ public class User {
 
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
+	}
+
+	public double getMaxtransfer() {
+		return maxtransfer;
+	}
+
+	public void setMaxtransfer(double maxtransfer) {
+		this.maxtransfer = maxtransfer;
 	}
 
 	public ArrayList<TradeRecord> getTradeRecordList() {
