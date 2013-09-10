@@ -1,5 +1,6 @@
 package com.billme.ui;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -29,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +50,7 @@ public class PaymentConfirmActivity extends BaseActivity implements
 	private MyListViewAdapter peopleAdapter = null;
 	private ArrayList<HashMap<String, Object>> pl = new ArrayList<HashMap<String, Object>>();
 	private ArrayList<Friend> fl = new ArrayList<Friend>();
+	private LinearLayout layout = null;
 	private Button friendButton = null;
 	private Button codeButton = null;
 	private ImageView couponImage = null;
@@ -72,6 +75,7 @@ public class PaymentConfirmActivity extends BaseActivity implements
 		text = (TextView) findViewById(R.id.tv_payment_confirm_text);
 		choiceList = (ListView) findViewById(R.id.lv_payment_confirm_choice);
 		peopleList = (GridView) findViewById(R.id.gv_payment_confirm_people);
+		layout = (LinearLayout) findViewById(R.id.ll_payment_confirm_layout);
 		friendButton = (Button) findViewById(R.id.btn_payment_confirm_friend);
 		codeButton = (Button) findViewById(R.id.btn_payment_confirm_code);
 		couponImage = (ImageView) findViewById(R.id.iv_payment_confirm_coupon);
@@ -89,7 +93,7 @@ public class PaymentConfirmActivity extends BaseActivity implements
 			e.printStackTrace();
 		}
 
-		text.setText("本次消费需向" + receiver + "支付" + getMoney() + "元");
+		refreshText();
 		bindChoiceAdapter();
 
 		codeButton.setOnClickListener(new Button.OnClickListener() {
@@ -110,7 +114,6 @@ public class PaymentConfirmActivity extends BaseActivity implements
 				for (int i = 0; i < pl.size(); i++) {
 					name.add(fl.get(i).getName());
 				}
-				Log.i("error", "Payment:" + name.toString());
 				Intent intent = new Intent();
 				intent.putExtra("name", name);
 				intent.setClass(PaymentConfirmActivity.this,
@@ -205,6 +208,7 @@ public class PaymentConfirmActivity extends BaseActivity implements
 					{
 						cl.get(1).put("end", R.drawable.nav_left);
 						peopleList.setVisibility(View.VISIBLE);
+						layout.setVisibility(View.VISIBLE);
 						mutipay = true;
 						choiceAdapter.notifyDataSetChanged();
 					} else {
@@ -222,6 +226,11 @@ public class PaymentConfirmActivity extends BaseActivity implements
 							map.put("money", getMoney());
 							tempList.add(map);
 						}
+						HashMap<String, Object> map = new HashMap<String, Object>();
+						map.put("name", MainService.getUser().getName());
+						// 分摊方式需要考虑
+						map.put("money", getMoney());
+						tempList.add(map);
 						param.put("sender", tempList);
 						Task task = new Task(Task.TASK_MULTI_USER_PAY, param);
 						MainService.newTask(task);
@@ -250,17 +259,22 @@ public class PaymentConfirmActivity extends BaseActivity implements
 				// else
 				// {
 				pl.remove(arg2);
+				fl.remove(arg2);
+				refreshText();
 				peopleAdapter.notifyDataSetChanged();
 				// }
 			}
 		});
 	}
 
+	private void refreshText()
+	{
+		text.setText("本次消费需向" + receiver + "支付" + getMoney() + "元");
+	}
 	private double getMoney() {
 		double result = initialMoney;
 		if (couponPos != 0) {
 			Coupon coupon = ll.get(couponPos);
-
 			if ("discount".equals(coupon.getType())) {
 				result = initialMoney * coupon.getValue();
 			} else if ("substitute".equals(coupon.getType())) {
@@ -269,7 +283,8 @@ public class PaymentConfirmActivity extends BaseActivity implements
 
 		}
 		result = result / (fl.size() + 1);
-		return result;
+		DecimalFormat df = new DecimalFormat("#.##");    
+		return Double.parseDouble(df.format(result));
 	}
 
 	@Override
@@ -372,7 +387,6 @@ public class PaymentConfirmActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		fl = data.getParcelableArrayListExtra("friend");
-		Log.i("error", fl.toString());
 		pl = new ArrayList<HashMap<String, Object>>();
 		for (int i = 0; i < fl.size(); i++) {
 			Friend temp = fl.get(i);
@@ -383,7 +397,7 @@ public class PaymentConfirmActivity extends BaseActivity implements
 			pl.add(map3);
 		}
 		bindPeopleAdapter();
-		text.setText("本次消费需向" + receiver + "支付" + getMoney() + "元");
+		refreshText();
 		// double m = initialMoney - initialMoney / (fl.size() + 1) * fl.size();
 		// text.setText("本次消费需向" + receiver + "支付" + m + "元");
 	}
