@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
-
 import org.json.JSONArray;
 
 import android.annotation.SuppressLint;
@@ -22,13 +20,8 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 
-import com.baidu.android.pushservice.PushConstants;
-import com.baidu.android.pushservice.PushManager;
-import com.baidupush.Utils;
 import com.billme.ui.*;
 import com.billme.util.FileUtil;
-import com.billme.util.LocationUtil;
-
 import com.futurePayment.constant.Task;
 import com.futurePayment.model.*;
 import com.google.gson.Gson;
@@ -73,9 +66,11 @@ public class MainService extends Service implements Runnable {
 				} else if (msg.obj instanceof BasicInformation) {
 					BasicInformation bi = (BasicInformation) msg.obj;
 					futurePayment.getUser().setName(bi.getName());
+					futurePayment.getUser().setHead(bi.getHead());
 					futurePayment.getUser().setBalance(bi.getBalance());
 					futurePayment.getUser().setGrade(bi.getGrade());
 					ba.refresh(new Integer(LoginActivity.LOGIN_SECCUSS));
+					
 				}
 			}
 				break;
@@ -166,7 +161,7 @@ public class MainService extends Service implements Runnable {
 				Log.i("error", "单人支付回调中");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("PaymentActivity");
-				if (msg.obj instanceof PaymentException || (Boolean) msg.obj) {
+				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
 					// TODO 返回失败信息
 					ba.refresh(new Integer(PaymentActivity.PAY_FAILURE), e);
@@ -537,7 +532,7 @@ public class MainService extends Service implements Runnable {
 					t.setReceiver((String) task.getTaskParam().get("receiver"));
 					t.setAmount((Double) task.getTaskParam().get("money"));
 					t.setMethod((String) task.getTaskParam().get("method"));
-					msg.obj = futurePayment.personalPay(t, (String) task
+					futurePayment.personalPay(t, (String) task
 							.getTaskParam().get("password"));
 				} catch (PaymentException e) {
 					msg.obj = e;
@@ -790,19 +785,17 @@ public class MainService extends Service implements Runnable {
 
 	@Override
 	public void onCreate() {
-		Log.i("error", " 服务初始化中");
+		Log.i("error", "主服务初始化中");
 		super.onCreate();
 		this.isRun = true;
 		Thread t = new Thread(this);
 		t.start();
-		PushManager.startWork(getApplicationContext(),
-				PushConstants.LOGIN_TYPE_API_KEY, Utils.API_KEY);
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
-		Log.i("error", "服务启动中");
+		Log.i("error", "主服务启动中");
 		return super.onStartCommand(intent, flags, startId);
 	}
 

@@ -80,7 +80,6 @@ public class FriendActivity extends BaseActivity implements BillMeActivity {
 	private void bindAdapter() {
 		Intent intent = getIntent();
 		ArrayList<String> nl = intent.getStringArrayListExtra("name");
-		Log.i("error", "friendActivity:" + nl.toString());
 		LinkedList<Friend> al = MainService.getFuturePayment().getUser()
 				.getFriendList();
 		for (int i = 0; i < al.size(); i++) {
@@ -92,7 +91,7 @@ public class FriendActivity extends BaseActivity implements BillMeActivity {
 			fl.add(map);
 			// 初始化选择
 			if (nl.contains(f.getName())) {
-				map.put("back", R.drawable.click);
+				map.put("end", R.drawable.click);
 				isChosen.add(true);
 			} else {
 				isChosen.add(false);
@@ -108,10 +107,11 @@ public class FriendActivity extends BaseActivity implements BillMeActivity {
 				// TODO Auto-generated method stub
 				// 选中某位好友
 				if (isChosen.get(arg2) == true) {
-					fl.get(arg2).remove("back");
+					fl.get(arg2).remove("end");
 					isChosen.set(arg2, false);
 				} else {
-					fl.get(arg2).put("back", R.drawable.click);
+					Log.i("error", "false");
+					fl.get(arg2).put("end", R.drawable.click);
 					isChosen.set(arg2, true);
 				}
 				adapter.notifyDataSetChanged();

@@ -190,6 +190,10 @@ public class PaymentActivity extends BaseActivity implements BillMeActivity {
 			// 跳转到支付成功页面
 			Intent intent = new Intent();
 			intent.putExtra("receiver", receiver);
+			intent.putExtra("money", money);
+			intent.setClass(this, ShareActivity.class);
+			startActivity(intent);
+			finish();
 
 		} else if (((Integer) param[0]).intValue() == PAY_FAILURE) {
 			int state = ((PaymentException) param[1]).getResultCode();

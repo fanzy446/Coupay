@@ -2,6 +2,7 @@ package com.billme.ui;
 
 import java.util.HashMap;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.billme.logic.BillMeActivity;
 import com.billme.logic.MainService;
+import com.billme.logic.PushService;
 import com.billme.util.NetUtil;
 import com.futurePayment.constant.ResultCode;
 import com.futurePayment.constant.Task;
@@ -117,6 +119,9 @@ public class LoginActivity extends BaseActivity implements BillMeActivity {
 			break;
 		case LOGIN_SECCUSS:
 			pd.cancel();
+			//启动推送服务
+			Intent intent = new Intent(this, PushService.class);
+			this.startService(intent);
 			Intent it = new Intent(this, MainActivity.class);
 			this.startActivity(it);
 			MainService.allActivities.remove(this);

@@ -10,6 +10,7 @@ import java.util.LinkedList;
  */
 public class User {
 	private String name;
+	private String head;
 	private String realName;
 	private String sex;
 	private String birthday;
@@ -241,7 +242,7 @@ public class User {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "{name:" + name + ",realName:" + realName + ",sex:" + sex
+		return "{name:" + name + ",head:" + head + ",realName:" + realName + ",sex:" + sex
 				+ ",birthday:" + birthday + ",phone:" + phone + ",email:"
 				+ email + ",grade:" + grade + ",balance:" + balance
 				+ ",vipCardList:" + vipCardList.toString() + ",couponList:"
@@ -250,5 +251,13 @@ public class User {
 				+ couponList.toString() + ",bankCardList:"
 				+ bankCardList.toString() + ",tradeRecordList:"
 				+ tradeRecordList.toString() + "}";
+	}
+
+	public String getHead() {
+		return head;
+	}
+
+	public void setHead(String head) {
+		this.head = head;
 	}
 }

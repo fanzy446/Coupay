@@ -96,6 +96,8 @@ public class MyListViewAdapter extends BaseAdapter {
 			} else if (map.get("icon") instanceof Integer) {
 				viewHolder.icon.setImageDrawable(context.getResources()
 						.getDrawable((Integer) (map.get("icon"))));
+			} else if (map.get("icon") == null) {
+				viewHolder.end.setImageDrawable(null);
 			}
 			viewHolder.text.setText((String) map.get("text"));
 			if (map.get("end") instanceof String) {
@@ -117,6 +119,8 @@ public class MyListViewAdapter extends BaseAdapter {
 			} else if (map.get("end") instanceof Integer) {
 				viewHolder.end.setImageDrawable(context.getResources()
 						.getDrawable((Integer) (map.get("end"))));
+			} else if (map.get("end") == null) {
+				viewHolder.end.setImageDrawable(null);
 			}
 		}
 		return convertView;
