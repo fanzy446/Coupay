@@ -37,12 +37,6 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 	private MyListViewAdapter adapter = null;
 	private ArrayList<HashMap<String, Object>> al = new ArrayList<HashMap<String, Object>>();
 
-	private Dialog addBankCard = null;
-	private EditText cardNumber = null;
-	private EditText password = null;
-	private Button add = null;
-	private Button cancel = null;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,6 +48,11 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 		bandCardBindButton = (Button) findViewById(R.id.btn_bankcard_bind);
 
 		bandCardBindButton.setOnClickListener(new Button.OnClickListener() {
+			private Dialog addBankCard = null;
+			private EditText cardNumber = null;
+			private EditText password = null;
+			private Button add = null;
+			private Button cancel = null;
 
 			@Override
 			public void onClick(View v) {
@@ -69,7 +68,6 @@ public class BankCardActivity extends BaseActivity implements BillMeActivity {
 				cancel = (Button) temp
 						.findViewById(R.id.btn_addbankcard_cancel);
 				add.setOnClickListener(new Button.OnClickListener() {
-
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub

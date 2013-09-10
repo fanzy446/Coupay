@@ -15,6 +15,7 @@ import com.futurePayment.model.PaymentException;
 import android.os.Bundle;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -69,7 +70,7 @@ public class FriendActivity extends BaseActivity implements BillMeActivity {
 					}
 				}
 				Intent intent = new Intent();
-				intent.putExtra("friend", al);
+				intent.putParcelableArrayListExtra("friend", al);
 				setResult(0, intent);
 				finish();
 			}
@@ -90,7 +91,7 @@ public class FriendActivity extends BaseActivity implements BillMeActivity {
 			fl.add(map);
 			// 初始化选择
 			if (nl.contains(f.getName())) {
-				map.put("back", R.drawable.click);
+				map.put("end", R.drawable.click);
 				isChosen.add(true);
 			} else {
 				isChosen.add(false);
@@ -106,12 +107,14 @@ public class FriendActivity extends BaseActivity implements BillMeActivity {
 				// TODO Auto-generated method stub
 				// 选中某位好友
 				if (isChosen.get(arg2) == true) {
-					fl.get(arg2).remove("back");
+					fl.get(arg2).remove("end");
 					isChosen.set(arg2, false);
 				} else {
-					fl.get(arg2).put("back", R.drawable.click);
+					Log.i("error", "false");
+					fl.get(arg2).put("end", R.drawable.click);
 					isChosen.set(arg2, true);
 				}
+				adapter.notifyDataSetChanged();
 			}
 		});
 	}

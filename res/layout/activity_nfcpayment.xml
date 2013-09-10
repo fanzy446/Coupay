@@ -25,10 +25,10 @@
         android:id="@+id/et_nfcpayment_money"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="100dp"
         android:layout_weight="0"
         android:ems="10"
-        android:layout_gravity="center"
         android:hint="Money"
         android:inputType="numberDecimal" />
 

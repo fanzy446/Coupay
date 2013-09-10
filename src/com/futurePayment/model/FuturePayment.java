@@ -98,13 +98,14 @@ public class FuturePayment {
 		}
 	}
 
-	public boolean personalPay(Transfer transfer) throws PaymentException{
-		try{
+	public boolean personalPay(Transfer transfer) throws PaymentException {
+		try {
 			return supporter.personalPay(transfer);
-		} catch(PaymentException e){
+		} catch (PaymentException e) {
 			throw e;
 		}
 	}
+
 	/**
 	 * 分页获取交易记录
 	 * 
@@ -350,6 +351,25 @@ public class FuturePayment {
 	public LinkedList<Coupon> queryCoupon() throws PaymentException {
 		try {
 			return supporter.queryCoupon();
+		} catch (PaymentException e) {
+			throw e;
+		}
+	}
+
+	/**
+	 * 查询本次消费能够使用的优惠券
+	 * 
+	 * @param name
+	 *            商家名
+	 * @param money
+	 *            此次消费金额
+	 * @return 优惠券列表
+	 * @throws PaymentException
+	 */
+	public LinkedList<Coupon> queryAvailableCoupon(String name, Double money)
+			throws PaymentException {
+		try {
+			return supporter.queryAvailableCoupon(name, money);
 		} catch (PaymentException e) {
 			throw e;
 		}

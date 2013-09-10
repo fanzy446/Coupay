@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
-
 import org.json.JSONArray;
 
 import android.annotation.SuppressLint;
@@ -22,13 +20,8 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 
-import com.baidu.android.pushservice.PushConstants;
-import com.baidu.android.pushservice.PushManager;
-import com.baidupush.Utils;
 import com.billme.ui.*;
 import com.billme.util.FileUtil;
-import com.billme.util.LocationUtil;
-
 import com.futurePayment.constant.Task;
 import com.futurePayment.model.*;
 import com.google.gson.Gson;
@@ -55,44 +48,46 @@ public class MainService extends Service implements Runnable {
 	}
 
 	private Handler handler = new Handler() {
-		// »Øµ÷º¯Êı
+		// é”Ÿæˆªç¢‰æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
 		@SuppressWarnings("unchecked")
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case Task.TASK_USER_LOGIN: {
-				// µÇÂ½
-				Log.i("error", "µÇÂ½»Øµ÷ÖĞ");
+				// é”Ÿæ–¤æ‹·é™†
+				Log.i("error", "é”Ÿæ–¤æ‹·é™†é”Ÿæˆªç¢‰æ‹·é”Ÿæ–¤æ‹·");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("LoginActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(LoginActivity.LOGIN_FAILURE), e);
 				} else if (msg.obj instanceof BasicInformation) {
 					BasicInformation bi = (BasicInformation) msg.obj;
 					futurePayment.getUser().setName(bi.getName());
+					futurePayment.getUser().setHead(bi.getHead());
 					futurePayment.getUser().setBalance(bi.getBalance());
 					futurePayment.getUser().setGrade(bi.getGrade());
 					ba.refresh(new Integer(LoginActivity.LOGIN_SECCUSS));
+					
 				}
 			}
 				break;
 			case Task.TASK_GET_USER_INFO: {
-				Log.i("error", "»ñÈ¡ÓÃ»§ĞÅÏ¢»Øµ÷ÖĞ");
+				Log.i("error", "é”Ÿæ–¤æ‹·å–é”ŸçŸ«ä¼™æ‹·é”Ÿæ–¤æ‹·æ¯é”Ÿæˆªç¢‰æ‹·é”Ÿæ–¤æ‹·");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("MainActivity");
 				ba.refresh(new Integer(MainActivity.REFRESH_USERINFO), msg.obj);
 				break;
 			}
 			case Task.TASK_CHECK_NAME_AVAILABLE: {
-				Log.i("error", "²âÊÔÓÃ»§ÃûÊÇ·ñÓĞĞ§»Øµ÷ÖĞ");
+				Log.i("error", "é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”ŸçŸ«ä¼™æ‹·é”Ÿæ–¤æ‹·é”Ÿè§’å‡¤æ‹·é”Ÿæ–¤æ‹·æ•ˆé”Ÿæˆªç¢‰æ‹·é”Ÿæ–¤æ‹·");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("RegistActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(RegistActivity.NAME_NOT_AVAILABLE),
 							e);
 				} else {
@@ -101,12 +96,12 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_USER_REGIST: {
-				Log.i("error", "ÓÃ»§×¢²á»Øµ÷ÖĞ");
+				Log.i("error", "ç”¨æˆ·æ³¨å†Œ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("RegistActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(RegistActivity.REGIST_FAILURE), e);
 				} else {
 					ba.refresh(new Integer(RegistActivity.REGIST_SUCCESS), null);
@@ -114,12 +109,12 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_BANK_CARD: {
-				Log.i("error", "»ñÈ¡ÒøĞĞ¿¨ÁĞ±í»Øµ÷ÖĞ");
+				Log.i("error", "è·å–é“¶è¡Œå¡");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("BankCardActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(
 							BankCardActivity.GET_BANK_CARD_FAILURE), e);
 				} else if (msg.obj instanceof LinkedList<?>) {
@@ -131,12 +126,11 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_ADD_BANK_CARD: {
-				Log.i("error", "Ìí¼ÓÒøĞĞ¿¨»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("BankCardActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(
 							BankCardActivity.ADD_BANK_CARD_FAILURE), e);
 				} else if (msg.obj instanceof BankCard) {
@@ -146,12 +140,11 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_FRIENDS: {
-				Log.i("error", "²éÑ¯ºÃÓÑÁĞ±í»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("RelationActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(
 							new Integer(RelationActivity.GET_FRIEND_FAILURE), e);
 				} else if (msg.obj instanceof LinkedList<?>) {
@@ -163,12 +156,11 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_SINGLE_USER_PAY: {
-				Log.i("error", "µ¥ÈËÖ§¸¶»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("PaymentActivity");
-				if (msg.obj instanceof PaymentException || (Boolean) msg.obj) {
+				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(PaymentActivity.PAY_FAILURE), e);
 				} else {
 					ba.refresh(new Integer(PaymentActivity.PAY_SUCCESS), null);
@@ -176,12 +168,11 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_MULTI_USER_PAY: {
-				Log.i("error", "¶àÈËÖ§¸¶»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("PaymentConfirmActivity");
 				if (msg.obj instanceof PaymentException || (Boolean) msg.obj) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(
 							new Integer(PaymentConfirmActivity.APPLY_FAILURE),
 							e);
@@ -193,12 +184,11 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_SHARE_MOMENT: {
-				Log.i("error", "·ÖÏíÏû·ÑÌåÑé»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("ShareActivity");
 				if (msg.obj instanceof PaymentException || (Boolean) msg.obj) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(ShareActivity.SHARE_FAILURE), e);
 				} else {
 					ba.refresh(new Integer(ShareActivity.SHARE_SECCUSS), null);
@@ -206,12 +196,11 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_MOMENTS: {
-				Log.i("error", "»ñµÃÏû·ÑÌåÑé»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("SocietyActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(SocietyActivity.GET_FAILURE), e);
 				} else {
 					ba.refresh(new Integer(SocietyActivity.GET_SECCUSS),
@@ -221,12 +210,11 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_AROUND_ENTERPRISES: {
-				Log.i("error", "»ñÈ¡ÖÜ±ßÉÌ¼ÒĞÅÏ¢»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("SurroundActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(SurroundActivity.GET_FAILURE), e);
 				} else {
 					ba.refresh(new Integer(SurroundActivity.GET_SECCUSS),
@@ -235,7 +223,6 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.INIT_SOCIETY: {
-				Log.i("error", "³õÊ¼»¯ÉçÇø½çÃæ»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("SocietyActivity");
 				if (msg.obj != null)
@@ -247,7 +234,6 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.INIT_SURROUND: {
-				Log.i("error", "³õÊ¼»¯ÖÜ±ß½çÃæ»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("SurroundActivity");
 				if (msg.obj != null)
@@ -259,12 +245,11 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_COUPON: {
-				Log.i("error", "»ñµÃÓÅ»İÈ¯ÁĞ±í»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("CouponActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(CouponActivity.GET_COUPON_FAILURE),
 							e);
 				} else if (msg.obj instanceof LinkedList<?>) {
@@ -275,7 +260,6 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_TRADING_REACORD: {
-				Log.i("error", "»ñÈ¡ÕËµ¥ĞÅÏ¢»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("TradeRecordActivity");
 				if (msg.obj instanceof PaymentException || msg.obj == null)
@@ -285,7 +269,6 @@ public class MainService extends Service implements Runnable {
 			}
 				break;
 			case Task.TASK_REFRESH_TRADING_REACORD: {
-				Log.i("error", "ÏÂÀ­Ë¢ĞÂÕËµ¥ĞÅÏ¢");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("TradeRecordActivity");
 				if (msg.obj instanceof PaymentException || msg.obj == null)
@@ -296,7 +279,6 @@ public class MainService extends Service implements Runnable {
 			}
 				break;
 			case Task.TASK_LOAD_TRADING_REACORD: {
-				Log.i("error", "ÉÏÀ­¼ÓÔØÕËµ¥ĞÅÏ¢");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("TradeRecordActivity");
 				if (msg.obj instanceof PaymentException || msg.obj == null)
@@ -306,12 +288,11 @@ public class MainService extends Service implements Runnable {
 			}
 				break;
 			case Task.TASK_GET_ENTERPRISES: {
-				Log.i("error", "µÃµ½¹Ø×¢ÉÌ¼ÒÁĞ±í»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("RelationActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(
 							RelationActivity.GET_ENTERPRISE_FAILURE), e);
 				} else if (msg.obj instanceof LinkedList<?>) {
@@ -323,12 +304,11 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_SEARCH_ENTERPRISE: {
-				Log.i("error", "ËÑË÷ÉÌ¼Ò»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("SearchEnterpriseActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(
 							new Integer(
 									SearchEnterpriseActivity.SEARCH_ENTERPRISE_FAILURE),
@@ -342,12 +322,11 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_SEARCH_FRIEND: {
-				Log.i("error", "ËÑË÷ºÃÓÑ»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("SearchFriendActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(
 							SearchFriendActivity.SEARCH_FRIEND_FAILURE), e);
 				} else if (msg.obj instanceof LinkedList<?>) {
@@ -358,11 +337,10 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_FOLLOW_ENTERPRISE: {
-				Log.i("error", "¹Ø×¢ÉÌ¼Ò»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("SearchEnterpriseActivity");
 				if (msg.obj instanceof PaymentException) {
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(
 							new Integer(
 									SearchEnterpriseActivity.ATTENT_ENTERPRISE_FAILURE),
@@ -374,12 +352,11 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_ADD_FRIEND: {
-				Log.i("error", "Ìí¼ÓºÃÓÑ»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("SearchFriendActivity");
 				if (msg.obj instanceof PaymentException) {
 					PaymentException e = (PaymentException) msg.obj;
-					// TODO ·µ»ØÊ§°ÜĞÅÏ¢
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 					ba.refresh(new Integer(
 							SearchFriendActivity.ADD_FRIEND_FAILURE), e);
 				} else {
@@ -389,12 +366,11 @@ public class MainService extends Service implements Runnable {
 			}
 				break;
 			case Task.TASK_NFC_PAY: {
-				Log.i("error", "NFC Ö§¸¶»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("PaymentActivity");
 				// if (msg.obj instanceof PaymentException ||(Boolean)msg.obj) {
 				// PaymentException e = (PaymentException) msg.obj;
-				// // TODO ·µ»ØÊ§°ÜĞÅÏ¢
+				// // TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 				// ba.refresh(new Integer(NFCPaymentActivity.NFCPAY_FAILURE),
 				// e);
 				// } else {
@@ -403,17 +379,32 @@ public class MainService extends Service implements Runnable {
 			}
 				break;
 			case Task.TASK_TRANSFER_TO_USER: {
-				Log.i("error", "×ªÕË»Øµ÷ÖĞ");
 				BillMeActivity ba = (BillMeActivity) MainService
 						.getActivityByName("PaymentActivity");
 				// if (msg.obj instanceof PaymentException ||(Boolean)msg.obj) {
 				// PaymentException e = (PaymentException) msg.obj;
-				// // TODO ·µ»ØÊ§°ÜĞÅÏ¢
+				// // TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
 				// ba.refresh(new
 				// Integer(NFCTransferActivity.NFCTRANSFER_FAILURE), e);
 				// } else {
 				ba.refresh(new Integer(NFCTransferActivity.NFCTRANSFER_SUCCESS));
 				// }
+			}
+			case Task.TASK_GET_AVAILABLE_COUPON: {
+				BillMeActivity ba = (BillMeActivity) MainService
+						.getActivityByName("PaymentConfirmActivity");
+				if (msg.obj instanceof PaymentException) {
+					PaymentException e = (PaymentException) msg.obj;
+					// TODO é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¤±é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¯
+					ba.refresh(
+							new Integer(PaymentConfirmActivity.QUERY_FAILURE),
+							e);
+				} else if (msg.obj instanceof LinkedList<?>) {
+					ba.refresh(
+							new Integer(PaymentConfirmActivity.QUERY_SUCCESS),
+							msg.obj);
+				}
+				break;
 			}
 			default:
 				break;
@@ -428,7 +419,7 @@ public class MainService extends Service implements Runnable {
 		try {
 			switch (task.getTaskId()) {
 			case Task.TASK_USER_LOGIN: {
-				Log.i("error", "µÇÂ½ÖĞ");
+				Log.i("error", "é”Ÿæ–¤æ‹·é™†é”Ÿæ–¤æ‹·");
 				String userName = (String) task.getTaskParam().get("userName");
 				String userPassword = (String) task.getTaskParam().get(
 						"userPassword");
@@ -441,13 +432,13 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_USER_INFO: {
-				Log.i("error", "»ñÈ¡ÓÃ»§ĞÅÏ¢");
+				Log.i("error", "é”Ÿæ–¤æ‹·å–é”ŸçŸ«ä¼™æ‹·é”Ÿæ–¤æ‹·æ¯");
 
 				msg.obj = task.getTaskParam();
 				break;
 			}
 			case Task.TASK_CHECK_NAME_AVAILABLE: {
-				Log.i("error", "²âÊÔÓÃ»§ÃûÊÇ·ñÓĞĞ§");
+				Log.i("error", "é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”ŸçŸ«ä¼™æ‹·é”Ÿæ–¤æ‹·é”Ÿè§’å‡¤æ‹·é”Ÿæ–¤æ‹·æ•ˆ");
 				try {
 					futurePayment.checkUserExistence((String) task
 							.getTaskParam().get("name"));
@@ -457,7 +448,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_USER_REGIST: {
-				Log.i("error", "ÓÃ»§×¢²á");
+				Log.i("error", "é”ŸçŸ«ä¼™æ‹·æ³¨é”Ÿæ–¤æ‹·");
 				RegistInformation ri = new RegistInformation();
 				try {
 					ri.setName((String) task.getTaskParam().get("name"));
@@ -479,7 +470,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_BANK_CARD: {
-				Log.i("error", "»ñÈ¡ÒøĞĞ¿¨ÁĞ±í");
+				Log.i("error", "é”Ÿæ–¤æ‹·å–é”Ÿæ–¤æ‹·é”Ÿå«åŒ¡æ‹·é”Ÿå«æ†‹æ‹·");
 				try {
 					msg.obj = futurePayment.queryAccount();
 				} catch (PaymentException e) {
@@ -488,7 +479,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_ADD_BANK_CARD: {
-				Log.i("error", "Ìí¼ÓÒøĞĞ¿¨");
+				Log.i("error", "æ·»åŠ é“¶è¡Œå¡");
 				try {
 					BankCard bc = new BankCard();
 					String cardNumber = (String) task.getTaskParam().get(
@@ -504,7 +495,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_FRIENDS: {
-				Log.i("error", "»ñÈ¡ºÃÓÑÁĞ±í");
+				Log.i("error", "è·å–å¥½å‹åˆ—è¡¨");
 				try {
 					msg.obj = futurePayment.queryFriend();
 				} catch (PaymentException e) {
@@ -513,14 +504,14 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_SINGLE_USER_PAY: {
-				Log.i("error", "¸öÈËÖ§¸¶");
+				Log.i("error", "é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ”¯é”Ÿæ–¤æ‹·");
 				try {
 					Transfer t = new Transfer();
 					t.setSender(getUser().getName());
 					t.setReceiver((String) task.getTaskParam().get("receiver"));
 					t.setAmount((Double) task.getTaskParam().get("money"));
 					t.setMethod((String) task.getTaskParam().get("method"));
-					msg.obj = futurePayment.personalPay(t, (String) task
+					futurePayment.personalPay(t, (String) task
 							.getTaskParam().get("password"));
 				} catch (PaymentException e) {
 					msg.obj = e;
@@ -528,7 +519,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_MULTI_USER_PAY: {
-				Log.i("error", "¶àÈËÖ§¸¶");
+				Log.i("error", "é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ”¯é”Ÿæ–¤æ‹·");
 				try {
 					ArrayList<HashMap<String, Object>> paramList = (ArrayList<HashMap<String, Object>>) task
 							.getTaskParam().get("sender");
@@ -546,7 +537,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_SHARE_MOMENT: {
-				Log.i("error", "·ÖÏíÏû·ÑÌåÑé");
+				Log.i("error", "åˆ†äº«moment");
 				try {
 					ShareInfo si = new ShareInfo();
 					si.setEnterpriseName((String) task.getTaskParam().get(
@@ -562,7 +553,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_MOMENTS: {
-				Log.i("error", "»ñµÃÏû·ÑÌåÑé");
+				Log.i("error", "é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·");
 				try {
 					msg.obj = futurePayment.getExperience();
 				} catch (PaymentException e) {
@@ -571,7 +562,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_AROUND_ENTERPRISES: {
-				Log.i("error", "»ñÈ¡ÖÜ±ßÉÌ¼ÒĞÅÏ¢");
+				Log.i("error", "é”Ÿæ–¤æ‹·å–é”Ÿæ°æ†‹æ‹·é”Ÿæ•™ç¡·æ‹·é”Ÿæ–¤æ‹·æ¯");
 				try {
 					msg.obj = futurePayment
 							.getSurroundingEnterprise((Location) task
@@ -582,7 +573,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.INIT_SOCIETY: {
-				Log.i("error", "³õÊ¼»¯ÉçÇø½çÃæ");
+				Log.i("error", "åˆå§‹åŒ–ç¤¾åŒº");
 				FileUtil fileUtil = new FileUtil(MainService.getUser()
 						.getName());
 				JSONArray ja = new JSONArray(fileUtil.readFromSD("society"));
@@ -594,7 +585,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.INIT_SURROUND: {
-				Log.i("error", "³õÊ¼»¯ÖÜ±ß½çÃæ");
+				Log.i("error", "åˆå§‹å‘¨è¾¹");
 				FileUtil fileUtil = new FileUtil(MainService.getUser()
 						.getName());
 				JSONArray ja = new JSONArray(fileUtil.readFromSD("surround"));
@@ -607,7 +598,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_COUPON: {
-				Log.i("error", "»ñÈ¡ÓÅ»İÈ¯ÁĞ±í");
+				Log.i("error", "é”Ÿæ–¤æ‹·å–é”Ÿè„šä¼™æ‹·åˆ¸é”Ÿå«æ†‹æ‹·");
 				try {
 					msg.obj = futurePayment.queryCoupon();
 				} catch (PaymentException e) {
@@ -616,7 +607,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_GET_TRADING_REACORD: {
-				Log.i("error", "»ñÈ¡ÕËµ¥ĞÅÏ¢");
+				Log.i("error", "é”Ÿæ–¤æ‹·å–é”Ÿå‰¿ç¢‰æ‹·é”Ÿæ–¤æ‹·æ¯");
 				try {
 					ArrayList<TradeRecord> tempTr;
 					tempTr = MainService.getUser().getTradeRecordList();
@@ -631,7 +622,7 @@ public class MainService extends Service implements Runnable {
 			}
 				break;
 			case Task.TASK_REFRESH_TRADING_REACORD: {
-				Log.i("error", "ÏÂÀ­Ë¢ĞÂÕËµ¥ĞÅÏ¢");
+				Log.i("error", "é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åˆ·é”Ÿæ–¤æ‹·é”Ÿå‰¿ç¢‰æ‹·é”Ÿæ–¤æ‹·æ¯");
 				try {
 					ArrayList<TradeRecord> tempTr;
 					String id = MainService.getUser().getTradeRecordList()
@@ -645,7 +636,7 @@ public class MainService extends Service implements Runnable {
 			}
 				break;
 			case Task.TASK_LOAD_TRADING_REACORD: {
-				Log.i("error", "ÉÏÀ­¼ÓÔØÕËµ¥ĞÅÏ¢");
+				Log.i("error", "é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿå‰¿ç¢‰æ‹·é”Ÿæ–¤æ‹·æ¯");
 				try {
 					ArrayList<TradeRecord> tempTr;
 					String id = MainService
@@ -662,7 +653,7 @@ public class MainService extends Service implements Runnable {
 			}
 				break;
 			case Task.TASK_GET_ENTERPRISES: {
-				Log.i("error", "»ñÈ¡¹Ø×¢µÄÉÌ¼ÒÁĞ±í");
+				Log.i("error", "é”Ÿæ–¤æ‹·å–é”Ÿæ–¤æ‹·æ³¨é”Ÿæ–¤æ‹·é”Ÿæ•™ç¡·æ‹·é”Ÿå«æ†‹æ‹·");
 				try {
 					msg.obj = futurePayment.queryEnterprise();
 				} catch (PaymentException e) {
@@ -671,7 +662,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_SEARCH_ENTERPRISE: {
-				Log.i("error", "ËÑË÷ÉÌ¼Ò");
+				Log.i("error", "é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ•™ç¡·æ‹·");
 				try {
 					msg.obj = futurePayment.searchEnterprise((String) task
 							.getTaskParam().get("name"));
@@ -681,7 +672,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_SEARCH_FRIEND: {
-				Log.i("error", "ËÑË÷ºÃÓÑ");
+				Log.i("error", "é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·");
 				try {
 					msg.obj = futurePayment.searchFriend((String) task
 							.getTaskParam().get("name"));
@@ -691,7 +682,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_FOLLOW_ENTERPRISE: {
-				Log.i("error", "¹Ø×¢ÉÌ¼Ò");
+				Log.i("error", "é”Ÿæ–¤æ‹·æ³¨é”Ÿæ•™ç¡·æ‹·");
 				try {
 					futurePayment.attentEnterprise((String) task.getTaskParam()
 							.get("name"));
@@ -701,7 +692,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_ADD_FRIEND: {
-				Log.i("error", "Ìí¼ÓºÃÓÑ");
+				Log.i("error", "æ·»åŠ å¥½å‹");
 				try {
 					futurePayment.addFriend((String) task.getTaskParam().get(
 							"name"));
@@ -711,7 +702,7 @@ public class MainService extends Service implements Runnable {
 				break;
 			}
 			case Task.TASK_NFC_PAY: {
-				Log.i("error", "NFC Ö§¸¶");
+				Log.i("error", "NFC æ”¯é”Ÿæ–¤æ‹·");
 				try {
 					Transfer t = new Transfer();
 					t.setSender(getUser().getName());
@@ -725,7 +716,7 @@ public class MainService extends Service implements Runnable {
 			}
 				break;
 			case Task.TASK_TRANSFER_TO_USER: {
-				Log.i("error", "ÓÃ»§×ªÕË");
+				Log.i("error", "é”ŸçŸ«ä¼™æ‹·è½¬é”Ÿæ–¤æ‹·");
 				try {
 					Transfer t = new Transfer();
 					t.setSender((String) task.getTaskParam().get("sender"));
@@ -743,10 +734,21 @@ public class MainService extends Service implements Runnable {
 				}
 			}
 				break;
-			default:
+			case Task.TASK_GET_AVAILABLE_COUPON: {
+				Log.i("error", "è·å–ä¼˜æƒ åˆ¸");
+				try {
+					msg.obj = futurePayment.queryAvailableCoupon((String) task
+							.getTaskParam().get("name"), (Double) task
+							.getTaskParam().get("money"));
+				} catch (PaymentException e) {
+					msg.obj = e;
+				}
 				break;
 			}
-
+			default: {
+				break;
+			}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -762,19 +764,17 @@ public class MainService extends Service implements Runnable {
 
 	@Override
 	public void onCreate() {
-		Log.i("error", " ·şÎñ³õÊ¼»¯ÖĞ");
+		Log.i("error", "å¯åŠ¨æœåŠ¡");
 		super.onCreate();
 		this.isRun = true;
 		Thread t = new Thread(this);
 		t.start();
-		PushManager.startWork(getApplicationContext(),
-				PushConstants.LOGIN_TYPE_API_KEY, Utils.API_KEY);
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
-		Log.i("error", "·şÎñÆô¶¯ÖĞ");
+		Log.i("error", "é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·");
 		return super.onStartCommand(intent, flags, startId);
 	}
 
@@ -840,8 +840,8 @@ public class MainService extends Service implements Runnable {
 			Task lastTask = null;
 			synchronized (allTask) {
 				if (allTask.size() > 0) {
-					lastTask = allTask.get(0); // È¡ÈÎÎñ
-					doTask(lastTask); // Ö´ĞĞÈÎÎñ
+					lastTask = allTask.get(0); // å–é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
+					doTask(lastTask); // æ‰§é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
 				}
 			}
 			try {

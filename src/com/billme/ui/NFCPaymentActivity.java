@@ -25,7 +25,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 public class NFCPaymentActivity extends BaseActivity implements BillMeActivity,
 		CreateNdefMessageCallback, OnNdefPushCompleteCallback {
 
@@ -35,6 +34,7 @@ public class NFCPaymentActivity extends BaseActivity implements BillMeActivity,
 	private static final int MESSAGE_SENT = -100;
 	public static final int NFCPAY_SUCCESS = -101;
 	public static final int NFCPAY_FAILURE = -102;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -98,9 +98,9 @@ public class NFCPaymentActivity extends BaseActivity implements BillMeActivity,
 		if (mInfoText != null && msg != null) {
 			String str = new String(msg.getRecords()[0].getPayload());
 			mInfoText.setText(new String(msg.getRecords()[0].getPayload()));
-			
+
 			String[] temp = str.split("~");
-			
+
 			HashMap<String, String> param = new HashMap<String, String>();
 			param.put("receiver", temp[0]);
 			param.put("money", temp[1]);
@@ -144,7 +144,6 @@ public class NFCPaymentActivity extends BaseActivity implements BillMeActivity,
 		Time time = new Time();
 		time.setToNow();
 
-		
 		String payInfo = (MainService.getUser().getName() + "~" + money
 				.getText().toString());
 		String text = ("Beam me up!\n\n" + money.getText().toString()

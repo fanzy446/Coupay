@@ -5,27 +5,15 @@
     android:background="#f8f8f8"
     android:orientation="vertical" >
 
-    <ScrollView
+    <include layout="@layout/my_title" />
+
+    <ListView
+        android:id="@+id/lv_friend_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <include layout="@layout/my_title" />
-
-            <ListView
-                android:id="@+id/lv_friend_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:listSelector="@drawable/list_selector" >
-            </ListView>
-        </LinearLayout>
-    </ScrollView>
+        android:layout_weight="1"
+        android:listSelector="@drawable/list_selector" >
+    </ListView>
 
     <Button
         android:id="@+id/btn_friend_ok"

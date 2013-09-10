@@ -119,8 +119,7 @@ public class FuturePaymentSupport {
 	 * @param transfer
 	 * @param password
 	 */
-	public boolean personalPay(Transfer transfer)
-			throws PaymentException {
+	public boolean personalPay(Transfer transfer) throws PaymentException {
 		JSONObject jobj = new JSONObject();
 		try {
 			jobj.put("sender", transfer.getSender());
@@ -251,9 +250,6 @@ public class FuturePaymentSupport {
 				JSONArray array = response.getResultArray("tradeRecords");
 				for (int i = 0; i < array.length(); i++) {
 					JSONObject ob = array.getJSONObject(i);
-					
-					
-					
 					TradeRecord record = new TradeRecord();
 					record.setId(ob.getString("id"));
 					record.setSender(ob.getString("sender"));
@@ -436,8 +432,9 @@ public class FuturePaymentSupport {
 		boolean result = false;
 		try {
 			Gson gson = new Gson();
-			MyResponse response = http.post(ServiceType.MUTIPLE_PAY,
-					new JSONObject(gson.toJson(payerlist)));
+			JSONObject temp = new JSONObject();
+			temp.put("payerlist", new JSONArray(gson.toJson(payerlist)));
+			MyResponse response = http.post(ServiceType.MUTIPLE_PAY, temp);
 			if (response.getResultCode() == ResultCode.SUCCESS)
 				return true;
 			else
@@ -750,6 +747,31 @@ public class FuturePaymentSupport {
 		return al;
 	}
 
+	public LinkedList<Coupon> queryAvailableCoupon(String name, Double money)
+			throws PaymentException {
+		LinkedList<Coupon> al = null;
+		Gson gson = new Gson();
+		try {
+			JSONObject temp = new JSONObject();
+			temp.put("name", name);
+			temp.put("money", money);
+			MyResponse response = http.post(ServiceType.QUERY_AVAILABLE_COUPON,
+					temp);
+			if (response.getResultCode() == ResultCode.SUCCESS) {
+				al = gson.fromJson(response.getResultArray("couponList")
+						.toString(), new TypeToken<LinkedList<Coupon>>() {
+				}.getType());
+			} else
+				throw new PaymentException(response.getResultCode());
+
+		} catch (PaymentException e) {
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return al;
+	}
+
 	/**
 	 * 
 	 * 查询优惠券详细信息
@@ -990,7 +1012,7 @@ public class FuturePaymentSupport {
 		JSONObject jobj = new JSONObject();
 		boolean result = false;
 		try {
-			jobj.put("name", name);
+			jobj.put("friend", name);
 			MyResponse response = http.post(ServiceType.ADD_FRIEND, jobj);
 			if (response.getResultCode() == ResultCode.SUCCESS)
 				return true;
@@ -1037,7 +1059,7 @@ public class FuturePaymentSupport {
 		LinkedList<EnterpriseBasicInfo> al = null;
 		try {
 			Gson gson = new Gson();
-			MyResponse response = http.post(ServiceType.QUERY_FRIEND, null);
+			MyResponse response = http.post(ServiceType.QUERY_ENTERPRISE, null);
 			if (response.getResultCode() == ResultCode.SUCCESS) {
 				JSONArray ja = response.getResultArray("enterpriseList");
 				al = gson.fromJson(ja.toString(),
@@ -1060,7 +1082,7 @@ public class FuturePaymentSupport {
 		try {
 			Gson gson = new Gson();
 			JSONObject jo = new JSONObject();
-			jo.put("name", name);
+			jo.put("enterprise", name);
 			MyResponse response = http.post(ServiceType.SEARCH_ENTERPRISE, jo);
 			if (response.getResultCode() == ResultCode.SUCCESS) {
 				JSONArray ja = response.getResultArray("enterpriseList");
@@ -1090,7 +1112,7 @@ public class FuturePaymentSupport {
 		JSONObject jobj = new JSONObject();
 		boolean result = false;
 		try {
-			jobj.put("name", name);
+			jobj.put("enterprise", name);
 			MyResponse response = http
 					.post(ServiceType.ATTENT_ENTERPRISE, jobj);
 			if (response.getResultCode() == ResultCode.SUCCESS)

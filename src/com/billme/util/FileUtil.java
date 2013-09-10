@@ -292,6 +292,70 @@ public class FileUtil {
 	}
 
 	/**
+	 * 通过inputStream写入数据到sd卡
+	 * 
+	 * @param dir
+	 *            文件目录路径
+	 * @param fileName
+	 *            文件名
+	 * @param input
+	 *            输入流
+	 * @param outputSize
+	 *            读入缓存大小
+	 * @param inputSize
+	 *            写入缓存大小
+	 * @param cover
+	 *            若文件存在，是否覆盖
+	 * @return 生成的文件
+	 */
+	public File writeToSDFromInputStream(String dir, String fileName,
+			InputStream input, int outputSize, int inputSize, boolean cover) {
+		FileOutputStream output = null;
+		String fn = fileName.replaceAll("/", "").replaceAll(":", "");
+		File file = new File(ROOTPATH + dir, fileName);
+		try {
+			createSDDirectory(dir);
+			if (isFileExists(dir, fn) && cover == false) {
+				output = new FileOutputStream(file, true);
+			} else {
+				file = createSDFile(dir, fn);
+				output = new FileOutputStream(file);
+
+			}
+			byte inputBuffer[] = new byte[inputSize];
+			byte outputBuffer[] = new byte[outputSize];
+			int j = 0;
+			while (input.read(inputBuffer) != -1) {
+				for (int i = 0; i < inputSize; i++) {
+					outputBuffer[j] = inputBuffer[i];
+					if (j != outputSize - 1) {
+						j++;
+					} else {
+						output.write(outputBuffer);
+						output.flush();
+						outputBuffer = new byte[outputSize];
+						j = 0;
+					}
+				}
+			}
+			if (j > 0) {
+				output.write(outputBuffer, 0, j - 1);
+				output.flush();
+			}
+			output.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				output.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return file;
+	}
+
+	/**
 	 * 从SD卡读取文件
 	 * 
 	 * @param path

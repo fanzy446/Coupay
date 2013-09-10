@@ -60,5 +60,6 @@
     <string name="title_activity_trade_record">TradeRecordActivity</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_search_enterprise">SearchEnterpriseActivity</string>
+    <string name="title_activity_day1404__io">Day1404_IOActivity</string>
 
 </resources>

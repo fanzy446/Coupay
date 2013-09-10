@@ -2,6 +2,7 @@ package com.futurePayment.model;
 
 public class BasicInformation {
 	private String name;
+	private String head;
 	private int grade;
 	private double balance;
 
@@ -29,10 +30,18 @@ public class BasicInformation {
 		this.balance = balance;
 	}
 
+	public String getHead() {
+		return head;
+	}
+
+	public void setHead(String head) {
+		this.head = head;
+	}
+	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "{name:" + name + ",grade:" + grade + ",balance:" + balance
+		return "{name:" + name + ",head:" + head + ",grade:" + grade + ",balance:" + balance
 				+ "}";
 	}
 }

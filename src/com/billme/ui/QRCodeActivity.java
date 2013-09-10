@@ -4,9 +4,8 @@ import android.os.Bundle;
 
 import com.billme.logic.BillMeActivity;
 
-public class QRCodeActivity extends BaseActivity implements BillMeActivity{
+public class QRCodeActivity extends BaseActivity implements BillMeActivity {
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -22,14 +21,13 @@ public class QRCodeActivity extends BaseActivity implements BillMeActivity{
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void refresh(Object... param) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	
 }

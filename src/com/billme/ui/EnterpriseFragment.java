@@ -1,16 +1,12 @@
 package com.billme.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.billme.logic.MainService;
-import com.billme.widget.MyListViewAdapter;
 import com.billme.widget.MySurroundAdapter;
 import com.futurePayment.constant.ResultCode;
 import com.futurePayment.constant.Task;
 import com.futurePayment.model.EnterpriseBasicInfo;
-import com.futurePayment.model.Friend;
 import com.futurePayment.model.PaymentException;
 
 import android.app.ProgressDialog;
@@ -58,6 +54,7 @@ public class EnterpriseFragment extends Fragment {
 	}
 
 	private void bindAdapter() {
+		el = MainService.getFuturePayment().getUser().getConcernList();
 		adapter = new MySurroundAdapter(getActivity(), el);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(new ListView.OnItemClickListener() {
@@ -86,8 +83,8 @@ public class EnterpriseFragment extends Fragment {
 				break;
 			default:
 				pd.cancel();
-				Toast.makeText(getActivity(), state + "", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(getActivity(), "error:" + state,
+						Toast.LENGTH_SHORT).show();
 			}
 		case RelationActivity.GET_ENTERPRISE_SUCCESS:
 			bindAdapter();

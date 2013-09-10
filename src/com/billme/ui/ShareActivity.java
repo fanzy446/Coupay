@@ -46,6 +46,7 @@ public class ShareActivity extends BaseActivity implements BillMeActivity {
 		lowButton = (Button) findViewById(R.id.btn_share_low);
 		content = (EditText) findViewById(R.id.et_share_content);
 		photo = (ImageView) findViewById(R.id.iv_share_photo);
+		okButton = (Button) findViewById(R.id.btn_share_ok);
 
 		highButton.setOnClickListener(new Button.OnClickListener() {
 
@@ -97,7 +98,7 @@ public class ShareActivity extends BaseActivity implements BillMeActivity {
 				}
 				pd.setMessage("Sharing..");
 				pd.show();
-				Intent intent = new Intent();
+				Intent intent = getIntent();
 				HashMap<String, Object> param = new HashMap<String, Object>();
 				param.put("receiver", intent.getStringExtra("receiver"));
 				param.put("grade", grade);
@@ -107,7 +108,7 @@ public class ShareActivity extends BaseActivity implements BillMeActivity {
 						"photo",
 						MainService.getImageHelper().drawableToByte(
 								photo.getDrawable()));
-				Task task = new Task(Task.TASK_USER_LOGIN, param);
+				Task task = new Task(Task.TASK_SHARE_MOMENT, param);
 				MainService.newTask(task);
 			}
 

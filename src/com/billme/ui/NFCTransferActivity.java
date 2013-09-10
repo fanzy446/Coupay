@@ -28,7 +28,6 @@ import com.futurePayment.constant.Task;
 public class NFCTransferActivity extends BaseActivity implements
 		BillMeActivity, CreateNdefMessageCallback, OnNdefPushCompleteCallback {
 
-	
 	private NfcAdapter mNfcAdapter;
 	private TextView mInfoText;
 	private EditText money;
@@ -36,7 +35,7 @@ public class NFCTransferActivity extends BaseActivity implements
 	private static final int MESSAGE_SENT = -100;
 	public static final int NFCTRANSFER_SUCCESS = -101;
 	public static final int NFCTRANSFER_FAILURE = -102;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,9 +99,9 @@ public class NFCTransferActivity extends BaseActivity implements
 		if (mInfoText != null && msg != null) {
 			String str = new String(msg.getRecords()[0].getPayload());
 			mInfoText.setText(new String(msg.getRecords()[0].getPayload()));
-			
+
 			String[] temp = str.split("~");
-			
+
 			HashMap<String, String> param = new HashMap<String, String>();
 			param.put("sender", temp[0]);
 			param.put("money", temp[1]);
@@ -141,13 +140,12 @@ public class NFCTransferActivity extends BaseActivity implements
 		}
 	};
 
-	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode == RESULT_OK){
-			payInfo += "~"+data.getStringExtra("paymentPassword");
+		if (resultCode == RESULT_OK) {
+			payInfo += "~" + data.getStringExtra("paymentPassword");
 		}
 	}
 
@@ -156,15 +154,16 @@ public class NFCTransferActivity extends BaseActivity implements
 		Time time = new Time();
 		time.setToNow();
 
-		payInfo = (MainService.getUser().getName() + "~" + money
-				.getText().toString());
-		
-		if(Double.valueOf(money.getText().toString())> MainService.getUser().getMaxtransfer()){
+		payInfo = (MainService.getUser().getName() + "~" + money.getText()
+				.toString());
+
+		if (Double.valueOf(money.getText().toString()) > MainService.getUser()
+				.getMaxtransfer()) {
 			Intent intent = new Intent();
 			intent.putExtra("transfer", true);
 			startActivityForResult(intent, 0);
 		}
-		
+
 		NdefMessage msg = new NdefMessage(NdefRecord.createMime(
 				"application/com.billme.ui", payInfo.getBytes())
 		/**

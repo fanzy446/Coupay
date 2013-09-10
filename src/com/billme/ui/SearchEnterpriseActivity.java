@@ -60,7 +60,7 @@ public class SearchEnterpriseActivity extends BaseActivity implements
 				if (pd == null) {
 					pd = new ProgressDialog(SearchEnterpriseActivity.this);
 				}
-				pd.setMessage("Loading..");
+				pd.setMessage("Search..");
 				pd.show();
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("name", name.getText().toString());
