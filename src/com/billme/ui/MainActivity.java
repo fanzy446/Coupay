@@ -2,8 +2,8 @@ package com.billme.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -13,6 +13,7 @@ import com.zxing.activity.CaptureActivity;
 public class MainActivity extends BaseActivity implements BillMeActivity {
 	private Button codeButton = null;
 	private Button nfcButton = null;
+	private Button tradeButton = null;
 	public static final int REFRESH_USERINFO = 1024;
 	public static final int REFRESH_PAYMENT = 1025;
 	public static final int REFRESH_REPAYMENT = 1026;
@@ -27,7 +28,8 @@ public class MainActivity extends BaseActivity implements BillMeActivity {
 
 		codeButton = (Button) findViewById(R.id.btn_main_code);
 		nfcButton = (Button) findViewById(R.id.btn_main_nfc);
-
+		tradeButton = (Button) findViewById(R.id.btn_main_traderecord);
+		
 		nfcButton.setOnClickListener(new Button.OnClickListener() {
 
 			@Override
@@ -51,7 +53,17 @@ public class MainActivity extends BaseActivity implements BillMeActivity {
 			}
 
 		});
-
+		
+		tradeButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, TradeRecordActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	@Override

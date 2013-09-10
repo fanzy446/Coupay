@@ -54,8 +54,8 @@ public class TradeRecordActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		super.onResume();
 
-		if (expandableListView != null)
-			expandableListView.expandGroup(0);
+//		if (expandableListView != null && !expandableListView.isGroupExpanded(0))
+//			expandableListView.expandGroup(0);
 	}
 
 	@Override

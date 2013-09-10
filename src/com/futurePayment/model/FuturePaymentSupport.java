@@ -204,7 +204,7 @@ public class FuturePaymentSupport {
 			jobj.put("name", name);
 			jobj.put("page", page);
 			jobj.put("perPage", perPage);
-			jobj.put("condition", new JSONObject(condition));
+			jobj.put("flag", 0);
 
 			MyResponse response = http.post(ServiceType.QUERY_BILL, jobj);
 			int resultCode = response.getResultCode();
@@ -251,6 +251,9 @@ public class FuturePaymentSupport {
 				JSONArray array = response.getResultArray("tradeRecords");
 				for (int i = 0; i < array.length(); i++) {
 					JSONObject ob = array.getJSONObject(i);
+					
+					
+					
 					TradeRecord record = new TradeRecord();
 					record.setId(ob.getString("id"));
 					record.setSender(ob.getString("sender"));

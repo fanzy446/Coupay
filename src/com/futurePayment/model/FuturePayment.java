@@ -137,7 +137,7 @@ public class FuturePayment {
 
 	public ArrayList<TradeRecord> loadBill(String id) throws PaymentException {
 		try {
-			return supporter.getBill(id, 0);
+			return supporter.getBill(id, -1);
 		} catch (PaymentException e) {
 			throw e;
 		}
