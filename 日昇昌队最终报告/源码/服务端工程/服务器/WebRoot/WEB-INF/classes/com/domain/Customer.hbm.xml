@@ -1,0 +1,35 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+	<joined-subclass name="com.domain.Customer" extends="com.domain.Register">
+		<key column="id"/>
+		<property name="sex" type="java.lang.String">
+			<column name="sex" length="2"/>
+		</property>
+		<property name="birthday" type="java.sql.Date">
+			<column name="birthday"/>
+		</property>
+		<property name="realName" type="java.lang.String">
+			<column name="realName" length="10"/>
+		</property>
+		
+		<set name="collections" cascade="delete"> 
+			<key column="customerId"/>
+			<one-to-many class="com.domain.CouponCollection"/>
+		</set>
+			
+		<set name="vipCollections" cascade="delete">
+			<key column="customerId"/>
+			<one-to-many class="com.domain.VipCardCollection"/>
+		</set>
+		
+		<set name="shares" cascade="delete">
+			<key column="customerId"/>
+			<one-to-many class="com.domain.Share"/>
+		</set>
+		
+	</joined-subclass>
+</hibernate-mapping>

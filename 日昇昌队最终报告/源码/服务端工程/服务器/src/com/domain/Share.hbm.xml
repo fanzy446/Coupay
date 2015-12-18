@@ -1,0 +1,47 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+<class name="com.domain.Share">
+	<id name="id">
+		<column name="id"/>
+		<generator class="identity">
+		</generator>
+	</id>
+	<property name="content" type="java.lang.String">
+		<column name="content" length="500"/>
+	</property>
+	
+	<property name="header" type="java.lang.String">
+		<column name="header" length="50"></column>
+	</property>
+	
+	<property name="grade" type="java.lang.Integer">
+		<column name="grade"/>
+	</property>
+	
+	<property name="picturePath" type="java.lang.String">
+		<column name="picturePath" length="100"/>
+	</property>
+	
+	<property name="date" type="java.sql.Timestamp">
+		<column name="date"/>
+	</property>
+	
+	<property name="money" type="java.lang.Double">
+		<column name="money"/>
+	</property>
+	<many-to-one name="sharer" class="com.domain.Customer">
+		<column name="customerId" not-null="true"/>
+	</many-to-one>
+	
+	<many-to-one name="seller" class="com.domain.Seller">
+		<column name="sellerId" not-null="true"/>
+	</many-to-one>
+	
+</class>
+
+</hibernate-mapping>

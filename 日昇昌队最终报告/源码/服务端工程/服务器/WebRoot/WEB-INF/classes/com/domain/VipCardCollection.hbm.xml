@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+<class name="com.domain.VipCardCollection">
+	<id name="id">
+		<generator class="identity">
+		</generator>
+	</id>
+	<property name="grade" type="int">
+	</property>
+	
+	<property name="vipNumber" type="java.lang.String">
+		<column name="vipNumber" length="10"></column>
+	</property>
+	
+	<many-to-one name="owner" class="com.domain.Customer" cascade="delete">
+		<column name="customerId"></column>
+	</many-to-one>
+	
+	<many-to-one name="vipCard" class="com.domain.VipCard" cascade="delete">
+		<column name="vipCardId" not-null="true"></column>
+	</many-to-one>
+</class>
+
+</hibernate-mapping>

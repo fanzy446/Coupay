@@ -1,0 +1,40 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+<class name="com.rmi.GoodDescription1">
+	<id name="serialNumber" type="java.lang.String">
+		<column name="serialNumber" length="20"></column>
+		<generator class="assigned"></generator>
+	</id>
+	
+	<property name="name" type="java.lang.String">
+		<column name="name" length="30" not-null="true"></column>
+	</property>
+	
+	<property name="type" type="java.lang.String">
+		<column name="gtype" length="20"></column>
+	</property>
+	
+	<property name="color" type="java.lang.String">
+		<column name="color" length="20"></column>
+	</property>
+	
+	<property name="size" type="double">
+		<column name="gsize"></column>
+	</property>
+	
+	<property name="price" type="double">
+		<column name="price" not-null="true"></column>
+	</property>
+	
+	<set name="goods">
+		<key column="serialNumber"></key>
+		<one-to-many class="com.rmi.Good1"/>
+	</set>
+</class>
+
+</hibernate-mapping>

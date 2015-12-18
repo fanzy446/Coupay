@@ -1,0 +1,20 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+	<class name="com.domain.BankCard">
+		<id name="cardNumber" type="java.lang.String">
+			<generator class="assigned"/>
+		</id>
+		
+		<many-to-one name="owner" class="com.domain.Register">
+			<column name="registerId" not-null="true"/>
+		</many-to-one>
+		
+		<property name="bankName" type="java.lang.String">
+			<column name="bankName" length="32" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>

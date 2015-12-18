@@ -1,0 +1,30 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+	<joined-subclass name="com.domain.Seller" extends="com.domain.Register">
+		<key column="id"/>
+		<property name="grade" type="java.lang.Integer">
+			<column name="grade"/>
+		</property>
+		<property name="address" type="java.lang.String">
+			<column name="address" length="100"/>
+		</property>
+		<property name="introduction" type="java.lang.String">
+			<column name="introduction" length="200"/>
+		</property>
+		<property name="longitude" type="double"></property>
+		<property name="latitude" type="double"></property>
+		<set name="coupons" cascade="delete">
+			<key column="sellerId"/>
+			<one-to-many class="com.domain.Coupon"/>
+		</set>
+		<set name="comments" cascade="delete">
+			<key column="sellerId"/>
+			<one-to-many class="com.domain.Share"/>
+		</set>
+	</joined-subclass>
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+<class name="com.domain.Friendship">
+	<composite-id name="id" class="com.domain.FriendshipId">
+		<key-property name="registerId1" type="java.lang.Integer">
+			<column name="registerId1" not-null="true"/>
+		</key-property>
+		<key-property name="registerId2" type="java.lang.Integer">
+			<column name="registerId2" not-null="true" />
+		</key-property>
+	</composite-id>
+	
+	<property name="level" type="java.lang.String">
+		<column name="focuslevel" length="10" not-null="true"></column>
+	</property>
+	<many-to-one name="person1" insert="false" update="false">
+		<column name="registerId1" not-null="true"/>
+	</many-to-one>
+	<many-to-one name="person2" lazy="false" insert="false" update="false">
+		<column name="registerId2" not-null="true"/>
+	</many-to-one>
+</class>
+	
+</hibernate-mapping>

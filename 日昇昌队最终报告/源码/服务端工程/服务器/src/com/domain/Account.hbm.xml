@@ -1,0 +1,26 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+<class name="com.domain.Account">
+	<id name="id" column="id">
+		<generator class="foreign">
+			<param name="property">owner</param>
+		</generator>
+	</id>
+	<one-to-one name="owner" class="com.domain.Register" constrained="false" fetch="select"/>
+	<property name="balance" type="double" precision="15" scale="2">
+		<column name="balance" not-null="true" length="15" scale="2"/>
+	</property>
+	<property name="payPassword" type="java.lang.String">
+		<column name="payPassword" not-null="true" length="128"></column>
+	</property>
+	<property name="grade" type="int">
+		<column name="grade"/>
+	</property>
+</class>
+
+</hibernate-mapping>

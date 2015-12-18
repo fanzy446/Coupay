@@ -1,0 +1,32 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+	<class name="com.domain.BankAccount">
+		<id name="cardNumber" type="java.lang.String">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="balance" type="double">
+			<column name="balance" not-null="true">
+			</column>
+		</property>
+		
+		<property name="password" type="java.lang.String">
+			<column name="password" length="128"/>
+		</property>
+		
+		<property name="bankName" type="java.lang.String">
+			<column name="bankName" length="32">
+			</column>
+		</property>
+		
+		<property name="address" type="java.lang.String">
+			<column name="address" length="64"/>
+		</property>
+	</class>
+	
+</hibernate-mapping>

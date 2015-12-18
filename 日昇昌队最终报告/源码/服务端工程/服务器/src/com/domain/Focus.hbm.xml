@@ -1,0 +1,24 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+<class name="com.domain.Focus">
+	<composite-id class="com.domain.FocusId" name="id">
+		<key-property name="customerId"></key-property>
+		<key-property name="sellerId"></key-property>
+	</composite-id>
+	
+	<many-to-one name="customer" class="com.domain.Customer" insert="false" update="false">
+		<column name="customerId"></column>
+	</many-to-one>
+	
+	<many-to-one name="seller" insert="false" update="false">
+		<column name="sellerId"></column>
+	</many-to-one>
+
+</class>
+
+</hibernate-mapping>

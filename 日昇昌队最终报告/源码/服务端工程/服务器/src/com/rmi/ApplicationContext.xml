@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"  
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"  
+    xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"  
+    xmlns:tool="http://www.springframework.org/schema/tool" xmlns:context="http://www.springframework.org/schema/context"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+     http://www.springframework.org/schema/beans/spring-beans.xsd  
+     http://www.springframework.org/schema/tx  
+     http://www.springframework.org/schema/tx/spring-tx.xsd  
+     http://www.springframework.org/schema/aop  
+     http://www.springframework.org/schema/aop/spring-aop.xsd  
+     http://www.springframework.org/schema/jee  
+     http://www.springframework.org/schema/jee/spring-jee.xsd  
+     http://www.springframework.org/schema/context  
+     http://www.springframework.org/schema/context/spring-context.xsd  
+     http://www.springframework.org/schema/util  
+     http://www.springframework.org/schema/util/spring-util.xsd  
+     http://www.springframework.org/schema/tool  
+     http://www.springframework.org/schema/tool/spring-tool.xsd"  
+    default-lazy-init="true" default-autowire="byName">  
+  
+   <bean id="propertyConfigurer"  
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+        <property name="locations">  
+            <list>  
+                <value>classpath:/oracledb.properties</value>  
+            </list>  
+        </property>  
+   </bean>  
+    
+              
+    <!-- C3P0 -->  
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"  
+        p:driverClass="${jdbc.driver}" p:jdbcUrl="${jdbc.url}" p:user="${jdbc.username}"  
+        p:password="${jdbc.password}" p:acquireIncrement="2"  
+        p:initialPoolSize="10" p:minPoolSize="10"  
+        p:maxPoolSize="100" p:maxIdleTime="2"  
+        p:idleConnectionTestPeriod="3000" p:maxStatements="100"  
+        destroy-method="close" />  
+        
+  	<!-- 配置session 工厂 -->
+    <bean id="sessionFactory"  
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"  
+        p:dataSource-ref="dataSource" p:mappingLocations="com/rmi/*.hbm.xml">  
+          
+        <property name="hibernateProperties">  
+            <props>  
+                <!-- C3P0 方式 (此节点配置是可选项，可以不用配置，有的配置覆盖了原生的配置，只是给出可以配置的项，使用<span style="color: rgb(0, 130, 0); font-family: Consolas, 'Courier New', Courier, mono, serif; line-height: 18px; text-align: left; ">BoneCP</span>配置的时候请注释掉) Begin--> 
+                
+                <!-- 下面的用户名和密码用于查询数据库元数据 --> 
+                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect </prop>
+                <!-- <prop key="hibernate.connection.username">scott</prop> 
+                <prop key="hibernate.connection.password">tiger</prop>                 -->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>  
+        </property>  
+    </bean>  
+  
+  	<!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+         
+  
+    <bean id="transactionInterceptor"  
+        class="org.springframework.transaction.interceptor.TransactionInterceptor"  
+        p:transactionManager-ref="transactionManager">  
+        <property name="transactionAttributes">  
+            <props>  
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>  
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>  
+                <prop key="select*">PROPAGATION_REQUIRED,readOnly</prop>  
+                <prop key="query*">PROPAGATION_REQUIRED,readOnly</prop>               
+                <prop key="sync*">PROPAGATION_REQUIRED</prop>  
+                <prop key="finish*">PROPAGATION_REQUIRED</prop>  
+                <prop key="add*">PROPAGATION_REQUIRED</prop>  
+                <prop key="insert*">PROPAGATION_REQUIRED</prop>  
+                <prop key="edit*">PROPAGATION_REQUIRED</prop>  
+                <prop key="update*">PROPAGATION_REQUIRED</prop>  
+                <prop key="save*">PROPAGATION_REQUIRED</prop>  
+                <prop key="remove*">PROPAGATION_REQUIRED</prop>  
+                <prop key="delete*">PROPAGATION_REQUIRED</prop>  
+                <prop key="*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>  
+            </props>  
+        </property>  
+    </bean>  
+    
+    
+ 
+  
+ <bean id="serviceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter" lazy-init="false">
+ 	<property name="service" ref="businessServer1"/>
+ 	<property name="serviceName" value="businessServer1"/>
+ 	<property name="serviceInterface" value="com.rmi.IBusinessServer"/>
+ 	<property name="registryPort" value="5000"/>
+ </bean>
+ 
+ <bean id="hqlUtil" class="com.rmi.HqlUtil" lazy-init="false">
+ 	<property name="sessionFactory" ref="sessionFactory"></property>
+ </bean>
+
+ <bean id="goodCatalog" class="com.rmi.GoodCatalog" lazy-init="false"/>
+ 
+ <bean id="businessServer1" class="com.rmi.BusinessServer1" lazy-init="false">
+ 	<property name="catalog" ref="goodCatalog"></property>
+ </bean>
+ 
+  </beans>

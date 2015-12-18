@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.i18n.encoding" value="utf-8"></constant>
+   	
+   	<!-- 属于topAction的包 -->
+   	<package name="topAction" extends="json-default">
+   		<action name="topService" class="com.action.top.TopAction">
+   			<result name="login" type="chain">login</result>
+   			<result name="logout" type="chain">logout</result>
+   			<result name="regist" type="chain">regist</result>
+   			<result name="get_user_info4customer" type="chain">get_user_info4customer</result>
+   			<result name="query_receive_traderecord" type="chain">query_receive_traderecord</result>
+   			<result name="query_vipCard" type="chain">query_vipCard</result>
+   			<result name="query_user_grade" type="chain">query_user_grade</result>
+   			<result name="check_customer_exists" type="chain">check_customer_exists</result>
+   			<result name="query_bankCard" type="chain">query_bankCard</result>
+   			<result name="add_bankCard" type="chain">add_bankCard</result>
+   			<result name="delete_bankCard" type="chain">delete_bankCard</result>
+   			<result name="personal_pay" type="chain">personal_pay</result>
+   			<result name="multiple_pay" type="chain">multiple_pay</result>
+   			<result name="apply_for_vipCard" type="chain">apply_for_vipCard</result>
+   			<result name="use_vipCard" type="chain">use_vipCard</result>
+   			<result name="add_friendRequest" type="chain">add_friendRequest</result>
+   			<result name="delete_friend" type="chain">delete_friend</result>
+   			<result name="focus_seller" type="chain">focus_seller</result>
+   			<result name="cancel_focus_seller" type="chain">cancel_focus_seller</result>
+   			<result name="share_experience" type="chain">share_experience</result>
+   			<result name="query_coupon" type="chain">query_coupon</result>
+   			<result name="send_coupon" type="chain">send_coupon</result>
+   			<result name="add_comment" type="chain">add_comment</result>
+   			<result name="get_comment4seller" type="chain">get_comment4seller</result>
+   			<result name="get_share" type="chain">get_share</result>
+   			<result name="set_VIP" type="chain">set_VIP</result>
+   			<result name="get_surrounding_enterprise" type="chain">get_surrounding_enterprise</result>
+   			<result name="get_friend" type="chain">get_friend</result>
+   			<result name="search_customer" type="chain">search_customer</result>
+   			<result name="query_bill" type="chain">query_bill</result>
+   		</action>
+   	</package>
+   
+   	<!-- 属于register的包,主包 -->
+   	<package name="register" extends="topAction">	
+		<global-results>
+			<result name="success" type="json">
+ 				<param name="root">response</param>			 
+			</result>
+		</global-results>
+   		
+   		<action name="login" class="com.action.register.LoginAction"></action>
+     	<action name="logout" class="com.action.register.LogoutAction"></action> 
+     	<action name="regist" class="com.action.register.RegistAction"></action>
+     	<action name="search_customer" class="com.action.register.SearchAction" method="searchCustomer"></action>
+
+   	
+   	
+   	</package>
+   
+  	<!-- 属于customer的包，继承包 -->
+   	<package name="customer" extends="register">
+   		<!-- 配置AccountAction -->
+   		
+   		<!-- 配置BankCardAction -->
+   		
+   		<!-- 配置CommunityAction -->
+   		<action name="add_friend" class="com.action.customer.CommunityAction" method="addFriend"></action>
+   		<action name="delete_friend" class="com.action.customer.CommunityAction" method="deleteFriend"></action>
+   		<action name="focus_seller" class="com.action.customer.CommunityAction" method="addFocus"></action>
+   		<action name="cancel_focus_seller" class="com.action.customer.CommunityAction" method="deleteFocus"></action>
+   		<action name="share_experience" class="com.action.customer.CommunityAction" method="addShare"></action>
+   		<action name="add_friendRequest" class="com.action.customer.CommunityAction" method="addFriendRequest"></action>
+   		<action name="get_share" class="com.action.customer.CommunityAction" method="getShare"></action>
+   		<action name="get_friend" class="com.action.customer.CommunityAction" method="getFriend"></action>
+   		
+   		
+   		
+   		<!-- 配置CouponAction -->
+   		<action name="query_coupon" class="com.action.customer.CouponAction" method="getCoupon"></action>
+   		
+   		<!-- 配置GetAroundAction -->
+   		<action name="get_surrounding_enterprise" class="com.action.customer.GetAroundAction"></action>
+
+	
+   		<!-- 配置ManageAction -->
+   	    <action name="get_user_info4customer" class="com.action.customer.ManageAction" method="getUserInfo"></action>
+     	<action name="update_user_info4customer" class="com.action.customer.ManageAction" method="updateUserInfo"></action>
+     	<action name="query_receive_traderecord" class="com.action.customer.TransferRecordAction" method="getReceiveTransferRecordBypage"></action>
+     	<action name="query_vipCard" class="com.action.customer.ManageAction" method="getVIP"></action>  
+     	<action name="apply_for_vipCard" class="com.action.customer.ManageAction" method="applyVIP"></action>
+     	<action name="query_user_grade" class="com.action.customer.ManageAction" method="getSysGrade"></action>
+   		<action name="check_customer_exists" class="com.action.customer.ManageAction" method="checkExist"></action>
+   		<action name="query_bankCard" class="com.action.customer.ManageAction" method="getBindedCards"></action>
+   		<action name="add_bankCard" class="com.action.customer.ManageAction" method="bindCard"></action>
+   		<action name="delete_bankCard" class="com.action.customer.ManageAction" method="deleteBankCard"></action>
+   		<action name="send_coupon" class="com.action.customer.ManageAction" method="sendCoupon"></action>
+   		<action name="add_comment" class="com.action.customer.ManageAction" method="addComment"></action>
+   		
+   		<!-- 配置TransferAction -->
+   		<action name="personal_pay" class="com.action.customer.TransferAction" method="personalTransfer"></action>   	
+   		<action name="multiple_pay" class="com.action.customer.TransferAction" method="multiplePay"></action>
+   		<action name="use_vipCard" class="com.action.customer.TransferAction" method="payByVIP"></action> 		 
+   		
+   		<!-- 配置TransferRecordAction -->
+   		<action name="query_bill" class="com.action.customer.TransferRecordAction" method="execute"></action>
+   		<action name="get_transferrecord_bypage" class="com.action.customer.TransferRecordAction"  method="getTransferRecordByPage"/>
+   		<action name="get_transferrecord_byoffert" class="com.action.customer.transferRecordAction" method="getTranferRecordByOffset"/>
+   		<!-- 配置VIPCardAction -->
+   		
+   		
+   		
+
+   	</package>
+   
+   	<!-- 属于seller的包 ，继承包-->
+   	<package name="seller" extends="register">
+   		<!-- 配置ManageAction -->
+   		<action name="get_comment4seller" class="com.action.seller.ManageAction" method="getComment"></action>
+   		<action name="set_VIP" class="com.action.seller.ManageAction" method="setVIP"></action>
+   		
+   		<!-- 配置TradeAction -->
+   		
+  	</package>
+
+</struts>

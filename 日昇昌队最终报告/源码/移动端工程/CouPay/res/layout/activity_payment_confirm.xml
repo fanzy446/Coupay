@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PaymentConfirmActivity" >
+
+    <include layout="@layout/my_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/tv_payment_confirm_text"
+            style="@style/DefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="您需向？？支付？？" />
+
+        <ImageView
+            android:id="@+id/iv_payment_confirm_coupon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:src="@drawable/back" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_payment_confirm_choice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:listSelector="@drawable/list_selector" />
+
+    <GridView
+        android:id="@+id/gv_payment_confirm_people"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="@drawable/list_selector"
+        android:visibility="invisible" >
+    </GridView>
+
+    <LinearLayout
+        android:id="@+id/ll_payment_confirm_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_payment_confirm_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableRight="@drawable/back"
+            android:text="二维码" />
+
+        <Button
+            android:id="@+id/btn_payment_confirm_friend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableRight="@drawable/back"
+            android:text="好友列表" />
+    </LinearLayout>
+
+</LinearLayout>

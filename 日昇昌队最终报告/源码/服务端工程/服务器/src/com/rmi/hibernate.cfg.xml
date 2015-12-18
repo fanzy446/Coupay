@@ -1,0 +1,40 @@
+<?xml version = "1.0"?>
+<!--表明解析本XML文件的DTD文档位置，DTD是Document Type Definition 的缩写,即文档类型的定义,XML解析器使用DTD文档来检查XML文件的合法性。hibernate.sourceforge.net/hibernate-configuration-3.0dtd可以在Hibernate3.1.3软件包中的src\org\hibernate目录中找到此文件--> 
+<!DOCTYPE hibernate-configuration PUBLIC 
+          "-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+          "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"> 
+    <!--声明Hibernate配置文件的开始-->      
+    <hibernate-configuration> 
+    <!--表明以下的配置是针对session-factory配置的，SessionFactory是Hibernate中的一个类，这个类主要负责保存HIbernate的配置信息，以及对Session的操作--> 
+      <session-factory>    
+      <!--配置数据库的驱动程序，Hibernate在连接数据库时，需要用到数据库的驱动程序--> 
+          <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property> 
+      <!--设置数据库的连接url:jdbc:mysql://localhost/hibernate,其中localhost表示mysql服务器名称，此处为本机，    hibernate是数据库名-->  
+            <property name="hibernate.connection.url">jdbc:oracle:thin:@127.0.0.1:1521:orcl</property> 
+    <!--连接数据库的用户名--> 
+          <property name="hibernate.connection.username">luo</property> 
+          <!--连接数据库是密码--> 
+          <property name="hibernate.connection.password">luo</property> 
+          
+          <!-- 配置连接池 -->
+          <!-- 最大连接数 -->
+          <property name="hibernate.c3p0.max_size">30</property>
+      
+          <property name="c3p0.min_size">10</property>
+     
+          <property name="c3p0.timeout">3000</property>
+          <property name="c3p0.acquire_increment">2</property>
+          <property name="c3p0.idle_test_period">5000</property>
+          
+          <!-- 方言 -->
+          <property name="dialect">org.hibernate.dialect.Oracle10gDialect</property>
+          
+          <!-- 其他配置 -->
+          <property name="hibernate.show_sql">true</property>
+        <!--   <property name="hibernate.hbm2ddl.auto">update</property> -->
+          
+          <mapping resource="com/rmi/Good1.hbm.xml"></mapping>
+          <mapping resource="com/rmi/GoodDescription1.hbm.xml"/>
+		   
+      </session-factory>  
+   </hibernate-configuration>    

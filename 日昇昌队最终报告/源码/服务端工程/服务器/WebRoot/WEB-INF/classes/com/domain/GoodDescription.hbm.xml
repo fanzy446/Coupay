@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+<class name="com.domain.GoodDescription">
+	<id name="id">
+		<generator class="identity">
+		</generator>
+	</id>
+	<property name="type" type="java.lang.String">
+		<column name="type" length="16"></column>
+	</property>
+	<property name="size" type="double">
+		<column name="gsize"></column>
+	</property>
+	<property name="color" type="java.lang.String">
+		<column name="color" length="16"></column>
+	</property>
+	<set name="goods">
+		<key column="descriptionId" not-null="true"/>
+		<one-to-many class="com.domain.Good"/>
+	</set>
+</class>
+
+
+</hibernate-mapping>

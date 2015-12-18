@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.billme.ui"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="18" />
+
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logoblue"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.billme.ui.LoginActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.RegistActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.LogoActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.billme.ui.MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.TestActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.PaymentActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.RepayActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.AccountActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.zxing.activity.CaptureActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+
+        <service
+            android:name="com.billme.logic.MainService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.billme.loogic.MainService" />
+            </intent-filter>
+        </service>
+        
+        <service
+            android:name="com.billme.logic.PushService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.billme.loogic.PushService" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="com.billme.ui.NFCPaymentActivity"
+            android:label="@string/title_activity_nfcpayment" >
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/com.billme.ui" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.billme.ui.PaymentConfirmActivity"
+            android:label="@string/title_activity_payment_confirm" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.FriendActivity"
+            android:label="@string/title_activity_friend" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.ShareActivity"
+            android:label="@string/title_activity_share" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.SocietyActivity"
+            android:label="@string/title_activity_society" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.SurroundActivity"
+            android:label="@string/title_activity_surround" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.ManagementActivity"
+            android:label="@string/title_activity_management" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.CouponActivity"
+            android:label="@string/title_activity_coupon" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.GradeActivity"
+            android:label="@string/title_activity_grade" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.RelationActivity"
+            android:label="@string/title_activity_relation" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.BankCardActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.TradeRecordActivity"
+            android:label="@string/title_activity_trade_record" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.SearchFriendActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
+        <activity
+            android:name="com.billme.ui.SearchEnterpriseActivity"
+            android:label="@string/title_activity_search_enterprise" >
+        </activity>
+      
+    </application>
+
+</manifest>

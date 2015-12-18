@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"  
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"  
+    xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"  
+    xmlns:tool="http://www.springframework.org/schema/tool" xmlns:context="http://www.springframework.org/schema/context"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+     http://www.springframework.org/schema/beans/spring-beans.xsd  
+     http://www.springframework.org/schema/tx  
+     http://www.springframework.org/schema/tx/spring-tx.xsd  
+     http://www.springframework.org/schema/aop  
+     http://www.springframework.org/schema/aop/spring-aop.xsd  
+     http://www.springframework.org/schema/jee  
+     http://www.springframework.org/schema/jee/spring-jee.xsd  
+     http://www.springframework.org/schema/context  
+     http://www.springframework.org/schema/context/spring-context.xsd  
+     http://www.springframework.org/schema/util  
+     http://www.springframework.org/schema/util/spring-util.xsd  
+     http://www.springframework.org/schema/tool  
+     http://www.springframework.org/schema/tool/spring-tool.xsd"  
+    default-lazy-init="false" default-autowire="byName">
+    
+    
+    
+    <bean id="serverpushSystem" class="com.subsystem.serverpush.ServerPushSystem">
+    </bean>
+    
+    <bean id="server" class="com.subsystem.serverpush.Server">
+    	<property name="dao" ref="messageDao"></property>
+    </bean> 
+    
+    <!-- 配置dao -->
+    <bean id="registerDao" class="com.dao.RegisterDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="customerDao" class="com.dao.CustomerDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="sellerDao" class="com.dao.SellerDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="accountDao" class="com.dao.AccountDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="circleEntityDao" class="com.dao.CircleEntityDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="loginMessageDao" class="com.dao.LoginMessageDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="contactDao" class="com.dao.ContactDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="couponDao" class="com.dao.CouponDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="bankCardDao" class="com.dao.BankCardDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="bankAccountDao" class="com.dao.BankAccountDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="transferRecordDao" class="com.dao.TransferRecordDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="messageDao" class="com.dao.MessageDao">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    
+    
+    <!-- 配置service -->
+   	<bean id="registerService" class="com.service.implement.RegisterServiceImpl">
+   		<property name="dao" ref="registerDao"></property>
+   		<property name="dao1" ref="contactDao"></property>
+   	</bean>
+   	<bean id="customerService" class="com.service.implement.CustomerServiceImpl">
+   		<property name="dao" ref="customerDao"></property>
+   	</bean>
+   	<bean id="sellerService" class="com.service.implement.SellerServiceImpl">
+   		<property name="dao" ref="sellerDao"></property>
+   	</bean>
+    <bean id="accountService" class="com.service.implement.AccountServiceImpl">
+    	<property name="dao" ref="accountDao"></property>
+    </bean>
+    <bean id="circleService" class="com.service.implement.CircleServiceImpl">
+    	<property name="dao" ref="circleEntityDao"></property>
+    </bean>
+    <bean id="loginMessageService" class="com.service.implement.LoginMessageServiceImpl">
+    	<property name="dao" ref="loginMessageDao"/>
+    </bean>
+    <bean id="couponService" class="com.service.implement.CouponServiceImpl">
+    	<property name="dao" ref="couponDao"/>
+    </bean>
+   	<bean id="bankCardService" class="com.service.implement.BankCardServiceImpl">
+   		<property name="dao" ref="bankCardDao"></property>
+   	</bean>
+   	<bean id="bankAccountService" class="com.service.implement.BankAccountServiceImpl">
+   		<property name="dao" ref="bankAccountDao"></property>
+   	</bean>
+    <bean id ="transferService" class="com.service.implement.TransferServiceImpl">
+    	<property name="accountDao" ref = "accountDao"></property>
+    	<property name="transferRecordDao" ref="transferRecordDao"></property>
+    	<property name="registerDao" ref="registerDao"></property>
+    </bean>
+    <bean id="messageService" class="com.service.implement.MessageServiceImpl">
+    	<property name="dao" ref="messageDao"></property>
+    </bean>
+ 
+    <!-- 配置action -->
+    <bean id="topAction" class="com.action.top.TopAction" scope="prototype"></bean>
+    <bean id="loginAction" class="com.action.register.LoginAction" scope="prototype">
+    	<property name="registerService" ref="registerService"/>
+    	<property name="accountService" ref="accountService"/>
+    	<property name="loginMessageService" ref="loginMessageService"/>
+    	<property name="pushService" ref="serverpushSystem"/>
+    </bean>
+    <bean id="registAction" class="com.action.register.RegistAction" scope="prototype">
+    	<property name="registerService" ref="registerService"/>
+    	<property name="customerService" ref="customerService"/>
+    	<property name="accountService" ref="accountService"/>
+    </bean>
+    <bean id="manageAction" class="com.action.customer.ManageAction" scope="prototype">
+    	<property name="registerService" ref="registerService"/>
+    	<property name="bankCardService" ref="bankCardService"/>
+    	<property name="bankAccountService" ref="bankAccountService"/>
+    </bean>
+    <bean id="manageAccountAction" class="com.action.customer.ManageAccountAction" scope="prototype">
+    	<property name="accountService" ref="accountService"/>
+    </bean>
+    <bean id="communityAction" class="com.action.customer.CommunityAction" scope="prototype">
+    	<property name="registerService" ref="registerService"/>
+    	<property name="circleService" ref="circleService"/>
+    	<property name="customerService" ref="customerService"/>
+    	<property name="sellerService" ref="sellerService"/>
+    </bean>
+    <bean id="getAroundAction" class="com.action.customer.GetAroundAction" scope="prototype">
+    	<property name="sellerService" ref="sellerService"/>
+    </bean>
+    <bean id="couponAction" class="com.action.customer.CouponAction" scope="prototype">
+    	<property name="couponService" ref="couponService"/>
+    </bean>
+    <bean id="transferAction" class="com.action.customer.TransferAction" scope="prototype">
+    	<property name="transferService" ref="transferService"/>
+    	<property name="registerService" ref="registerService"/>
+    	<property name="pushService" ref="serverpushSystem"/>
+    </bean>
+    <bean id="transferRecordAction" class="com.action.customer.TransferRecordAction" scope="prototype">
+    	<property name="transferService" ref="transferService"/>
+    	<property name="registerService" ref="registerService"/>
+
+    </bean>
+    <bean id="searchAction" class="com.action.register.SearchAction" scope="prototype">
+    	<property name="registerService" ref="registerService"/>
+    </bean>
+    
+    
+    <!-- <bean id="bankCardAction" class="com.action.customer.BankCardAction" scope="prototype">
+    	<property name="bankCardService" ref="bankCardService"/>
+    	<property name="bankAccountService" ref="bankAccountService"/>
+    	<property name="registerService" ref="registerService"></property>
+    </bean> -->
+</beans>

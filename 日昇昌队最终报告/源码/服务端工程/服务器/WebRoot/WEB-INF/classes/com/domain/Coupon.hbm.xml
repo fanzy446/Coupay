@@ -1,0 +1,30 @@
+<?xml version = "1.0" encoding="gb2312"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+ <hibernate-mapping>
+ 	<class name="com.domain.Coupon">
+ 		<id name="id">
+ 			<column name="id"/>
+ 			<generator class="identity">
+ 			</generator>
+ 		</id>
+ 		<many-to-one name="seller" lazy="false" >
+ 			<column name="sellerId" not-null="true"/>
+ 		</many-to-one>
+ 		<property name="couponNumber" type="long">
+ 			<column name="couponNumber" length="8" not-null="true"></column>
+ 		</property>
+ 		<property name="picture" type="java.lang.String">
+ 			<column name="picture"/>
+ 		</property>
+ 		<property name="startDate" type="java.sql.Date"/>
+ 		<property name="endDate" type="java.sql.Date"/>
+ 		<property name="type" type="java.lang.String">
+ 			<column name="ctype" length="10" not-null="true"></column>
+ 		</property>
+ 		<property name="value" type="double"></property>
+ 		<property name="least" type="double"></property>
+ 	</class>
+ </hibernate-mapping>

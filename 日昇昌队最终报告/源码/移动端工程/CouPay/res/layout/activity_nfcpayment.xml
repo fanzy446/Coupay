@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background"
+    android:orientation="vertical"
+    tools:context=".NFCPayment" >
+
+    <include
+        android:layout_weight="0"
+        layout="@layout/my_title" />
+
+    <TextView
+        android:id="@+id/tv_nfcpayment_text"
+        style="@style/RegistText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0"
+        android:text="@string/tv_nfc_payment"
+        android:textSize="20sp" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/et_nfcpayment_money"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:layout_weight="0"
+        android:ems="10"
+        android:hint="Money"
+        android:inputType="numberDecimal" />
+
+</LinearLayout>
